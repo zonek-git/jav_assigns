@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class Items {
 
     private String name;
@@ -13,9 +15,9 @@ public class Items {
 
     }
 
-    Items(String name, String itemDescription) {
+    Items(String name, HashMap<String, String> desc) {
         this.name = name;
-        this.itemDescription = itemDescription;
+        this.itemDescription = desc.get(name);
     }
 
     //GETTERS//

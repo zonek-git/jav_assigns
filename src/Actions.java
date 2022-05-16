@@ -9,10 +9,10 @@ public class Actions extends Player{
 
     //TODO instead of doing it all this way, I think it would be a good idea to take a parser for TXT file, remember?
 
-    public Actions(Game game, String name, String desc) {
+    public Actions(Game game, String name, HashMap<String, String> desc) {
         super();
         this.actionName = name;
-        this.actionDescription = desc;
+        this.actionDescription = desc.get(name);
         checkActionable();
     }
 

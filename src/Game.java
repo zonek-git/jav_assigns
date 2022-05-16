@@ -23,14 +23,14 @@ public class Game {
         assetHash.put("locations", importAssetDescriptions.assetImport("locations"));
         assetHash.put("actions", importAssetDescriptions.assetImport("actions"));
 
-        Actions look = new Actions(this,"look", assetHash.get("actions").get("look"));
-        Actions inventory = new Actions(this, "inventory", assetHash.get("actions").get("inventory"));
-        Actions help = new Actions(this,"help", assetHash.get("actions").get("help"));
+        Actions look = new Actions(this,"look", assetHash.get("actions"));
+        Actions inventory = new Actions(this, "inventory", assetHash.get("actions"));
+        Actions help = new Actions(this,"help", assetHash.get("actions"));
 
-        Items baton = new Items("baton", assetHash.get("items").get("baton"));
-        Items rose = new Items("rose", assetHash.get("items").get("rose"));
+        Items baton = new Items("baton", assetHash.get("items"));
+        Items rose = new Items("rose", assetHash.get("items"));
 
-        Locations squareRoom = new Locations(this, "squareRoom");
+        Locations squareRoom = new Locations(this, "squareRoom", assetHash.get("locations"));
         squareRoom.addItem(baton);
         squareRoom.addItem(rose);
 

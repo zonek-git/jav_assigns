@@ -21,7 +21,7 @@ public class Player {
     Game game;
     private Locations currentLocation;
     private Locations moveFromTo;
-    private ArrayList<Items> currentInventory;
+    private ArrayList<Items> currentInventory = new ArrayList<>();
     private int numberOfItems;
 
     public Player() {

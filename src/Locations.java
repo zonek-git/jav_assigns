@@ -1,18 +1,13 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-enum LocationData {
-    SQUARE_ROOM, FOREST_ZONE, RABBITS_HOUSE, MUSH_FOREST, COURT_ROOM, UNBIRTHDAY_PARTY, SAFE_HAVEN,
-    THE_VOID;
-}
-
 public class Locations {
 
     private String name;
     private String locationDescription;
     private String entryDescription;
     private String exitDescription;
-    private ArrayList<Items> containedItems = null;
+    private ArrayList<Items> containedItems = new ArrayList<>();
     private HashMap<String, Locations> directory;
     private Game game;
 
@@ -26,9 +21,10 @@ public class Locations {
      * @param name
      * @param locationDescription
      */
-    public Locations(Game game, String locationName) {
+    public Locations(Game game, String name, HashMap<String, String> desc) {
         super();
         this.game = game;
+        this.locationDescription = desc.get(name);
     }
 
     //SETTERS
