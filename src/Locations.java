@@ -27,7 +27,15 @@ public class Locations {
         this.locationDescription = desc.get(name);
     }
 
+    public void addDirection(String dir, Locations location) {
+        directory.put(dir, location);
+    }
+
+
     //SETTERS
+    puvlic void setDirectory(HashMap<String, Locations> directory) {
+        this.directory = directory;
+    }
 
     public void addItem(Items item) {
         containedItems.add(item);
@@ -38,6 +46,10 @@ public class Locations {
     }
 
     //GETTERS
+
+    public HashMap<String, Locations> getDirection() {
+        return directory;
+    }
 
     public void getLocationItems() {
 

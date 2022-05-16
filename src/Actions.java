@@ -3,7 +3,7 @@ import java.util.List;
 
 public class Actions extends Player{
 
-
+    Game game;
     private String actionDescription;
     private String actionName;
 
@@ -11,6 +11,7 @@ public class Actions extends Player{
 
     public Actions(Game game, String name, HashMap<String, String> desc) {
         super();
+        this.game = game;
         this.actionName = name;
         this.actionDescription = desc.get(name);
         checkActionable();

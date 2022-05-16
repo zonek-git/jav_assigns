@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 public class Characters {
 
+    Game game;
     private String name;
     private String desc;
 
@@ -20,12 +21,9 @@ public class Characters {
      * @param name
      * @param desc
      */
-    Characters(String name, HashMap<String, String> desc, int maxCharHealth, int maxCharDamage, int resistance) {
+    Characters(Game game, String name, HashMap<String, String> desc) {
         this.name = name;
         this.desc = desc.get(name);
-        this.maxCharHealth = maxCharHealth;
-        this.maxCharDamage = maxCharDamage;
-        this.resistance = resistance;
     }
 
     /**

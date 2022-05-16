@@ -2,6 +2,7 @@ import java.util.HashMap;
 
 public class Items {
 
+    Game game;
     private String name;
     private String itemDescription;
     private String examineDescription;
@@ -15,7 +16,8 @@ public class Items {
 
     }
 
-    Items(String name, HashMap<String, String> desc) {
+    Items(Game game, String name, HashMap<String, String> desc) {
+        this.game = game;
         this.name = name;
         this.itemDescription = desc.get(name);
     }

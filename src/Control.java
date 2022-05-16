@@ -58,10 +58,8 @@ public class Control extends Player{
         }
 
         switch(verb + noun) {
-            case "list commands" :
-                System.out.println();
-                break;
             case "drop" :
+                
         }
     }
 

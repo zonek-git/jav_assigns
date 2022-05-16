@@ -32,7 +32,6 @@ public class Player {
         super();
         this.game = game;
         this.currentLocation = currentLocation;
-        this.currentInventory = new ArrayList<Items>();
         this.numberOfItems = numberOfItems;
     }
 
