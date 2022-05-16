@@ -1,0 +1,17 @@
+baton:Your trusty baton. Great for hitting things. Sometimes people.
+rose:A pretty rose. It smells nice. Makes you feel invigorated. You could replenish your health with this.
+watch:A well-kept pocket watch. Maybe it has some kind of value?
+drinkMeBottle:A bottle named Drink Me Bottle. You're hesitant to use this... See what it does?
+eatMeBox:A box named Eat Me Box. You're hesitant to use this... See what it does?
+key:A shiny little key. Obviously used to open something? A door?
+oyster:A little oyster. Looks delicious. You could replenish your health with this.
+match:A all-surface ignition match. Useful if you ever wanted to commit arson. Or maybe a candle?
+hookah:A hookah. Not exactly to your taste, maybe someone else wants it?
+teapot:A nice looking ornamental teapot. Nothing in it right now... Maybe someone else wants it? I don't think I should use it as a weapon.
+teacup:An ornamental teacup. Nothing much to say about it...
+unbirthdayCake:A birthday cake of some kind? A nice gift to someone, I'm sure.
+mallet:A sturdy looking mallet. This would be a big improvement over my baton.
+jam:A jar of jam. You could replenish your health with this.
+gasMask:A new gas mask. Could be useful.
+umbrella:An umbrella. Could be useful.
+playingCard:A Queen of Hearts playing card. Could come in handy. Looks like it's from a fancy deck.

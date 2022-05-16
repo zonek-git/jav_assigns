@@ -1,0 +1,20 @@
+** Welcome. Please create your custom mercenary.
+
+** In your first typed response in the box below, enter your mercenary's name.
+** After pressing enter to confirm, then type in the numerical value of your three choices below.
+
+** Your choice will give you an attribute boost, but to only one of the characteristics. Make your choice wisely.
+
+** 1 - Charisma: You'll have an enhanced ability to potentially run away from combat, or to convince your enemy to
+** willingly give you the items and/or information you're searching for. Some information will be impossible to gain
+** without this attribute, but there are select enemies that will be IMPOSSIBLE to convince.
+
+** 2 - Fortitude: The Rabbit's Hole is dark and frightening. Something always seems to lurk around every corner. In
+** dark areas, you will lose sanity the longer you remain in that location. By selecting this attribute boost, you'll
+** be able to more thoroughly search the darkened areas without losing as much Sanity as you normally would. Every turn
+** in a darkened area will reduce your sanity by a certain percentage.
+
+** 3 - Combat Ability: This ability allows you to boost your overall combat performance. It will increase the odds of a
+** critical hit, regardless of the object/item you're using to fight.
+
+** Please input your name:
