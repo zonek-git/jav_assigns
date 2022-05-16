@@ -23,10 +23,8 @@ public class Game {
         assetHash.put("locations", importAssetDescriptions.assetImport("locations"));
         assetHash.put("actions", importAssetDescriptions.assetImport("actions"));
 
-        System.out.println(assetHash.get("actions").get("give"));
-
         Actions look = new Actions(this,"look", assetHash.get("actions").get("look"));
-        //Actions inventory = new Actions("inventory", actionsDescHash.get("inventory"));
+        Actions inventory = new Actions(this, "inventory", assetHash.get("actions").get("inventory"));
         Actions help = new Actions(this,"help", assetHash.get("actions").get("help"));
 
         Items baton = new Items("baton", assetHash.get("items").get("baton"));
