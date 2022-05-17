@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Control extends Player{
+public class Control extends Actions{
     Game game;
 
     public Control(Game game) {
@@ -15,22 +15,7 @@ public class Control extends Player{
             case "help" :
             case "h" :
             case "commands" :
-                System.out.println(game.assetHash.get("actions").get("help"));
-                System.out.println(game.assetHash.get("actions").get("take"));
-                System.out.println(game.assetHash.get("actions").get("run"));
-                System.out.println(game.assetHash.get("actions").get("drop"));
-                System.out.println(game.assetHash.get("actions").get("persuade"));
-                System.out.println(game.assetHash.get("actions").get("north"));
-                System.out.println(game.assetHash.get("actions").get("south"));
-                System.out.println(game.assetHash.get("actions").get("east"));
-                System.out.println(game.assetHash.get("actions").get("west"));
-                System.out.println(game.assetHash.get("actions").get("again"));
-                System.out.println(game.assetHash.get("actions").get("attack"));
-                System.out.println(game.assetHash.get("actions").get("inventory"));
-                System.out.println(game.assetHash.get("actions").get("examine"));
-                System.out.println(game.assetHash.get("actions").get("look"));
-                System.out.println(game.assetHash.get("actions").get("use"));
-                System.out.println(game.assetHash.get("actions").get("give"));
+
                 break;
             case "look" :
                 System.out.println(getCurrentLocationDescription());
@@ -59,11 +44,15 @@ public class Control extends Player{
 
         switch(verb + noun) {
             case "drop" :
-                
+
         }
     }
 
-    public void outputCommand(String verb, String noun, String character) {
+    public void outputCommand(String verb, String noun, String add1) {
+
+    }
+
+    public void outputCommand(String verb, String noun, String add1, String add2) {
 
     }
 

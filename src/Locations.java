@@ -33,7 +33,7 @@ public class Locations {
 
 
     //SETTERS
-    puvlic void setDirectory(HashMap<String, Locations> directory) {
+    public void setDirectory(HashMap<String, Locations> directory) {
         this.directory = directory;
     }
 

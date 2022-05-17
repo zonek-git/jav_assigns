@@ -10,7 +10,9 @@ public class Characters {
     private int maxCharHealth;
     private int maxCharDamage;
     private int resistance;
+    private double charAttack;
     private boolean isAlive;
+    private Locations charLocation;
 
     Characters() {
 
@@ -30,7 +32,43 @@ public class Characters {
      * Takes the maxCharDamage and multiplies it randomly by 0.0 - 1.0;
      * @return attack output
      */
-    public double charAttack() {
-        return maxCharDamage * Math.random();
+    public void charAttackRoll() {
+        charAttack = maxCharDamage * Math.random();
+    }
+
+    //Getters
+
+    public int getMaxCharHealth() {
+        return maxCharHealth;
+    }
+
+    public int getMaxCharDamage() {
+        return maxCharDamage;
+    }
+
+    public int getResistance() {
+        return resistance;
+    }
+
+    //Setters
+
+    public void setmaxCharHealth(int maxCharHealth) {
+        this.maxCharHealth = maxCharHealth;
+    }
+
+    public void setMaxCharDamage(int maxCharDamage) {
+        this.maxCharDamage = maxCharDamage;
+    }
+
+    public void setResistance(int resistance) {
+        this.resistance = resistance;
+    }
+
+    public void setIsAlive(boolean isAlive) {
+        this.isAlive = isAlive;
+    }
+
+    public void setCharLocation(Locations charLocation) {
+        this.charLocation = charLocation;
     }
 }

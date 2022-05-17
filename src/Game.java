@@ -106,9 +106,18 @@ public class Game {
         String[] cmdArray = cmdSentence.split(" ");
         String verb = cmdArray[0];
         registry.outputCommand(verb);
-        if (cmdArray.length > 1) {
+        if (cmdArray.length == 2) {
             String noun = cmdArray[1];
             registry.outputCommand(verb, noun);
+        } else if (cmdArray.length == 3) {
+            String noun = cmdArray[1];
+            String add1 = cmdArray[2];
+            registry.outputCommand(verb, noun, add1);
+        } else if (cmdArray.length == 4) {
+            String noun = cmdArray[1];
+            String add1 = cmdArray[2];
+            String add2 = cmdArray[3];
+            registry.outputCommand(verb, noun, add1, add2);
         }
     }
 }
