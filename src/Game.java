@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Game {
-    public Control registry = new Control(this);
+    public Control registry;
 
     Player player;
 
@@ -88,6 +88,7 @@ public class Game {
         Scanner userInput = new Scanner(System.in);
         String command;
         loadAssets();
+        registry = new Control(this);
 
         do {
             player.displayHealth();

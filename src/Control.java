@@ -1,18 +1,25 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.HashMap;
 
-public class Control extends Actions{
+public class Control extends Actions {
     Game game;
+
+    HashMap<String, String> actions;
 
     public Control(Game game) {
         this.game = game;
+        this.actions = game.assetHash.get("actions");
     }
 
     public void outputCommand(String verb){
         switch(verb) {
-            case "help" :
+            case "help":
+                for (String key : actions.keySet()) {
+                    System.out.print(key + ": ");
+                    System.out.print(actions.get(key));
+                    System.out.println();
+                    System.out.println();
+                }
             case "h" :
             case "commands" :
 
