@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 public class Control extends Actions {
     Game game;
+    Actions action;
 
     HashMap<String, String> actions;
 
@@ -14,39 +15,38 @@ public class Control extends Actions {
     public void outputCommand(String verb){
         switch(verb) {
             case "help":
-                for (String key : actions.keySet()) {
-                    System.out.print(key + ": ");
-                    System.out.print(actions.get(key));
-                    System.out.println();
-                    System.out.println();
-                }
             case "h" :
             case "commands" :
-
+                action = new Actions(this.game, "help", game.actionHash);
+                action.checkActionName();
                 break;
             case "look" :
-                System.out.println(getCurrentLocationDescription());
+                action = new Actions(this.game, "look", game.actionHash);
+                action.checkActionName();
                 break;
             case "inventory" :
             case "i" :
             case "in":
             case "invent" :
-                viewInventory();
+                action = new Actions(this.game, "inventory", game.actionHash);
+                action.checkActionName();
                 break;
             case "take" :
             case "grab" :
-                System.out.println("Please specify the item you want to take.");
+                System.out.println("Please indicate what item you want to grab.");
+                break;
             default :
                 System.out.println("You don't think you can do that. You should try again or ask (help).");
         }
     }
 
     public void outputCommand(String verb, String noun) {
-        String nounName = noun;
-
         switch(verb) {
-            case "examine" :
-
+            case "take" :
+            case "grab" :
+                action = new Actions(this.game, "take", game.actionHash);
+                action.actionableTake(noun);
+                break;
         }
 
         switch(verb + noun) {

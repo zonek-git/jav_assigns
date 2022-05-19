@@ -63,8 +63,8 @@ public class Player {
         numberOfItems++;
     }
 
-    public void checkInventoryExist(String name) {
-        if (currentInventory.contains(name)) {
+    public void checkInventoryExist(Items item) {
+        if (currentInventory.contains(item)) {
 
         }
     }
@@ -80,8 +80,16 @@ public class Player {
         }
     }
 
-    public String getCurrentLocationDescription() {
-        return game.assetHash.get("locations").get(currentLocation);
+    public String getCurrentLocationName() {
+        return currentLocation.getLocationName();
+    }
+
+    public Locations getCurrentLocationObject() {
+        return currentLocation;
+    }
+
+    public void getCurrentLocationDescription() {
+        System.out.println(game.assetHash.get("locations").get(currentLocation));
     }
 
     public void setCurrentLocation(Locations currentLocation) {

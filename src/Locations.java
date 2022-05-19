@@ -19,7 +19,7 @@ public class Locations {
      * When locations are created, itemsAvailable is created, which passes that to local variable, which passes that to
      * the class file of Items
      * @param name
-     * @param locationDescription
+     * @param
      */
     public Locations(Game game, String name, HashMap<String, String> desc) {
         super();
@@ -41,6 +41,10 @@ public class Locations {
         containedItems.add(item);
     }
 
+    public void removeItem(Items item) {
+        containedItems.remove(item);
+    }
+
     public void setLocationInitDescription(String locationDescription) {
         this.locationDescription = locationDescription;
     }
@@ -51,15 +55,22 @@ public class Locations {
         return directory;
     }
 
-    public void getLocationItems() {
+    public ArrayList<Items> getLocationItems() {
+        return containedItems;
+    }
 
+    public void getLocationItemNames() {
+        String[] items;
+        for(int i = 0 ; i < containedItems.size() ; i++ ) {
+            System.out.println(containedItems.get(i).getName());
+        }
     }
 
     public String getLocationDescription() {
         return locationDescription;
     }
 
-    public String getLocationName(String name) {
+    public String getLocationName() {
         return name;
     }
 

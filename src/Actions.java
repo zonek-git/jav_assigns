@@ -4,6 +4,7 @@ import java.util.List;
 public class Actions extends Player{
 
     Game game;
+    Items item;
     private String actionDescription;
     private String actionName;
 
@@ -24,6 +25,13 @@ public class Actions extends Player{
         switch (actionName) {
             case "help" :
                 displayHelp();
+                break;
+            case "look" :
+                displayLook();
+                break;
+            case "inventory" :
+                displayInventory();
+                break;
         }
     }
 
@@ -37,21 +45,42 @@ public class Actions extends Player{
     //Action Functions
 
     public void displayHelp() {
-        System.out.println(game.assetHash.get("actions").get("help"));
-        System.out.println(game.assetHash.get("actions").get("take"));
-        System.out.println(game.assetHash.get("actions").get("run"));
-        System.out.println(game.assetHash.get("actions").get("drop"));
-        System.out.println(game.assetHash.get("actions").get("persuade"));
-        System.out.println(game.assetHash.get("actions").get("north"));
-        System.out.println(game.assetHash.get("actions").get("south"));
-        System.out.println(game.assetHash.get("actions").get("east"));
-        System.out.println(game.assetHash.get("actions").get("west"));
-        System.out.println(game.assetHash.get("actions").get("again"));
-        System.out.println(game.assetHash.get("actions").get("attack"));
-        System.out.println(game.assetHash.get("actions").get("inventory"));
-        System.out.println(game.assetHash.get("actions").get("examine"));
-        System.out.println(game.assetHash.get("actions").get("look"));
-        System.out.println(game.assetHash.get("actions").get("use"));
-        System.out.println(game.assetHash.get("actions").get("give"));
+        System.out.println(game.actionHash.get("help"));
+        System.out.println(game.actionHash.get("take"));
+        System.out.println(game.actionHash.get("run"));
+        System.out.println(game.actionHash.get("drop"));
+        System.out.println(game.actionHash.get("persuade"));
+        System.out.println(game.actionHash.get("north"));
+        System.out.println(game.actionHash.get("south"));
+        System.out.println(game.actionHash.get("east"));
+        System.out.println(game.actionHash.get("west"));
+        System.out.println(game.actionHash.get("again"));
+        System.out.println(game.actionHash.get("attack"));
+        System.out.println(game.actionHash.get("inventory"));
+        System.out.println(game.actionHash.get("examine"));
+        System.out.println(game.actionHash.get("look"));
+        System.out.println(game.actionHash.get("use"));
+        System.out.println(game.actionHash.get("give"));
+    }
+
+    public void displayInventory() {
+        game.player.viewInventory();
+    }
+
+    public void displayLook() {
+        game.player.getCurrentLocationDescription();
+        game.player.getCurrentLocationObject().getLocationItemNames();
+    }
+
+    public void actionableTake(String itemName) {
+        item = new Items(this.game, itemName, game.itemHash);
+        System.out.println(item.getItemDescription());
+        System.out.println(game.player.getCurrentLocationName());
+        if (game.player.getCurrentLocationObject().getLocationItems().contains(item)) {
+            game.player.addInventoryItem(item);
+            game.player.getCurrentLocationObject().removeItem(item);
+        } else {
+            System.out.println("The item indicated doesn't exist in the area you're currently in. Try 'look' to see items available.");
+        }
     }
 }

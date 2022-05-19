@@ -7,13 +7,16 @@ public class Game {
     Player player;
 
     HashMap<String, HashMap<String, String>> assetHash = new HashMap<>();
+    HashMap<String, String> actionHash;
+    HashMap<String, String> itemHash;
+    HashMap<String, String> characterHash;
+    HashMap<String, String> locationHash;
 
     FileHandlingClass importAssetDescriptions = new FileHandlingClass();
 
     public static void main(String[] args) throws IOException {
         Game newGame = new Game();
         newGame.startGame();
-
     }
 
     public void loadAssets() throws IOException {
@@ -23,35 +26,35 @@ public class Game {
         assetHash.put("locations", importAssetDescriptions.assetImport("locations"));
         assetHash.put("actions", importAssetDescriptions.assetImport("actions"));
 
-        HashMap<String, String> actionHash = assetHash.get("actions");
-        HashMap<String, String> itemHash = assetHash.get("items");
-        HashMap<String, String> characterHash = assetHash.get("characters");
-        HashMap<String, String> locationHash = assetHash.get("locations");
+        actionHash = assetHash.get("actions");
+        itemHash = assetHash.get("items");
+        characterHash = assetHash.get("characters");
+        locationHash = assetHash.get("locations");
 
-        Characters madHatter = new Characters(this, "madHatter", characterHash);
-        Characters redQueen = new Characters(this, "redQueen", characterHash);
-        Characters alice = new Characters(this, "alice", characterHash);
-        Characters whiteRabbit = new Characters(this, "whiteRabbit", characterHash);
-        Characters soldier = new Characters(this, "soldier", characterHash);
-        Characters caterpillar = new Characters(this, "caterpillar", characterHash);
-
-        Actions look = new Actions(this,"look", actionHash);
-        Actions inventory = new Actions(this, "inventory", actionHash);
-        Actions help = new Actions(this,"help", actionHash);
-        Actions take = new Actions(this, "take", actionHash);
-        Actions run = new Actions(this, "run", actionHash);
-        Actions drop = new Actions(this, "drop", actionHash);
-        Actions persuade = new Actions(this, "persuade", actionHash);
-        Actions north = new Actions(this, "north", actionHash);
-        Actions south = new Actions(this, "south", actionHash);
-        Actions east = new Actions(this, "east", actionHash);
-        Actions west = new Actions(this, "west", actionHash);
-        Actions again = new Actions(this, "again", actionHash);
-        Actions attack = new Actions(this, "attack", actionHash);
-        Actions examine = new Actions(this, "examine", actionHash);
-        Actions use = new Actions(this, "use", actionHash);
-        Actions give = new Actions(this, "give", actionHash);
-
+        //Characters madHatter = new Characters(this, "madHatter", characterHash);
+        //Characters redQueen = new Characters(this, "redQueen", characterHash);
+        //Characters alice = new Characters(this, "alice", characterHash);
+        //Characters whiteRabbit = new Characters(this, "whiteRabbit", characterHash);
+        //Characters soldier = new Characters(this, "soldier", characterHash);
+        //Characters caterpillar = new Characters(this, "caterpillar", characterHash);
+//
+        //Actions look = new Actions(this,"look", actionHash);
+        //Actions inventory = new Actions(this, "inventory", actionHash);
+        //Actions help = new Actions(this,"help", actionHash);
+        //Actions take = new Actions(this, "take", actionHash);
+        //Actions run = new Actions(this, "run", actionHash);
+        //Actions drop = new Actions(this, "drop", actionHash);
+        //Actions persuade = new Actions(this, "persuade", actionHash);
+        //Actions north = new Actions(this, "north", actionHash);
+        //Actions south = new Actions(this, "south", actionHash);
+        //Actions east = new Actions(this, "east", actionHash);
+        //Actions west = new Actions(this, "west", actionHash);
+        //Actions again = new Actions(this, "again", actionHash);
+        //Actions attack = new Actions(this, "attack", actionHash);
+        //Actions examine = new Actions(this, "examine", actionHash);
+        //Actions use = new Actions(this, "use", actionHash);
+        //Actions give = new Actions(this, "give", actionHash);
+//
         Items baton = new Items(this, "baton", itemHash);
         Items rose = new Items(this, "rose", itemHash);
         Items watch = new Items(this, "watch", itemHash);
@@ -81,7 +84,6 @@ public class Game {
         Locations theVoid = new Locations(this, "theVoid", locationHash);
 
         player = new Player(this, squareRoom, 0);
-
     }
 
     public void startGame() throws IOException {
@@ -105,16 +107,20 @@ public class Game {
     public void actionRegistry(String command) {
         String cmdSentence = command.toLowerCase();
         String[] cmdArray = cmdSentence.split(" ");
-        String verb = cmdArray[0];
-        registry.outputCommand(verb);
-        if (cmdArray.length == 2) {
+        if (cmdArray.length == 1) {
+            String verb = cmdArray[0];
+            registry.outputCommand(verb);
+        } else if (cmdArray.length == 2) {
+            String verb = cmdArray[0];
             String noun = cmdArray[1];
             registry.outputCommand(verb, noun);
         } else if (cmdArray.length == 3) {
+            String verb = cmdArray[0];
             String noun = cmdArray[1];
             String add1 = cmdArray[2];
             registry.outputCommand(verb, noun, add1);
         } else if (cmdArray.length == 4) {
+            String verb = cmdArray[0];
             String noun = cmdArray[1];
             String add1 = cmdArray[2];
             String add2 = cmdArray[3];
