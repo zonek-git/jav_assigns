@@ -5,6 +5,11 @@ public class Game {
     public Control registry;
 
     Player player;
+    Items baton, rose, watch, drinkMeBottle, eatMeBox, key, oyster, match, hookah, teapot, teacup,
+    unbirthdayCake, mallet, jam, gasMask, umbrella, playingCard;
+    Locations squareRoom, forestZone, rabbitsHouse, mushForest, courtRoom, unbirthdayParty, safeHaven,
+    theVoid;
+
 
     HashMap<String, HashMap<String, String>> assetHash = new HashMap<>();
     HashMap<String, String> actionHash;
@@ -16,10 +21,10 @@ public class Game {
 
     public static void main(String[] args) throws IOException {
         Game newGame = new Game();
-        newGame.startGame();
+        newGame.startGame(newGame);
     }
 
-    public void loadAssets() throws IOException {
+    public void loadAssets(Game game) throws IOException {
 
         assetHash.put("characters", importAssetDescriptions.assetImport("characters"));
         assetHash.put("items", importAssetDescriptions.assetImport("items"));
@@ -55,42 +60,43 @@ public class Game {
         //Actions use = new Actions(this, "use", actionHash);
         //Actions give = new Actions(this, "give", actionHash);
 //
-        Items baton = new Items(this, "baton", itemHash);
-        Items rose = new Items(this, "rose", itemHash);
-        Items watch = new Items(this, "watch", itemHash);
-        Items drinkMeBottle = new Items(this, "drinkMeBottle", itemHash);
-        Items eatMeBox = new Items(this, "eatMebox", itemHash);
-        Items key = new Items(this, "key", itemHash);
-        Items oyster = new Items(this, "oyster", itemHash);
-        Items match = new Items(this, "match", itemHash);
-        Items hookah = new Items(this, "hookah", itemHash);
-        Items teapot = new Items(this, "teapot", itemHash);
-        Items teacup = new Items(this, "teacup", itemHash);
-        Items unbirthdayCake = new Items(this, "unbirthdayCake", itemHash);
-        Items mallet = new Items(this, "mallet", itemHash);
-        Items jam = new Items(this, "jam", itemHash);
-        Items gasMask = new Items(this, "gasMask", itemHash);
-        Items umbrella = new Items(this, "umbrella", itemHash);
-        Items playingCard = new Items(this, "playingCard", itemHash);
+        baton = new Items(game, "baton", itemHash);
+        rose = new Items(game, "rose", itemHash);
+        watch = new Items(this, "watch", itemHash);
+        drinkMeBottle = new Items(this, "drinkMeBottle", itemHash);
+        eatMeBox = new Items(this, "eatMebox", itemHash);
+        key = new Items(this, "key", itemHash);
+        oyster = new Items(this, "oyster", itemHash);
+        match = new Items(this, "match", itemHash);
+        hookah = new Items(this, "hookah", itemHash);
+        teapot = new Items(this, "teapot", itemHash);
+        teacup = new Items(this, "teacup", itemHash);
+        unbirthdayCake = new Items(this, "unbirthdayCake", itemHash);
+        mallet = new Items(this, "mallet", itemHash);
+        jam = new Items(this, "jam", itemHash);
+        gasMask = new Items(this, "gasMask", itemHash);
+        umbrella = new Items(this, "umbrella", itemHash);
+        playingCard = new Items(this, "playingCard", itemHash);
 
-        Locations squareRoom = new Locations(this, "squareRoom", locationHash);
+        squareRoom = new Locations(game, "squareRoom", locationHash);
         squareRoom.addItem(baton);
         squareRoom.addItem(rose);
-        Locations forestZone = new Locations(this, "forestZone", locationHash);
-        Locations rabbitsHouse = new Locations(this, "rabbitsHouse", locationHash);
-        Locations mushForest = new Locations(this, "mushForest", locationHash);
-        Locations courtRoom = new Locations(this, "courtRoom", locationHash);
-        Locations safeHaven = new Locations(this, "safeHaven", locationHash);
-        Locations theVoid = new Locations(this, "theVoid", locationHash);
+        forestZone = new Locations(this, "forestZone", locationHash);
+        unbirthdayParty = new Locations(game, "unbirthdayParty", locationHash);
+        rabbitsHouse = new Locations(this, "rabbitsHouse", locationHash);
+        mushForest = new Locations(this, "mushForest", locationHash);
+        courtRoom = new Locations(this, "courtRoom", locationHash);
+        safeHaven = new Locations(this, "safeHaven", locationHash);
+        theVoid = new Locations(this, "theVoid", locationHash);
 
-        player = new Player(this, squareRoom, 0);
     }
 
-    public void startGame() throws IOException {
+    public void startGame(Game game) throws IOException {
         Scanner userInput = new Scanner(System.in);
         String command;
-        loadAssets();
-        registry = new Control(this);
+        loadAssets(game);
+        player = new Player(game, squareRoom, 0);
+        registry = new Control(game, player);
 
         do {
             player.displayHealth();

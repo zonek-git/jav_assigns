@@ -46,7 +46,7 @@ public class Player {
             System.out.println("You currently have nothing in your inventory");
         } else {
             for(int i = 0 ; i < currentInventory.size() ; i++) {
-                System.out.println("#" + i + " " + currentInventory.get(i));
+                System.out.println("#" + i + " " + currentInventory.get(i).getItemName());
             }
         }
         System.out.println();
@@ -58,8 +58,8 @@ public class Player {
         return name;
     }
 
-    public void addInventoryItem(Items item) {
-        currentInventory.add(item);
+    public void addInventoryItem(Items itemObject) {
+        currentInventory.add(itemObject);
         numberOfItems++;
     }
 
@@ -89,7 +89,7 @@ public class Player {
     }
 
     public void getCurrentLocationDescription() {
-        System.out.println(game.assetHash.get("locations").get(currentLocation));
+        System.out.println(currentLocation.getLocationDescription());
     }
 
     public void setCurrentLocation(Locations currentLocation) {

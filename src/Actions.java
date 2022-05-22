@@ -4,6 +4,7 @@ import java.util.List;
 public class Actions extends Player{
 
     Game game;
+    Player player;
     Items item;
     private String actionDescription;
     private String actionName;
@@ -14,9 +15,10 @@ public class Actions extends Player{
 
     }
 
-    public Actions(Game game, String name, HashMap<String, String> desc) {
+    public Actions(Player player, Game game, String name, HashMap<String, String> desc) {
         super();
         this.game = game;
+        this.player = player;
         this.actionName = name;
         this.actionDescription = desc.get(name);
     }
@@ -32,13 +34,6 @@ public class Actions extends Player{
             case "inventory" :
                 displayInventory();
                 break;
-        }
-    }
-
-    public void checkActionable() {
-        switch (actionName) {
-            case "examine" :
-
         }
     }
 
@@ -64,21 +59,27 @@ public class Actions extends Player{
     }
 
     public void displayInventory() {
-        game.player.viewInventory();
+        player.viewInventory();
     }
 
     public void displayLook() {
-        game.player.getCurrentLocationDescription();
-        game.player.getCurrentLocationObject().getLocationItemNames();
+        player.getCurrentLocationDescription();
+        if(player.getCurrentLocationObject().getLocationItems().size() == 1) {
+            System.out.println("It appears there is an item in this room as well: ");
+            player.getCurrentLocationObject().getLocationItemNames();
+        } else if(player.getCurrentLocationObject().getLocationItems().size() > 1) {
+            System.out.println("It appears there are some items in this room as well: ");
+            player.getCurrentLocationObject().getLocationItemNames();
+        }
+
     }
 
-    public void actionableTake(String itemName) {
-        item = new Items(this.game, itemName, game.itemHash);
-        System.out.println(item.getItemDescription());
-        System.out.println(game.player.getCurrentLocationName());
-        if (game.player.getCurrentLocationObject().getLocationItems().contains(item)) {
-            game.player.addInventoryItem(item);
-            game.player.getCurrentLocationObject().removeItem(item);
+    public void actionableTake(String itemName, Items itemObject) {
+        if (player.getCurrentLocationObject().locationContainsItem(itemName)) {
+            System.out.println("yes");
+            player.addInventoryItem(itemObject);
+            System.out.println(player.getCurrentLocationName());
+            game.player.getCurrentLocationObject().removeItem(itemObject);
         } else {
             System.out.println("The item indicated doesn't exist in the area you're currently in. Try 'look' to see items available.");
         }

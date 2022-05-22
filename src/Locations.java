@@ -60,10 +60,21 @@ public class Locations {
     }
 
     public void getLocationItemNames() {
-        String[] items;
         for(int i = 0 ; i < containedItems.size() ; i++ ) {
-            System.out.println(containedItems.get(i).getName());
+            System.out.println(containedItems.get(i).getItemName());
         }
+    }
+
+    public boolean locationContainsItem(String itemName) {
+        String itemTitle;
+        boolean contained = false;
+        for(int i = 0 ; i < containedItems.size() ; i++) {
+            itemTitle = containedItems.get(i).getItemName();
+            if(itemTitle.equals(itemName)){
+                contained = true;
+            }
+        }
+        return contained;
     }
 
     public String getLocationDescription() {

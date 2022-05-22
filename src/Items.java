@@ -24,7 +24,7 @@ public class Items {
 
     //GETTERS//
 
-    public String getName() {
+    public String getItemName() {
         return name;
     }
 
