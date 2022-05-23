@@ -28,6 +28,64 @@ public class Items {
         return name;
     }
 
+    public String getProperItemName() {
+        String properName = null;
+        switch(name) {
+            case "baton" :
+                properName = "Baton";
+                break;
+            case "rose" :
+                properName = "Rose";
+                break;
+            case "watch" :
+                properName = "Watch";
+                break;
+            case "drinkMeBottle" :
+                properName = "Drink Me Bottle";
+                break;
+            case "eatMeBox" :
+                properName = "Eat Me Box";
+                break;
+            case "key" :
+                properName = "Key";
+                break;
+            case "oyster" :
+                properName = "Oyster";
+                break;
+            case "match" :
+                properName = "Matchstick";
+                break;
+            case "hookah" :
+                properName = "Hookah";
+                break;
+            case "teapot" :
+                properName = "Teapot";
+                break;
+            case "teacup" :
+                properName = "Teacup";
+                break;
+            case "unbirthdayCake" :
+                properName = "Un-Birthday Cake";
+                break;
+            case "mallet" :
+                properName = "Mallet";
+                break;
+            case "jam" :
+                properName = "Jam Jar";
+                break;
+            case "gasMask" :
+                properName = "Gas Mask";
+                break;
+            case "umbrella" :
+                properName = "Umbrella";
+                break;
+            case "playingCard" :
+                properName = "Playing Card";
+                break;
+        }
+        return properName;
+    }
+
     public String getItemDescription() {
         return itemDescription;
     }

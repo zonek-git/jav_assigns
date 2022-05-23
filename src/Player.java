@@ -52,32 +52,22 @@ public class Player {
         System.out.println();
     }
 
-    // Getters and Setters //
-
-    public String getName() {
-        return name;
-    }
+    // Functions //
 
     public void addInventoryItem(Items itemObject) {
         currentInventory.add(itemObject);
         numberOfItems++;
     }
 
-    public void checkInventoryExist(Items item) {
-        if (currentInventory.contains(item)) {
+    // Getters and Setters //
 
-        }
+    public String getName() {
+        return name;
     }
 
     public void removeInventoryItem(Items item) {
-        if (currentInventory.isEmpty()) {
-            System.out.println("There aren't any items in your inventory!");
-        } else if (currentInventory.contains(item)) {
-            currentInventory.remove(item);
-            System.out.println("The item indicated has been removed and dropped.");
-            currentLocation.addItem(item);
-            numberOfItems--;
-        }
+        currentInventory.remove(item);
+        numberOfItems--;
     }
 
     public String getCurrentLocationName() {
@@ -86,6 +76,10 @@ public class Player {
 
     public Locations getCurrentLocationObject() {
         return currentLocation;
+    }
+
+    public ArrayList<Items> getCurrentInventory() {
+        return currentInventory;
     }
 
     public void getCurrentLocationDescription() {

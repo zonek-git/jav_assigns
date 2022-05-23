@@ -10,6 +10,8 @@ public class Game {
     Locations squareRoom, forestZone, rabbitsHouse, mushForest, courtRoom, unbirthdayParty, safeHaven,
     theVoid;
 
+    ArrayList<Items> itemsArrayList = new ArrayList<>();
+
 
     HashMap<String, HashMap<String, String>> assetHash = new HashMap<>();
     HashMap<String, String> actionHash;
@@ -62,32 +64,32 @@ public class Game {
 //
         baton = new Items(game, "baton", itemHash);
         rose = new Items(game, "rose", itemHash);
-        watch = new Items(this, "watch", itemHash);
-        drinkMeBottle = new Items(this, "drinkMeBottle", itemHash);
-        eatMeBox = new Items(this, "eatMebox", itemHash);
-        key = new Items(this, "key", itemHash);
-        oyster = new Items(this, "oyster", itemHash);
-        match = new Items(this, "match", itemHash);
-        hookah = new Items(this, "hookah", itemHash);
-        teapot = new Items(this, "teapot", itemHash);
-        teacup = new Items(this, "teacup", itemHash);
-        unbirthdayCake = new Items(this, "unbirthdayCake", itemHash);
-        mallet = new Items(this, "mallet", itemHash);
-        jam = new Items(this, "jam", itemHash);
-        gasMask = new Items(this, "gasMask", itemHash);
-        umbrella = new Items(this, "umbrella", itemHash);
-        playingCard = new Items(this, "playingCard", itemHash);
+        watch = new Items(game, "watch", itemHash);
+        drinkMeBottle = new Items(game, "drinkMeBottle", itemHash);
+        eatMeBox = new Items(game, "eatMebox", itemHash);
+        key = new Items(game, "key", itemHash);
+        oyster = new Items(game, "oyster", itemHash);
+        match = new Items(game, "match", itemHash);
+        hookah = new Items(game, "hookah", itemHash);
+        teapot = new Items(game, "teapot", itemHash);
+        teacup = new Items(game, "teacup", itemHash);
+        unbirthdayCake = new Items(game, "unbirthdayCake", itemHash);
+        mallet = new Items(game, "mallet", itemHash);
+        jam = new Items(game, "jam", itemHash);
+        gasMask = new Items(game, "gasMask", itemHash);
+        umbrella = new Items(game, "umbrella", itemHash);
+        playingCard = new Items(game, "playingCard", itemHash);
 
         squareRoom = new Locations(game, "squareRoom", locationHash);
         squareRoom.addItem(baton);
         squareRoom.addItem(rose);
-        forestZone = new Locations(this, "forestZone", locationHash);
+        forestZone = new Locations(game, "forestZone", locationHash);
         unbirthdayParty = new Locations(game, "unbirthdayParty", locationHash);
-        rabbitsHouse = new Locations(this, "rabbitsHouse", locationHash);
-        mushForest = new Locations(this, "mushForest", locationHash);
-        courtRoom = new Locations(this, "courtRoom", locationHash);
-        safeHaven = new Locations(this, "safeHaven", locationHash);
-        theVoid = new Locations(this, "theVoid", locationHash);
+        rabbitsHouse = new Locations(game, "rabbitsHouse", locationHash);
+        mushForest = new Locations(game, "mushForest", locationHash);
+        courtRoom = new Locations(game, "courtRoom", locationHash);
+        safeHaven = new Locations(game, "safeHaven", locationHash);
+        theVoid = new Locations(game, "theVoid", locationHash);
 
     }
 

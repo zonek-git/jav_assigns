@@ -54,13 +54,16 @@ public class Control {
             case "take" :
             case "grab" :
                 action = new Actions(player, game, "take", game.actionHash);
-                Items item = new Items(game, noun, game.itemHash);
-                action.actionableTake(noun, item);
+                action.checkActionName(noun);
                 break;
-        }
-
-        switch(verb + noun) {
             case "drop" :
+                action = new Actions(player, game, "drop", game.actionHash);
+                action.checkActionName(noun);
+                break;
+            case "examine" :
+                action = new Actions(player, game, "examine", game.actionHash);
+                action.checkActionName(noun);
+                break;
 
         }
     }
