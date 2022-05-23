@@ -3,6 +3,8 @@ import java.util.HashMap;
 
 public class Player {
 
+    Game game;
+
     //Constant vars
     private String name;
     private int modifierSelector = 1; //1 = charisma, 2 = fortitude, 3 = combat
@@ -11,6 +13,7 @@ public class Player {
     private int maxHealth = 100;
     private int currentHealth = 100;
     private boolean isAlive;
+    private int maxInventory = 5;
 
     //Combat/Interaction modifiers:
     private int baseCharisma = 50;
@@ -18,17 +21,19 @@ public class Player {
     private int baseCombatAbility = 50;
 
     //Location holder
-    Game game;
     private Locations currentLocation;
     private Locations moveFromTo;
     private ArrayList<Items> currentInventory = new ArrayList<>();
     private int numberOfItems;
 
+    //Special modifiers
+    private boolean wearingGasMask = false;
+
     public Player() {
 
     }
 
-    public Player(Game game, Locations currentLocation, int numberOfItems){
+    public Player(Game game, Locations currentLocation, int numberOfItems) {
         super();
         this.game = game;
         this.currentLocation = currentLocation;
@@ -42,10 +47,10 @@ public class Player {
     public void viewInventory() {
         System.out.println("Your current inventory: ");
         System.out.println();
-        if(currentInventory.size() == 0) {
+        if (currentInventory.size() == 0) {
             System.out.println("You currently have nothing in your inventory");
         } else {
-            for(int i = 0 ; i < currentInventory.size() ; i++) {
+            for (int i = 0; i < currentInventory.size(); i++) {
                 System.out.println("#" + i + " " + currentInventory.get(i).getItemName());
             }
         }
@@ -59,15 +64,25 @@ public class Player {
         numberOfItems++;
     }
 
-    // Getters and Setters //
+    public void removeInventoryItem(Items item) {
+        currentInventory.remove(item);
+        numberOfItems--;
+    }
+
+
+    // Getters //
+
 
     public String getName() {
         return name;
     }
 
-    public void removeInventoryItem(Items item) {
-        currentInventory.remove(item);
-        numberOfItems--;
+    public int getMaxInventory() {
+        return maxInventory;
+    }
+
+    public int getNumberOfItems() {
+        return numberOfItems;
     }
 
     public String getCurrentLocationName() {
@@ -86,16 +101,51 @@ public class Player {
         System.out.println(currentLocation.getLocationDescription());
     }
 
+    public boolean getIsAlive() {
+        return isAlive;
+    }
+
+    public boolean getWearingGasMask() {
+        return wearingGasMask;
+    }
+
+
+    // Setters //
+
+
+    public void setMaxInventory(int inValue) {
+        this.maxInventory = inValue;
+    }
+
+    public void setWearingGasMask(boolean wearing) {
+        this.wearingGasMask = wearing;
+    }
+
     public void setCurrentLocation(Locations currentLocation) {
         this.currentLocation = currentLocation;
     }
 
-    /**
-     * //TODO restrict the ability of changing the health beyond 100 max level
-     * @param effect
-     */
-    public void setCurrentHealth(int effect) {
-        this.currentHealth = this.currentHealth + effect;
+    public void setStartingPlayerHealth(int health) {
+        this.currentHealth = health;
+    }
+
+    public boolean setAddCurrentHealth(int effect) {
+        boolean used = false;
+        if (currentHealth == maxHealth) {
+            System.out.println("You're already at full health. No need to use this!");
+            used = false;
+        } else if (currentHealth < maxHealth) {
+            currentHealth = Math.min(currentHealth + effect, maxHealth);
+            used = true;
+        }
+        return used;
+    }
+
+    public void setSubtractCurrentHealth(int effect) {
+        currentHealth = currentHealth - effect;
+        if (currentHealth <= 0) {
+            isAlive = false;
+        }
     }
 
     public int getCurrentHealth() {
@@ -120,14 +170,9 @@ public class Player {
         }
     }
 
-    public boolean isAlive() {
-        return currentHealth > 0;
-    }
-
     public void displayHealth() {
         System.out.println("** Current Health: " + currentHealth);
     }
-
 
 
 }

@@ -14,3 +14,4 @@ look:THe 'look' command will describe to you your surroundings.
 use:The 'use' command will use an item as indicated. Ex: "use rose".
 help:The Help Menu
 give:The 'give' command will give an item indicated to another character.
+open:The ability to open certain objects. Use the "look" command to see openable objects.

@@ -7,9 +7,11 @@ public class Locations {
     private String locationDescription;
     private String entryDescription;
     private String exitDescription;
-    private ArrayList<Characters> locationCharacters = new ArrayList<>();
-    private ArrayList<Items> locationItems = new ArrayList<>();
-    private HashMap<String, Locations> directory;
+    private ArrayList<Rooms> containedRooms = new ArrayList<>();
+    private ArrayList<Characters> containedCharacters = new ArrayList<>();
+    private ArrayList<Items> containedItems = new ArrayList<>();
+    private HashMap<String, Locations> directoryLocation = new HashMap<>();
+    private HashMap<String, Rooms> directoryRoom = new HashMap<>();
     private Game game;
 
     Locations() {
@@ -30,7 +32,11 @@ public class Locations {
     }
 
     public void addDirection(String dir, Locations location) {
-        directory.put(dir, location);
+        directoryLocation.put(dir, location);
+    }
+
+    public void addDirection(String dir, Rooms room) {
+        directoryRoom.put(dir, room);
     }
 
     // Functions //
@@ -66,51 +72,63 @@ public class Locations {
 
     // Setters //
 
+    public void setContainedRooms(Rooms room) {
+        containedRooms.add(room);
+    }
+
     public void setLocationCharacters(Characters character) {
-        locationCharacters.add(character);
+        containedCharacters.add(character);
     }
 
     public void setDirectory(HashMap<String, Locations> directory) {
-        this.directory = directory;
+        this.directoryLocation = directory;
     }
 
     public void addItem(Items item) {
-        locationItems.add(item);
+        containedItems.add(item);
     }
 
     public void removeItem(Items item) {
-        locationItems.remove(item);
+        containedItems.remove(item);
     }
 
     public void setLocationInitDescription(String locationDescription) {
         this.locationDescription = locationDescription;
     }
 
+    public void setDirection(String dir, Locations locations) {
+        directoryLocation.put(dir, locations);
+    }
+
     // Getters //
 
-    public HashMap<String, Locations> getDirection() {
-        return directory;
+    public ArrayList<Rooms> getContainedRooms() {
+        return containedRooms;
+    }
+
+    public Locations getDirection(String dir) {
+        return directoryLocation.get(dir);
     }
 
     public ArrayList<Characters> getLocationCharacters() {
-        return locationCharacters;
+        return containedCharacters;
     }
 
     public ArrayList<Items> getLocationItems() {
-        return locationItems;
+        return containedItems;
     }
 
     public void getLocationItemNames() {
-        for(int i = 0 ; i < locationItems.size() ; i++ ) {
-            System.out.println(locationItems.get(i).getProperItemName());
+        for(int i = 0 ; i < containedItems.size() ; i++ ) {
+            System.out.println(containedItems.get(i).getProperItemName());
         }
     }
 
     public boolean locationContainsItem(String itemName) {
         String itemTitle;
         boolean contained = false;
-        for(int i = 0 ; i < locationItems.size() ; i++) {
-            itemTitle = locationItems.get(i).getItemName();
+        for(int i = 0 ; i < containedItems.size() ; i++) {
+            itemTitle = containedItems.get(i).getItemName();
             if(itemTitle.equals(itemName)){
                 contained = true;
             }

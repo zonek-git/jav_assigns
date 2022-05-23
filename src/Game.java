@@ -5,10 +5,12 @@ public class Game {
     public Control registry;
 
     Player player;
-    Items baton, rose, watch, drinkMeBottle, eatMeBox, key, oyster, match, hookah, teapot, teacup,
-    unbirthdayCake, mallet, jam, gasMask, umbrella, playingCard;
-    Locations squareRoom, forestZone, rabbitsHouse, mushForest, courtRoom, unbirthdayParty, safeHaven,
-    theVoid;
+
+    Items baton, rose, watch, drinkMeBottle, eatMeBox, key, oyster, match, hookah, teapot, teacup, unbirthdayCake, mallet, jam, gasMask, umbrella, playingCard, squareRoomCabinet;
+
+    Rooms squareRoomMain, rabbitsHouseLivingRoom, rabbitsHouseHallway, rabbitsHouseBackRoom;
+
+    Locations squareRoom, forestZone, rabbitsHouse, mushForest, courtRoom, unbirthdayParty, safeHaven, theVoid;
 
     ArrayList<Items> itemsArrayList = new ArrayList<>();
 
@@ -18,6 +20,7 @@ public class Game {
     HashMap<String, String> itemHash;
     HashMap<String, String> characterHash;
     HashMap<String, String> locationHash;
+    HashMap<String, String> roomHash;
 
     FileHandlingClass importAssetDescriptions = new FileHandlingClass();
 
@@ -32,11 +35,13 @@ public class Game {
         assetHash.put("items", importAssetDescriptions.assetImport("items"));
         assetHash.put("locations", importAssetDescriptions.assetImport("locations"));
         assetHash.put("actions", importAssetDescriptions.assetImport("actions"));
+        assetHash.put("rooms", importAssetDescriptions.assetImport("rooms"));
 
         actionHash = assetHash.get("actions");
         itemHash = assetHash.get("items");
         characterHash = assetHash.get("characters");
         locationHash = assetHash.get("locations");
+        roomHash = assetHash.get("rooms");
 
         //Characters madHatter = new Characters(this, "madHatter", characterHash);
         //Characters redQueen = new Characters(this, "redQueen", characterHash);
@@ -62,30 +67,57 @@ public class Game {
         //Actions use = new Actions(this, "use", actionHash);
         //Actions give = new Actions(this, "give", actionHash);
 //
+        //Items
+
+        squareRoomCabinet = new Items(game, "squareRoomCabinet", itemHash);
+        squareRoomCabinet.setIsOpenable(true);
+
+
         baton = new Items(game, "baton", itemHash);
         rose = new Items(game, "rose", itemHash);
+        rose.setHealingModifier(25);
+
         watch = new Items(game, "watch", itemHash);
         drinkMeBottle = new Items(game, "drinkMeBottle", itemHash);
         eatMeBox = new Items(game, "eatMebox", itemHash);
         key = new Items(game, "key", itemHash);
+
         oyster = new Items(game, "oyster", itemHash);
+        oyster.setHealingModifier(40);
+
         match = new Items(game, "match", itemHash);
         hookah = new Items(game, "hookah", itemHash);
+        hookah.setHealingModifier(-10);
+
         teapot = new Items(game, "teapot", itemHash);
         teacup = new Items(game, "teacup", itemHash);
         unbirthdayCake = new Items(game, "unbirthdayCake", itemHash);
         mallet = new Items(game, "mallet", itemHash);
         jam = new Items(game, "jam", itemHash);
+        jam.setHealingModifier(30);
+
         gasMask = new Items(game, "gasMask", itemHash);
         umbrella = new Items(game, "umbrella", itemHash);
         playingCard = new Items(game, "playingCard", itemHash);
 
+        //Rooms
+
+        squareRoomMain = new Rooms();
+
+        //Locations
+
         squareRoom = new Locations(game, "squareRoom", locationHash);
         squareRoom.addItem(baton);
         squareRoom.addItem(rose);
+        squareRoom.setDirection("south", rabbitsHouse);
+
         forestZone = new Locations(game, "forestZone", locationHash);
         unbirthdayParty = new Locations(game, "unbirthdayParty", locationHash);
+
         rabbitsHouse = new Locations(game, "rabbitsHouse", locationHash);
+        rabbitsHouse.addItem(jam);
+        rabbitsHouse.addItem(match);
+
         mushForest = new Locations(game, "mushForest", locationHash);
         courtRoom = new Locations(game, "courtRoom", locationHash);
         safeHaven = new Locations(game, "safeHaven", locationHash);
@@ -109,7 +141,7 @@ public class Game {
             } else {
                 actionRegistry(command);
             }
-        } while (!command.equals("quit"));
+        } while ((!command.equals("quit") && !player.getIsAlive()));
     }
 
     public void actionRegistry(String command) {

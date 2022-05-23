@@ -18,31 +18,31 @@ public class Control {
         this.actions = game.assetHash.get("actions");
     }
 
-    public void outputCommand(String w1){
+    public void outputCommand(String w1) {
         String verb = w1.toLowerCase();
-        switch(verb) {
+        switch (verb) {
             case "help":
-            case "h" :
-            case "commands" :
+            case "h":
+            case "commands":
                 action = new Actions(this.player, this.game, "help", game.actionHash);
                 action.checkActionName();
                 break;
-            case "look" :
+            case "look":
                 action = new Actions(this.player, this.game, "look", game.actionHash);
                 action.checkActionName();
                 break;
-            case "inventory" :
-            case "i" :
+            case "inventory":
+            case "i":
             case "in":
-            case "invent" :
+            case "invent":
                 action = new Actions(player, game, "inventory", game.actionHash);
                 action.checkActionName();
                 break;
-            case "take" :
-            case "grab" :
+            case "take":
+            case "grab":
                 System.out.println("Please indicate what item you want to grab.");
                 break;
-            default :
+            default:
                 System.out.println("You don't think you can do that. You should try again or ask (help).");
         }
     }
@@ -50,21 +50,26 @@ public class Control {
     public void outputCommand(String w1, String w2) {
         String verb = w1.toLowerCase();
         String noun = w2.toLowerCase();
-        switch(verb) {
-            case "take" :
-            case "grab" :
+        switch (verb) {
+            case "take":
+            case "grab":
                 action = new Actions(player, game, "take", game.actionHash);
                 action.checkActionName(noun);
                 break;
-            case "drop" :
+            case "drop":
                 action = new Actions(player, game, "drop", game.actionHash);
                 action.checkActionName(noun);
                 break;
-            case "examine" :
+            case "examine":
                 action = new Actions(player, game, "examine", game.actionHash);
                 action.checkActionName(noun);
                 break;
-
+            case "use":
+                action = new Actions(player, game, "use", game.actionHash);
+                action.checkActionName(noun);
+                break;
+            case "open":
+                action = new Actions(player, game, "open", game.actionHash);
         }
     }
 
@@ -81,8 +86,10 @@ public class Control {
      */
     public void pressEnterToContinue() {
         System.out.println("Press the <ENTER> key to continue...");
-        try {System.in.read();}
-        catch(IOException ignored) {}
+        try {
+            System.in.read();
+        } catch (IOException ignored) {
+        }
     }
 
 

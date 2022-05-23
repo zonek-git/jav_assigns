@@ -1,16 +1,20 @@
 import java.util.HashMap;
 
-public class Items {
+public class Items extends Player {
 
     Game game;
     private String name;
     private String itemDescription;
     private String examineDescription;
-    private boolean isUsable;
-    private boolean isWeapon;
-    private boolean isDroppable;
-    private boolean isTakeable;
-    private boolean isInArea;
+
+    private int healingModifier = 0;
+
+    private boolean isUsable = false;
+    private boolean isWeapon = false;
+    private boolean isDroppable = false;
+    private boolean isTakeable = false;
+    private boolean isOpenable = false;
+    private boolean isDestroyable = false;
 
     Items() {
 
@@ -22,64 +26,91 @@ public class Items {
         this.itemDescription = desc.get(name);
     }
 
-    //GETTERS//
+    // Functions //
+
+
+    // Getters //
 
     public String getItemName() {
         return name;
     }
 
+    public boolean getIsWeapon() {
+        return isWeapon;
+    }
+
+    public boolean getIsOpenable() {
+        return isOpenable;
+    }
+
+    public boolean getIsUsable() {
+        return isUsable;
+    }
+
+    public boolean getIsTakeable() {
+        return isTakeable;
+    }
+
+    public boolean getIsDroppable() {
+        return isDroppable;
+    }
+
+    public boolean getIsDestroyable() {
+        return isDestroyable;
+    }
+
     public String getProperItemName() {
         String properName = null;
-        switch(name) {
-            case "baton" :
+        switch (name) {
+            case "baton":
                 properName = "Baton";
                 break;
-            case "rose" :
+            case "rose":
                 properName = "Rose";
                 break;
-            case "watch" :
+            case "watch":
                 properName = "Watch";
                 break;
-            case "drinkMeBottle" :
+            case "drinkMeBottle":
                 properName = "Drink Me Bottle";
                 break;
-            case "eatMeBox" :
+            case "eatMeBox":
                 properName = "Eat Me Box";
                 break;
-            case "key" :
+            case "key":
                 properName = "Key";
                 break;
-            case "oyster" :
+            case "oyster":
                 properName = "Oyster";
                 break;
-            case "match" :
+            case "match":
                 properName = "Matchstick";
                 break;
-            case "hookah" :
+            case "hookah":
                 properName = "Hookah";
                 break;
-            case "teapot" :
+            case "teapot":
                 properName = "Teapot";
                 break;
-            case "teacup" :
+            case "teacup":
                 properName = "Teacup";
                 break;
-            case "unbirthdayCake" :
+            case "unbirthdayCake":
                 properName = "Un-Birthday Cake";
                 break;
-            case "mallet" :
+            case "mallet":
                 properName = "Mallet";
                 break;
-            case "jam" :
+            case "jam":
                 properName = "Jam Jar";
                 break;
-            case "gasMask" :
+            case "gasMask":
                 properName = "Gas Mask";
                 break;
-            case "umbrella" :
+            case "umbrella":
                 properName = "Umbrella";
                 break;
-            case "playingCard" :
+            case "playingCard":
                 properName = "Playing Card";
                 break;
         }
@@ -94,18 +125,48 @@ public class Items {
         return examineDescription;
     }
 
-    public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
+    public int getHealingModifier() {
+        return healingModifier;
     }
 
+
     //SETTERS//
+
+
+    public void setIsWeapon(boolean set) {
+        this.isWeapon = set;
+    }
+
+    public void setIsDroppable(boolean set) {
+        this.isDroppable = set;
+    }
+
+    public void setIsTakeable(boolean set) {
+        this.isTakeable = set;
+    }
+
+    public void setIsUsable(boolean set) {
+        this.isUsable = set;
+    }
+
+    public void setIsDestroyable(boolean set) {
+        this.isDestroyable = set;
+    }
+
+    public void setIsOpenable(boolean set) {
+        this.isOpenable = set;
+    }
+
+    public void setHealingModifier(int effect) {
+        this.healingModifier = effect;
+    }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setExamineDescription(String examineDescription) {
-        this.examineDescription = examineDescription;
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
     }
 
     /**

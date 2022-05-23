@@ -19,7 +19,6 @@ public class Characters {
     }
 
     /**
-     *
      * @param name
      * @param desc
      */
@@ -30,6 +29,7 @@ public class Characters {
 
     /**
      * Takes the maxCharDamage and multiplies it randomly by 0.0 - 1.0;
+     *
      * @return attack output
      */
     public void charAttackRoll() {

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Actions extends Player{
+public class Actions extends Player {
 
     Game game;
     Player player;
@@ -21,10 +21,11 @@ public class Actions extends Player{
 
     /**
      * Primary constructor for actions.
+     *
      * @param player dependency injection for the player object inside of Game
-     * @param game dependency injection for the main Game class object newGame
-     * @param name pushing in the name of the particular action
-     * @param desc pushing in the description of the particular action using itemHash in Game.loadAssets()
+     * @param game   dependency injection for the main Game class object newGame
+     * @param name   pushing in the name of the particular action
+     * @param desc   pushing in the description of the particular action using itemHash in Game.loadAssets()
      */
     public Actions(Player player, Game game, String name, HashMap<String, String> desc) {
         super();
@@ -39,29 +40,31 @@ public class Actions extends Player{
      */
     public void checkActionName() {
         switch (actionName) {
-            case "help" :
+            case "help":
                 displayHelp();
                 break;
-            case "look" :
+            case "look":
                 displayLook();
                 break;
-            case "inventory" :
+            case "inventory":
                 displayInventory();
                 break;
-
         }
     }
 
     public void checkActionName(String object) {
-        switch(object) {
-            case "take" :
+        switch (actionName) {
+            case "take":
                 actionableTake(object);
                 break;
-            case "drop" :
+            case "drop":
                 actionableDrop(object);
                 break;
-            case "examine" :
+            case "examine":
                 actionableExamine(object);
+                break;
+            case "use":
+                actionableUse(object);
                 break;
         }
     }
@@ -90,6 +93,7 @@ public class Actions extends Player{
         System.out.println(game.actionHash.get("look"));
         System.out.println(game.actionHash.get("use"));
         System.out.println(game.actionHash.get("give"));
+        System.out.println();
     }
 
     /**
@@ -105,12 +109,16 @@ public class Actions extends Player{
      */
     public void displayLook() {
         player.getCurrentLocationDescription();
-        if(player.getCurrentLocationObject().getLocationItems().size() == 1) {
+        if (player.getCurrentLocationObject().getLocationItems().size() == 1) {
+            System.out.println();
             System.out.println("It appears there is an item in this room as well: ");
             player.getCurrentLocationObject().getLocationItemNames();
-        } else if(player.getCurrentLocationObject().getLocationItems().size() > 1) {
+            System.out.println();
+        } else if (player.getCurrentLocationObject().getLocationItems().size() > 1) {
+            System.out.println();
             System.out.println("It appears there are some items in this room as well: ");
             player.getCurrentLocationObject().getLocationItemNames();
+            System.out.println();
         }
 
     }
@@ -122,6 +130,7 @@ public class Actions extends Player{
     /**
      * Starts up the "Take" method, which removes an item from the inventory of the current player location, into the
      * inventory of the player.
+     *
      * @param itemName The String name of the item that is passed in through console commands. This is translated to
      *                 an Items name.
      * @throws NullPointerException Catches the possible NullPointerException sent out by properName variable.
@@ -130,19 +139,29 @@ public class Actions extends Player{
         ArrayList<Items> locationItems = player.getCurrentLocationObject().getLocationItems();
         String properName = null;
 
-        if(locationItems.isEmpty()) {
+
+        if (locationItems.isEmpty()) {
             System.out.println("There doesn't seem to be anything here to take at the moment.");
+            System.out.println();
         } else {
-            for (int i = 0 ; i < locationItems.size() ; i++) {
+            for (int i = 0; i < locationItems.size(); i++) {
                 if (locationItems.get(i).getItemName().equals(itemName)) {
                     properName = locationItems.get(i).getProperItemName();
-                    player.addInventoryItem(locationItems.get(i));
-                    player.getCurrentLocationObject().removeItem(locationItems.get(i));
-                    System.out.println(properName + " has been added to your inventory.");
+                    if (locationItems.get(i).getIsTakeable() && (player.getNumberOfItems() < player.getMaxInventory())) {
+                        player.addInventoryItem(locationItems.get(i));
+                        player.getCurrentLocationObject().removeItem(locationItems.get(i));
+                        System.out.println(properName + " has been added to your inventory.");
+                        System.out.println();
+                    } else if (!locationItems.get(i).getIsTakeable()) {
+                        System.out.println("You cannot take this particular item into your inventory.");
+                    } else if (player.getNumberOfItems() >= player.getMaxInventory()) {
+                        System.out.println("Your inventory is currently full. Drop something off in the safe room!");
+                    }
                 }
             }
-            if(properName == null) {
+            if (properName == null) {
                 System.out.println("The " + itemName + " item indicated doesn't exist in the area you're currently in. Try 'look' to see items available.");
+                System.out.println();
             }
         }
     }
@@ -150,6 +169,7 @@ public class Actions extends Player{
     /**
      * Starts up the "Drop" method, which removes an item from the inventory of the current player, and into the inventory
      * of the player's current location.
+     *
      * @param itemName The String name of the item that is passed in through console commands. This is translated to an
      *                 Items name.
      * @throws NullPointerException
@@ -158,52 +178,93 @@ public class Actions extends Player{
         ArrayList<Items> playerItems = player.getCurrentInventory();
         String properName = null;
 
-        if(playerItems.isEmpty()) {
+        if (playerItems.isEmpty()) {
             System.out.println("Hmmm. Your inventory is empty. Nothing to remove.");
+            System.out.println();
         } else {
-            for (int i = 0 ; i < playerItems.size() ; i++) {
-                if(playerItems.get(i).getItemName().equals(itemName)) {
+            for (int i = 0; i < playerItems.size(); i++) {
+                if (playerItems.get(i).getItemName().equals(itemName)) {
                     properName = playerItems.get(i).getProperItemName();
                     player.getCurrentLocationObject().addItem(playerItems.get(i));
                     player.removeInventoryItem(playerItems.get(i));
                     System.out.println(properName + " has been dropped in the " + player.getCurrentLocationObject().getLocationProperName());
+                    System.out.println();
                 }
             }
             if (properName == null) {
                 System.out.println("The " + itemName + " item indicated doesn't exist in your inventory. Please use 'inventory' to check your inventory.");
+                System.out.println();
             }
         }
     }
 
     /**
-     *
      * @param itemName
      * @throws NullPointerException
      */
     public void actionableExamine(String itemName) throws NullPointerException {
         ArrayList<Items> playerItems = player.getCurrentInventory();
         ArrayList<Items> locationItems = player.getCurrentLocationObject().getLocationItems();
-        ArrayList<Items> totalItems = null;
+        ArrayList<Items> totalItems = new ArrayList<>();
         String properName = null;
 
-        totalItems.addAll(playerItems);
-        totalItems.addAll(locationItems);
+        if (!playerItems.isEmpty()) {
+            totalItems.addAll(playerItems);
+        }
 
-        System.out.println(totalItems);
+        if (!locationItems.isEmpty()) {
+            totalItems.addAll(locationItems);
+        }
 
-        if(totalItems.isEmpty()) {
+        if (totalItems.size() == 0) {
             System.out.println("There isn't anything in this area, and neither is there anything in your inventory.");
         } else {
-            for(int i = 0 ; i < totalItems.size() ; i++) {
-                if(totalItems.get(i).getItemName().equals(itemName)) {
-                    properName = playerItems.get(i).getProperItemName();
+            for (int i = 0; i < totalItems.size(); i++) {
+                if (totalItems.get(i).getItemName().equals(itemName)) {
+                    properName = totalItems.get(i).getProperItemName();
                     System.out.println(properName + ": " + game.itemHash.get(itemName));
+                    System.out.println();
                 }
             }
         }
         if (properName == null) {
             System.out.println("The " + itemName + " item indicated doesn't exist in the area or in your inventory.");
+            System.out.println();
         }
+
+    }
+
+    public void actionableUse(String itemName) throws NullPointerException {
+        ArrayList<Items> playerItems = player.getCurrentInventory();
+        String properName = null;
+
+        if (playerItems.isEmpty()) {
+            System.out.println("There isn't anything in your inventory. Pick something up first.");
+        } else {
+            for (int i = 0; i < playerItems.size(); i++) {
+                if (playerItems.get(i).getItemName().equals(itemName)) {
+                    String nameObject = playerItems.get(i).getItemName();
+                    Items itemObject = playerItems.get(i);
+                    if (nameObject.equals("rose") || nameObject.equals("jam") || nameObject.equals("oyster")) {
+                        player.setAddCurrentHealth((itemObject.getHealingModifier()));
+                    } else if (nameObject.equals("gasMask")) {
+                        player.setWearingGasMask(true);
+                    } else if (nameObject.equals("key")) {
+                        //todo
+                    } else if (nameObject.equals("umbrella")) {
+                        //todo
+                    }
+                }
+            }
+        }
+        if (properName == null) {
+            System.out.println("The " + itemName + " item indicated doesn't exist in your inventory. Try something else.");
+        }
+    }
+
+    public void actionableOpen(String itemName) throws NullPointerException {
+        ArrayList<Items> locationItems = getCurrentLocationObject().getLocationItems();
+        String properName = null;
 
     }
 

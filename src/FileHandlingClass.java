@@ -39,7 +39,13 @@ public class FileHandlingClass {
 
         while ((lineContent = readLine.readLine()) != null) {
             String[] splitUp = lineContent.split(":");
-            hashDesc.put(splitUp[0], splitUp[1]);
+            StringBuilder descFormat = new StringBuilder(splitUp[1]);
+            int i = 0;
+            while ((i = descFormat.indexOf(" ", i + 50)) != -1) {
+                descFormat.replace(i, i + 1, "\n");
+            }
+
+            hashDesc.put(splitUp[0], descFormat.toString());
         }
         return hashDesc;
     }
