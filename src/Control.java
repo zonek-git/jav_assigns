@@ -5,23 +5,25 @@ public class Control extends Game{
     Game game;
     Player player;
 
-    //HashMap<String, String> actions;
+    HashMap<String, String> actionsDesc;
+    HashMap<String, Actions> actions;
 
     public Control() {
 
     }
 
-    public Control(Game game, Player player) {
+    public Control(Game game, Player player, HashMap<String, Actions> actions) {
         this.game = game;
         this.player = player;
-        //this.actions = game.assetHash.get("actions");
+        this.actionsDesc = game.assetHash.get("actions");
+        this.actions = actions;
     }
 
     public void outputCommand(String w1) {
         String verb = w1.toLowerCase();
         switch (verb) {
             case "test":
-                actionHash.get("test").displayCurrentLoc();
+                actions.get("test").displayCurrentLoc();
             case "help":
             case "h":
             case "commands":

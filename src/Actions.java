@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Actions extends Player {
+public class Actions {
 
     Game game;
+    Player player;
     private String actionDescription;
     private String actionName;
 
@@ -23,9 +24,10 @@ public class Actions extends Player {
      * @param name   pushing in the name of the particular action
      * @param desc   pushing in the description of the particular action using itemHash in Game.loadAssets()
      */
-    public Actions(Game game, String name, HashMap<String, String> desc) {
+    public Actions(Player player, Game game, String name, HashMap<String, String> desc) {
         this.game = game;
         this.actionName = name;
+        this.player = player;
         this.actionDescription = desc.get(name);
     }
 
@@ -61,14 +63,14 @@ public class Actions extends Player {
     }
 
     public void displayCurrentLoc() {
-        System.out.println(getCurrentLocationObject().getLocationName());
+        System.out.println(player.getCurrentLocationObject().getLocationName());
     }
 
     /**
      * Displays the current player's inventory.
      */
     public void displayInventory() {
-        viewInventory();
+        player.viewInventory();
         System.out.println();
     }
 
@@ -77,7 +79,7 @@ public class Actions extends Player {
      * as well.
      */
     public void displayLook() {
-        Locations currentLoc = getCurrentLocationObject();
+        Locations currentLoc = player.getCurrentLocationObject();
         System.out.println(currentLoc.getLocationName());
         if (currentLoc.getLocationItems().size() == 1) {
             System.out.println();
@@ -106,7 +108,7 @@ public class Actions extends Player {
      * @throws NullPointerException Catches the possible NullPointerException sent out by properName variable.
      */
     public void actionableTake(String itemName) throws NullPointerException {
-        ArrayList<Items> locationItems = getCurrentLocationObject().getLocationItems();
+        ArrayList<Items> locationItems = player.getCurrentLocationObject().getLocationItems();
         String properName = null;
 
 
@@ -117,14 +119,14 @@ public class Actions extends Player {
             for (int i = 0; i < locationItems.size(); i++) {
                 if (locationItems.get(i).getItemName().equals(itemName)) {
                     properName = locationItems.get(i).getProperItemName();
-                    if (locationItems.get(i).getIsTakeable() && (getNumberOfItems() < getMaxInventory())) {
-                        addInventoryItem(locationItems.get(i));
-                        getCurrentLocationObject().removeItem(locationItems.get(i));
+                    if (locationItems.get(i).getIsTakeable() && (player.getNumberOfItems() < player.getMaxInventory())) {
+                        player.addInventoryItem(locationItems.get(i));
+                        player.getCurrentLocationObject().removeItem(locationItems.get(i));
                         System.out.println(properName + " has been added to your inventory.");
                         System.out.println();
                     } else if (!locationItems.get(i).getIsTakeable()) {
                         System.out.println("You cannot take this particular item into your inventory.");
-                    } else if (getNumberOfItems() >= getMaxInventory()) {
+                    } else if (player.getNumberOfItems() >= player.getMaxInventory()) {
                         System.out.println("Your inventory is currently full. Drop something off in the safe room!");
                     }
                 }
@@ -145,7 +147,7 @@ public class Actions extends Player {
      * @throws NullPointerException
      */
     public void actionableDrop(String itemName) throws NullPointerException {
-        ArrayList<Items> playerItems = getCurrentInventory();
+        ArrayList<Items> playerItems = player.getCurrentInventory();
         String properName = null;
 
         if (playerItems.isEmpty()) {
@@ -155,9 +157,9 @@ public class Actions extends Player {
             for (int i = 0; i < playerItems.size(); i++) {
                 if (playerItems.get(i).getItemName().equals(itemName)) {
                     properName = playerItems.get(i).getProperItemName();
-                    getCurrentLocationObject().addItem(playerItems.get(i));
-                    removeInventoryItem(playerItems.get(i));
-                    System.out.println(properName + " has been dropped in the " + getCurrentLocationObject().getLocationProperName());
+                    player.getCurrentLocationObject().addItem(playerItems.get(i));
+                    player.removeInventoryItem(playerItems.get(i));
+                    System.out.println(properName + " has been dropped in the " + player.getCurrentLocationObject().getLocationProperName());
                     System.out.println();
                 }
             }
@@ -173,8 +175,8 @@ public class Actions extends Player {
      * @throws NullPointerException
      */
     public void actionableExamine(String itemName) throws NullPointerException {
-        ArrayList<Items> playerItems = getCurrentInventory();
-        ArrayList<Items> locationItems = getCurrentLocationObject().getLocationItems();
+        ArrayList<Items> playerItems = player.getCurrentInventory();
+        ArrayList<Items> locationItems = player.getCurrentLocationObject().getLocationItems();
         ArrayList<Items> totalItems = new ArrayList<>();
         String properName = null;
 
@@ -205,7 +207,7 @@ public class Actions extends Player {
     }
 
     public void actionableUse(String itemName) throws NullPointerException {
-        ArrayList<Items> playerItems = getCurrentInventory();
+        ArrayList<Items> playerItems = player.getCurrentInventory();
         String properName = null;
 
         if (playerItems.isEmpty()) {
@@ -216,9 +218,9 @@ public class Actions extends Player {
                     String nameObject = playerItems.get(i).getItemName();
                     Items itemObject = playerItems.get(i);
                     if (nameObject.equals("rose") || nameObject.equals("jam") || nameObject.equals("oyster")) {
-                        setAddCurrentHealth((itemObject.getHealingModifier()));
+                        player.setAddCurrentHealth((itemObject.getHealingModifier()));
                     } else if (nameObject.equals("gasMask")) {
-                        setWearingGasMask(true);
+                        player.setWearingGasMask(true);
                     } else if (nameObject.equals("key")) {
                         //todo
                     } else if (nameObject.equals("umbrella")) {
@@ -233,20 +235,20 @@ public class Actions extends Player {
     }
 
     public void actionableOpen(String itemName) throws NullPointerException {
-        ArrayList<Items> locationItems = getCurrentLocationObject().getLocationItems();
+        ArrayList<Items> locationItems = player.getCurrentLocationObject().getLocationItems();
         String properName = null;
 
     }
 
     public void actionableMovement(String movementDirection) throws NullPointerException {
 
-        if(getCurrentLocationObject().getDirection(movementDirection) != null) {
-            setCurrentLocation(getCurrentLocationObject().getDirection(movementDirection));
+        if(player.getCurrentLocationObject().getDirection(movementDirection) != null) {
+            player.setCurrentLocation(player.getCurrentLocationObject().getDirection(movementDirection));
         } else {
             System.out.println("You can't go that way. There's nowhere to go!");
         }
 
-        if(getCurrentLocationObject().getLocationName().equals("squareRoom") && movementDirection.equals("north")) {
+        if(player.getCurrentLocationObject().getLocationName().equals("squareRoom") && movementDirection.equals("north")) {
             System.out.println("Can't go back up the way you came... You'll have to continue on forward.");
         }
     }

@@ -19,7 +19,7 @@ public class Player {
     private int baseCombatAbility = 50;
 
     //Location holder
-    private Locations currentLocation;
+    protected Locations currentLocation;
     private Locations moveFromTo;
     private ArrayList<Items> currentInventory = new ArrayList<>();
     private int numberOfItems;

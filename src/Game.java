@@ -4,13 +4,13 @@ import java.util.*;
 public class Game {
     public Control registry;
 
-    Player player;
+    public Player player;
 
-    HashMap<String, Items> itemHash = new HashMap<>();
-    HashMap<String, Characters> characterHash = new HashMap<>();
-    HashMap<String, Locations> locationHash = new HashMap<>();
-    HashMap<String, Rooms> roomHash = new HashMap<>();
-    HashMap<String, Actions> actionHash = new HashMap<>();
+    protected HashMap<String, Items> itemHash = new HashMap<>();
+    protected HashMap<String, Characters> characterHash = new HashMap<>();
+    protected HashMap<String, Locations> locationHash = new HashMap<>();
+    protected HashMap<String, Rooms> roomHash = new HashMap<>();
+    protected HashMap<String, Actions> actionHash = new HashMap<>();
 
     HashMap<String, HashMap<String, String>> assetHash = new HashMap<>();
     HashMap<String, String> actionDescHash;
@@ -30,8 +30,8 @@ public class Game {
         Scanner userInput = new Scanner(System.in);
         String command;
         loadAssets(game);
-        registry = new Control(game, player);
-
+        registry = new Control(game, player, actionHash);
+        System.out.println(actionHash.get("test"));
 
         do {
             player.displayHealth();
@@ -45,7 +45,7 @@ public class Game {
         } while ((!command.equals("quit") && !player.getIsAlive()));
     }
 
-    public void loadAssets(Game game) throws IOException {
+    private void loadAssets(Game game) throws IOException {
 
         assetHash.put("characters", importAssetDescriptions.assetImport("characters"));
         assetHash.put("items", importAssetDescriptions.assetImport("items"));
@@ -77,24 +77,24 @@ public class Game {
 
         // Actions //
 
-        Actions test = new Actions(game, "test", actionDescHash);
-        Actions look = new Actions(game,"look", actionDescHash);
-        Actions inventory = new Actions(game, "inventory", actionDescHash);
-        Actions help = new Actions(game,"help", actionDescHash);
-        Actions take = new Actions(game, "take", actionDescHash);
-        Actions run = new Actions(game,"run", actionDescHash);
-        Actions drop = new Actions(game, "drop", actionDescHash);
-        Actions persuade = new Actions(game, "persuade", actionDescHash);
-        Actions north = new Actions(game, "north", actionDescHash);
-        Actions south = new Actions(game, "south", actionDescHash);
-        Actions east = new Actions(game, "east", actionDescHash);
-        Actions west = new Actions(game, "west", actionDescHash);
-        Actions again = new Actions(game, "again", actionDescHash);
-        Actions attack = new Actions(game, "attack", actionDescHash);
-        Actions examine = new Actions( game, "examine", actionDescHash);
-        Actions use = new Actions(game, "use", actionDescHash);
-        Actions give = new Actions(game, "give", actionDescHash);
-        Actions open = new Actions(game, "open", actionDescHash);
+        Actions test = new Actions(player, game, "test", actionDescHash);
+        Actions look = new Actions(player,game,"look", actionDescHash);
+        Actions inventory = new Actions(player, game, "inventory", actionDescHash);
+        Actions help = new Actions(player, game,"help", actionDescHash);
+        Actions take = new Actions(player, game, "take", actionDescHash);
+        Actions run = new Actions(player, game,"run", actionDescHash);
+        Actions drop = new Actions(player, game, "drop", actionDescHash);
+        Actions persuade = new Actions(player, game, "persuade", actionDescHash);
+        Actions north = new Actions(player, game, "north", actionDescHash);
+        Actions south = new Actions(player, game, "south", actionDescHash);
+        Actions east = new Actions(player, game, "east", actionDescHash);
+        Actions west = new Actions(player, game, "west", actionDescHash);
+        Actions again = new Actions(player, game, "again", actionDescHash);
+        Actions attack = new Actions(player, game, "attack", actionDescHash);
+        Actions examine = new Actions(player, game, "examine", actionDescHash);
+        Actions use = new Actions(player, game, "use", actionDescHash);
+        Actions give = new Actions(player, game, "give", actionDescHash);
+        Actions open = new Actions(player, game, "open", actionDescHash);
 
         actionHash.put("test", test);
         actionHash.put("look", look);
