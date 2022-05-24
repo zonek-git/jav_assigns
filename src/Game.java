@@ -6,13 +6,17 @@ public class Game {
 
     Player player;
 
-    Items baton, rose, watch, drinkMeBottle, eatMeBox, key, oyster, match, hookah, teapot, teacup, unbirthdayCake, mallet, jam, gasMask, umbrella, playingCard, squareRoomCabinet;
+    Items baton, rose, watch, drinkMeBottle, eatMeBox, key, oyster, match, hookah, teapot,
+            teacup, unbirthdayCake, mallet, jam, gasMask, umbrella, playingCard, squareRoomCabinet;
 
     Rooms squareRoomMain, rabbitsHouseLivingRoom, rabbitsHouseHallway, rabbitsHouseBackRoom;
 
     Locations squareRoom, forestZone, rabbitsHouse, mushForest, courtRoom, unbirthdayParty, safeHaven, theVoid;
 
-    ArrayList<Items> itemsArrayList = new ArrayList<>();
+    Actions take, run, drop, persuade, north, south, east, west, again, attack, inventory, examine,
+            look, use, help, give, open, test;
+
+    Characters madHatter, redQueen, alice, soldier, caterpillar, whiteRabbit;
 
 
     HashMap<String, HashMap<String, String>> assetHash = new HashMap<>();
@@ -29,6 +33,25 @@ public class Game {
         newGame.startGame(newGame);
     }
 
+    public void startGame(Game game) throws IOException {
+        Scanner userInput = new Scanner(System.in);
+        String command;
+        loadAssets(game);
+        registry = new Control(game, player);
+
+
+        do {
+            player.displayHealth();
+            System.out.print(">> ");
+            command = userInput.nextLine();
+            if (command.equals("")) {
+                System.out.println("Hmm. I wonder what I should do?");
+            } else {
+                actionRegistry(command);
+            }
+        } while ((!command.equals("quit") && !player.getIsAlive()));
+    }
+
     public void loadAssets(Game game) throws IOException {
 
         assetHash.put("characters", importAssetDescriptions.assetImport("characters"));
@@ -43,30 +66,36 @@ public class Game {
         locationHash = assetHash.get("locations");
         roomHash = assetHash.get("rooms");
 
-        //Characters madHatter = new Characters(this, "madHatter", characterHash);
-        //Characters redQueen = new Characters(this, "redQueen", characterHash);
-        //Characters alice = new Characters(this, "alice", characterHash);
-        //Characters whiteRabbit = new Characters(this, "whiteRabbit", characterHash);
-        //Characters soldier = new Characters(this, "soldier", characterHash);
-        //Characters caterpillar = new Characters(this, "caterpillar", characterHash);
-//
-        //Actions look = new Actions(this,"look", actionHash);
-        //Actions inventory = new Actions(this, "inventory", actionHash);
-        //Actions help = new Actions(this,"help", actionHash);
-        //Actions take = new Actions(this, "take", actionHash);
-        //Actions run = new Actions(this, "run", actionHash);
-        //Actions drop = new Actions(this, "drop", actionHash);
-        //Actions persuade = new Actions(this, "persuade", actionHash);
-        //Actions north = new Actions(this, "north", actionHash);
-        //Actions south = new Actions(this, "south", actionHash);
-        //Actions east = new Actions(this, "east", actionHash);
-        //Actions west = new Actions(this, "west", actionHash);
-        //Actions again = new Actions(this, "again", actionHash);
-        //Actions attack = new Actions(this, "attack", actionHash);
-        //Actions examine = new Actions(this, "examine", actionHash);
-        //Actions use = new Actions(this, "use", actionHash);
-        //Actions give = new Actions(this, "give", actionHash);
-//
+        // Characters //
+
+        madHatter = new Characters(this, "madHatter", characterHash);
+        redQueen = new Characters(this, "redQueen", characterHash);
+        alice = new Characters(this, "alice", characterHash);
+        whiteRabbit = new Characters(this, "whiteRabbit", characterHash);
+        soldier = new Characters(this, "soldier", characterHash);
+        caterpillar = new Characters(this, "caterpillar", characterHash);
+
+        // Actions //
+
+        test = new Actions(game, "test", actionHash);
+        look = new Actions(game,"look", actionHash);
+        inventory = new Actions(game, "inventory", actionHash);
+        help = new Actions(game,"help", actionHash);
+        take = new Actions(game, "take", actionHash);
+        run = new Actions(game,"run", actionHash);
+        drop = new Actions(game, "drop", actionHash);
+        persuade = new Actions(game, "persuade", actionHash);
+        north = new Actions(game, "north", actionHash);
+        south = new Actions(game, "south", actionHash);
+        east = new Actions(game, "east", actionHash);
+        west = new Actions(game, "west", actionHash);
+        again = new Actions(game, "again", actionHash);
+        attack = new Actions(game, "attack", actionHash);
+        examine = new Actions( game, "examine", actionHash);
+        use = new Actions(game, "use", actionHash);
+        give = new Actions(game, "give", actionHash);
+        open = new Actions(game, "open", actionHash);
+
         //Items
 
         squareRoomCabinet = new Items(game, "squareRoomCabinet", itemHash);
@@ -74,8 +103,13 @@ public class Game {
 
 
         baton = new Items(game, "baton", itemHash);
+        baton.setIsTakeable(true);
+        baton.setIsDroppable(true);
+        baton.setIsUsable(true);
+
         rose = new Items(game, "rose", itemHash);
         rose.setHealingModifier(25);
+
 
         watch = new Items(game, "watch", itemHash);
         drinkMeBottle = new Items(game, "drinkMeBottle", itemHash);
@@ -102,47 +136,43 @@ public class Game {
 
         //Rooms
 
-        squareRoomMain = new Rooms();
+        squareRoomMain = new Rooms("squareRoomMain", roomHash);
+        squareRoomMain.addItem(baton);
+        squareRoomMain.addItem(rose);
+        squareRoomMain.addItem(squareRoomCabinet);
+        squareRoomMain.addDirection("south", rabbitsHouse);
+
+        rabbitsHouseLivingRoom = new Rooms("rabbitsHouseLivingRoom", roomHash);
+        rabbitsHouseLivingRoom.addItem(match);
+        rabbitsHouseLivingRoom.addDirection("south", rabbitsHouseHallway);
+        rabbitsHouseHallway = new Rooms("rabbitsHouseHallway", roomHash);
+        //todo - add character "whiteRabbit
+        rabbitsHouseHallway.addDirection("south", rabbitsHouseBackRoom);
+        rabbitsHouseHallway.addDirection("north", rabbitsHouseLivingRoom);
 
         //Locations
 
         squareRoom = new Locations(game, "squareRoom", locationHash);
-        squareRoom.addItem(baton);
-        squareRoom.addItem(rose);
-        squareRoom.setDirection("south", rabbitsHouse);
+        squareRoom.setContainedRooms(squareRoomMain);
+        squareRoom.setInitialRoom(squareRoomMain);
+
+        rabbitsHouse = new Locations(game, "rabbitsHouse", locationHash);
+        squareRoom.setContainedRooms(rabbitsHouseLivingRoom);
+        squareRoom.setContainedRooms(rabbitsHouseHallway);
+        squareRoom.setContainedRooms(rabbitsHouseBackRoom);
 
         forestZone = new Locations(game, "forestZone", locationHash);
         unbirthdayParty = new Locations(game, "unbirthdayParty", locationHash);
-
-        rabbitsHouse = new Locations(game, "rabbitsHouse", locationHash);
-        rabbitsHouse.addItem(jam);
-        rabbitsHouse.addItem(match);
-
         mushForest = new Locations(game, "mushForest", locationHash);
         courtRoom = new Locations(game, "courtRoom", locationHash);
         safeHaven = new Locations(game, "safeHaven", locationHash);
         theVoid = new Locations(game, "theVoid", locationHash);
 
-    }
-
-    public void startGame(Game game) throws IOException {
-        Scanner userInput = new Scanner(System.in);
-        String command;
-        loadAssets(game);
         player = new Player(game, squareRoom, 0);
-        registry = new Control(game, player);
 
-        do {
-            player.displayHealth();
-            System.out.print(">> ");
-            command = userInput.nextLine();
-            if (command.equals("")) {
-                System.out.println("Hmm. I wonder what I should do?");
-            } else {
-                actionRegistry(command);
-            }
-        } while ((!command.equals("quit") && !player.getIsAlive()));
     }
+
+
 
     public void actionRegistry(String command) {
         String cmdSentence = command.toLowerCase();

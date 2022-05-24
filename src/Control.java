@@ -1,10 +1,9 @@
 import java.io.*;
 import java.util.HashMap;
 
-public class Control {
+public class Control extends Game{
     Game game;
     Player player;
-    Actions action;
 
     HashMap<String, String> actions;
 
@@ -21,27 +20,40 @@ public class Control {
     public void outputCommand(String w1) {
         String verb = w1.toLowerCase();
         switch (verb) {
+            case "test":
+                test.displayCurrentLoc();
             case "help":
             case "h":
             case "commands":
-                action = new Actions(this.player, this.game, "help", game.actionHash);
-                action.checkActionName();
+                help.displayHelp();
                 break;
             case "look":
-                action = new Actions(this.player, this.game, "look", game.actionHash);
-                action.checkActionName();
+                look.displayLook();
                 break;
             case "inventory":
             case "i":
             case "in":
             case "invent":
-                action = new Actions(player, game, "inventory", game.actionHash);
-                action.checkActionName();
+                inventory.displayInventory();
                 break;
             case "take":
             case "grab":
                 System.out.println("Please indicate what item you want to grab.");
                 break;
+            case "south":
+            case "go south":
+            case "s":
+            case "go s":
+            case "head south":
+            case "head s":
+                south.actionableMovement("south");
+            case "north":
+            case "go north":
+            case "n":
+            case "go n":
+            case "head north":
+            case "head n":
+                north.actionableMovement("north");
             default:
                 System.out.println("You don't think you can do that. You should try again or ask (help).");
         }
@@ -53,23 +65,19 @@ public class Control {
         switch (verb) {
             case "take":
             case "grab":
-                action = new Actions(player, game, "take", game.actionHash);
-                action.checkActionName(noun);
+                take.actionableTake(noun);
                 break;
             case "drop":
-                action = new Actions(player, game, "drop", game.actionHash);
-                action.checkActionName(noun);
+                drop.actionableDrop(noun);
                 break;
             case "examine":
-                action = new Actions(player, game, "examine", game.actionHash);
-                action.checkActionName(noun);
+                examine.actionableExamine(noun);
                 break;
             case "use":
-                action = new Actions(player, game, "use", game.actionHash);
-                action.checkActionName(noun);
+                use.actionableDrop(noun);
                 break;
             case "open":
-                action = new Actions(player, game, "open", game.actionHash);
+                open.actionableOpen(noun);
         }
     }
 

@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-public class Items extends Player {
+public class Items {
 
     Game game;
     private String name;

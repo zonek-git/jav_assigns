@@ -9,9 +9,7 @@ public class Player {
     private String name;
     private int modifierSelector = 1; //1 = charisma, 2 = fortitude, 3 = combat
 
-    //Maximum, constants. Able to go up and down
-    private int maxHealth = 100;
-    private int currentHealth = 100;
+    private int currentHealth = 0;
     private boolean isAlive;
     private int maxInventory = 5;
 
@@ -97,8 +95,8 @@ public class Player {
         return currentInventory;
     }
 
-    public void getCurrentLocationDescription() {
-        System.out.println(currentLocation.getLocationDescription());
+    public String getCurrentLocationDescription() {
+        return currentLocation.getLocationDescription();
     }
 
     public boolean getIsAlive() {
@@ -131,6 +129,8 @@ public class Player {
 
     public boolean setAddCurrentHealth(int effect) {
         boolean used = false;
+        //Maximum, constants. Able to go up and down
+        int maxHealth = 100;
         if (currentHealth == maxHealth) {
             System.out.println("You're already at full health. No need to use this!");
             used = false;

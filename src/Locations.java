@@ -8,10 +8,10 @@ public class Locations {
     private String entryDescription;
     private String exitDescription;
     private ArrayList<Rooms> containedRooms = new ArrayList<>();
+    private Rooms initRoom;
     private ArrayList<Characters> containedCharacters = new ArrayList<>();
     private ArrayList<Items> containedItems = new ArrayList<>();
-    private HashMap<String, Locations> directoryLocation = new HashMap<>();
-    private HashMap<String, Rooms> directoryRoom = new HashMap<>();
+    private HashMap<String, Locations> directions = new HashMap<>();
     private Game game;
 
     Locations() {
@@ -32,12 +32,9 @@ public class Locations {
     }
 
     public void addDirection(String dir, Locations location) {
-        directoryLocation.put(dir, location);
+        this.directions.put(dir, location);
     }
 
-    public void addDirection(String dir, Rooms room) {
-        directoryRoom.put(dir, room);
-    }
 
     // Functions //
 
@@ -46,6 +43,9 @@ public class Locations {
         switch(name) {
             case "squareRoom" :
                 properName = "Square Room";
+                break;
+            case "squareRoomMain" :
+                properName = "Square Room main area";
                 break;
             case "forestZone" :
                 properName = "Forest Zone";
@@ -72,16 +72,24 @@ public class Locations {
 
     // Setters //
 
+    public void setInitialRoom(Rooms roomName) {
+        Rooms initRoom = null;
+        for(int i = 0 ; i < containedRooms.size() ; i++) {
+            if(containedRooms.get(i).getLocationName().equals(roomName.getLocationName())){
+                initRoom = containedRooms.get(i);
+            }else {
+                System.out.println("Error_setInitialRoom_Locations.java: this location doesn't contain this room");
+            }
+        }
+        this.initRoom = initRoom;
+    }
+
     public void setContainedRooms(Rooms room) {
         containedRooms.add(room);
     }
 
     public void setLocationCharacters(Characters character) {
         containedCharacters.add(character);
-    }
-
-    public void setDirectory(HashMap<String, Locations> directory) {
-        this.directoryLocation = directory;
     }
 
     public void addItem(Items item) {
@@ -96,8 +104,8 @@ public class Locations {
         this.locationDescription = locationDescription;
     }
 
-    public void setDirection(String dir, Locations locations) {
-        directoryLocation.put(dir, locations);
+    public void setLocationName(String locationName) {
+        this.name = locationName;
     }
 
     // Getters //
@@ -107,7 +115,7 @@ public class Locations {
     }
 
     public Locations getDirection(String dir) {
-        return directoryLocation.get(dir);
+        return directions.get(dir);
     }
 
     public ArrayList<Characters> getLocationCharacters() {
