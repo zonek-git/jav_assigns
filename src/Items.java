@@ -6,8 +6,10 @@ public class Items {
     private String name;
     private String itemDescription;
     private String examineDescription;
+    private Items containedItem;
 
     private int healingModifier = 0;
+    private int weaponDamage = 0;
 
     private boolean isUsable = false;
     private boolean isWeapon = false;
@@ -62,6 +64,9 @@ public class Items {
     public String getProperItemName() {
         String properName = null;
         switch (name) {
+            case "squareRoomCabinet":
+                properName = "Small cabinet";
+                break;
             case "baton":
                 properName = "Baton";
                 break;
@@ -129,6 +134,14 @@ public class Items {
         return healingModifier;
     }
 
+    public Items getContainedItem() {
+        return containedItem;
+    }
+
+    public int getWeaponDamage() {
+        return weaponDamage;
+    }
+
 
     //SETTERS//
 
@@ -153,7 +166,8 @@ public class Items {
         this.isDestroyable = set;
     }
 
-    public void setIsOpenable(boolean set) {
+    public void setIsOpenable(boolean set, Items item) {
+        containedItem = item;
         this.isOpenable = set;
     }
 
@@ -167,6 +181,10 @@ public class Items {
 
     public void setItemDescription(String itemDescription) {
         this.itemDescription = itemDescription;
+    }
+
+    public void setWeaponDamage(int damage) {
+        this.weaponDamage = damage;
     }
 
     /**

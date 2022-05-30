@@ -35,7 +35,6 @@ public class Actions {
      * Used to take the command that is passed in through Control and sends it to do the proper Action sequence
      */
 
-
     //Display Functions - Simple functions to display something, nothing else.
 
 
@@ -59,12 +58,10 @@ public class Actions {
         System.out.println(game.actionHash.get("look"));
         System.out.println(game.actionHash.get("use"));
         System.out.println(game.actionHash.get("give"));
+        System.out.println(game.actionHash.get("open"));
         System.out.println();
     }
 
-    public void displayCurrentLoc() {
-        System.out.println(player.getCurrentLocationObject().getLocationName());
-    }
 
     /**
      * Displays the current player's inventory.
@@ -80,7 +77,8 @@ public class Actions {
      */
     public void displayLook() {
         Locations currentLoc = player.getCurrentLocationObject();
-        System.out.println(currentLoc.getLocationName());
+        System.out.println(currentLoc.getLocationDescription());
+        Characters char1 = null;
         if (currentLoc.getLocationItems().size() == 1) {
             System.out.println();
             System.out.println("It appears there is an item in this room as well: ");
@@ -92,7 +90,17 @@ public class Actions {
             currentLoc.getLocationItemNames();
             System.out.println();
         }
-
+        if(currentLoc.getLocationCharacters().size() == 0) {
+            System.out.println("There doesn't seem to be anyone else in here with you...");
+        } else if(currentLoc.getLocationCharacters().size() > 0) {
+            for (int i = 0; i < currentLoc.getLocationCharacters().size(); i++) {
+                char1 = currentLoc.getLocationCharacters().get(i);
+            }
+            if (char1 != null) {
+                System.out.println("There also appears to be someone in here with you! It looks like... " + char1.getProperCharacterName());
+                System.out.println(char1.getCharacterDescription());
+            }
+        }
     }
 
 
@@ -226,31 +234,109 @@ public class Actions {
                     } else if (nameObject.equals("umbrella")) {
                         //todo
                     }
+                } else {
+                    System.out.println("You don't currently have that item in your inventory...");
                 }
             }
-        }
-        if (properName == null) {
-            System.out.println("The " + itemName + " item indicated doesn't exist in your inventory. Try something else.");
         }
     }
 
     public void actionableOpen(String itemName) throws NullPointerException {
         ArrayList<Items> locationItems = player.getCurrentLocationObject().getLocationItems();
-        String properName = null;
+        Items itemObject = null;
 
+        if (locationItems.isEmpty()) {
+            System.out.println("There isn't anything in here...");
+        } else {
+            for (int i = 0 ; i < locationItems.size(); i++) {
+                if (locationItems.get(i).getItemName().equals(itemName)) {
+                    itemObject = locationItems.get(i);
+                    if(itemObject.getIsOpenable()) {
+                        Items containedItem = itemObject.getContainedItem();
+                        player.addInventoryItem(containedItem);
+                    }
+                } else {
+                    System.out.println("This item doesn't exist in this location");
+                }
+            }
+        }
     }
 
     public void actionableMovement(String movementDirection) throws NullPointerException {
-
         if(player.getCurrentLocationObject().getDirection(movementDirection) != null) {
             player.setCurrentLocation(player.getCurrentLocationObject().getDirection(movementDirection));
         } else {
-            System.out.println("You can't go that way. There's nowhere to go!");
+            System.out.println("You can't go that way.");
         }
 
         if(player.getCurrentLocationObject().getLocationName().equals("squareRoom") && movementDirection.equals("north")) {
             System.out.println("Can't go back up the way you came... You'll have to continue on forward.");
         }
+    }
+
+    public void actionableAttack(String character, String addition, String weapon) throws NullPointerException {
+        ArrayList<Characters> locationCharacters = player.getCurrentLocationObject().getLocationCharacters();
+        ArrayList<Items> playerItems = player.getCurrentInventory();
+        Characters targetObject = null;
+        String targetName;
+        String targetProperName = null;
+        Items weaponObject = null;
+        String weaponName;
+        String weaponProperName = null;
+        boolean pass = true;
+
+        if(locationCharacters.isEmpty()) {
+            System.out.println("There are no enemies in this location!");
+        } else {
+            do {
+                for(int i = 0 ; i < locationCharacters.size() ; i++ ) {
+                    if(locationCharacters.get(i).getCharacterName().equals(character)) {
+                        targetObject = locationCharacters.get(i);
+                        targetName = locationCharacters.get(i).getCharacterName();
+                        targetProperName = locationCharacters.get(i).getProperCharacterName();
+                        break;
+                    } else {
+                        System.out.println("That's not a valid target.");
+                        pass = false;
+                    }
+                }
+                if(addition.equals("with")) {
+                    for(int i = 0 ; i < playerItems.size() ; i++) {
+                        if(playerItems.get(i).getItemName().equals(weapon)) {
+                            weaponName = playerItems.get(i).getItemName();
+                            weaponProperName = playerItems.get(i).getProperItemName();
+                            weaponObject = playerItems.get(i);
+                            if(!weaponObject.getIsWeapon()) {
+                                pass = false;
+                            }
+                            break;
+                        } else {
+                            System.out.println("You don't have that weapon in your inventory.");
+                            pass = false;
+                        }
+                    }
+                } else {
+                    System.out.println("Try: 'attack *character* with *weapon*");
+                    pass = false;
+                }
+
+                if (targetObject != null && weaponObject != null && targetProperName != null && weaponProperName != null) {
+                    System.out.println("You attack " + targetProperName + " with your " + weaponProperName);
+                    System.out.println(targetObject.getCharacterCurrentHealth());
+                    int health = targetObject.getCharacterCurrentHealth();
+                    int attackpl = player.getBaseDamage();
+                    int attackwp = weaponObject.getWeaponDamage();
+                    int attackttl = attackpl + attackwp;
+
+                    health = health - attackttl;
+                    targetObject.setCurrentHealth(health);
+                    System.out.println(targetObject.getCharacterCurrentHealth());
+                    pass = false;
+                }
+            } while (pass);
+
+        }
+
     }
 
 }

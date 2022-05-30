@@ -8,7 +8,6 @@ public class Player {
     //Constant vars
     private String name;
     private int modifierSelector = 1; //1 = charisma, 2 = fortitude, 3 = combat
-
     private int currentHealth = 0;
     private boolean isAlive;
     private int maxInventory = 5;
@@ -17,6 +16,7 @@ public class Player {
     private int baseCharisma = 50;
     private int baseFortitude = 50;
     private int baseCombatAbility = 50;
+    private int baseDamage = 15;
 
     //Location holder
     protected Locations currentLocation;
@@ -31,10 +31,9 @@ public class Player {
 
     }
 
-    public Player(Game game, Locations currentLocation, int numberOfItems) {
+    public Player(Game game, int numberOfItems) {
         super();
         this.game = game;
-        this.currentLocation = currentLocation;
         this.numberOfItems = numberOfItems;
     }
 
@@ -70,6 +69,9 @@ public class Player {
 
     // Getters //
 
+    public int getBaseDamage() {
+        return baseDamage;
+    }
 
     public String getName() {
         return name;

@@ -1,7 +1,8 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Control extends Game{
+public class Control {
     Game game;
     Player player;
 
@@ -22,21 +23,19 @@ public class Control extends Game{
     public void outputCommand(String w1) {
         String verb = w1.toLowerCase();
         switch (verb) {
-            case "test":
-                actions.get("test").displayCurrentLoc();
             case "help":
             case "h":
             case "commands":
-                actionHash.get("help").displayHelp();
+                actions.get("help").displayHelp();
                 break;
             case "look":
-                actionHash.get("look").displayLook();
+                actions.get("look").displayLook();
                 break;
             case "inventory":
             case "i":
             case "in":
             case "invent":
-                actionHash.get("inventory").displayInventory();
+                actions.get("inventory").displayInventory();
                 break;
             case "take":
             case "grab":
@@ -48,14 +47,16 @@ public class Control extends Game{
             case "go s":
             case "head south":
             case "head s":
-                actionHash.get("south").actionableMovement("south");
+                actions.get("south").actionableMovement("south");
             case "north":
             case "go north":
             case "n":
             case "go n":
             case "head north":
             case "head n":
-                actionHash.get("north").actionableMovement("north");
+                actions.get("north").actionableMovement("north");
+            case "up":
+                actions.get("up").actionableMovement("up");
             default:
                 System.out.println("You don't think you can do that. You should try again or ask (help).");
         }
@@ -67,19 +68,19 @@ public class Control extends Game{
         switch (verb) {
             case "take":
             case "grab":
-                actionHash.get("take").actionableTake(noun);
+                actions.get("take").actionableTake(noun);
                 break;
             case "drop":
-                actionHash.get("drop").actionableDrop(noun);
+                actions.get("drop").actionableDrop(noun);
                 break;
             case "examine":
-                actionHash.get("examine").actionableExamine(noun);
+                actions.get("examine").actionableExamine(noun);
                 break;
             case "use":
-                actionHash.get("use").actionableUse(noun);
+                actions.get("use").actionableUse(noun);
                 break;
             case "open":
-                actionHash.get("open").actionableOpen(noun);
+                actions.get("open").actionableOpen(noun);
         }
     }
 
@@ -87,8 +88,17 @@ public class Control extends Game{
 
     }
 
-    public void outputCommand(String verb, String noun, String add1, String add2) {
+    public void outputCommand(String w1, String w2, String w3, String w4) {
+        String add1 = w1.toLowerCase();
+        String add2 = w2.toLowerCase();
+        String add3 = w3.toLowerCase();
+        String add4 = w4.toLowerCase();
 
+        switch(add1) {
+            case "attack":
+            case "atk":
+                actions.get("attack").actionableAttack(add2, add3, add4);
+        }
     }
 
     /**

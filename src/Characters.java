@@ -7,6 +7,7 @@ public class Characters {
     private String name;
     private String desc;
 
+    private int currentHealth;
     private int maxCharHealth;
     private int maxCharDamage;
     private int resistance;
@@ -38,19 +39,60 @@ public class Characters {
 
     //Getters
 
-    public int getMaxCharHealth() {
+    public String getCharacterDescription() {
+        return desc;
+    }
+
+    public String getCharacterName() {
+        return name;
+    }
+
+    public int getMaxCharacterHealth() {
         return maxCharHealth;
     }
 
-    public int getMaxCharDamage() {
+    public int getMaxCharacterDamage() {
         return maxCharDamage;
     }
 
-    public int getResistance() {
+    public int getCharacterResistance() {
         return resistance;
     }
 
+    public int getCharacterCurrentHealth() {
+        return currentHealth;
+    }
+
+    public String getProperCharacterName() {
+        String properName = null;
+        switch (name) {
+            case "madHatter" :
+                properName = "The Mad Hatter";
+                break;
+            case "redQueen" :
+                properName = "The Queen of Hearts";
+                break;
+            case "alice" :
+                properName = "Alice";
+                break;
+            case "whiteRabbit" :
+                properName = "The White Rabbit";
+                break;
+            case "soldier" :
+                properName = "The Card Soldier";
+                break;
+            case "caterpillar" :
+                properName = "The Caterpillar";
+                break;
+        }
+        return properName;
+    }
+
     //Setters
+
+    public void setCurrentHealth(int healthSet) {
+        this.currentHealth = healthSet;
+    }
 
     public void setmaxCharHealth(int maxCharHealth) {
         this.maxCharHealth = maxCharHealth;

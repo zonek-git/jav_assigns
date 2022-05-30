@@ -9,7 +9,6 @@ public class Game {
     protected HashMap<String, Items> itemHash = new HashMap<>();
     protected HashMap<String, Characters> characterHash = new HashMap<>();
     protected HashMap<String, Locations> locationHash = new HashMap<>();
-    protected HashMap<String, Rooms> roomHash = new HashMap<>();
     protected HashMap<String, Actions> actionHash = new HashMap<>();
 
     HashMap<String, HashMap<String, String>> assetHash = new HashMap<>();
@@ -29,9 +28,10 @@ public class Game {
     public void startGame(Game game) throws IOException {
         Scanner userInput = new Scanner(System.in);
         String command;
+        player = new Player(game, 0);
         loadAssets(game);
+        player.setCurrentLocation(locationHash.get("squareRoom"));
         registry = new Control(game, player, actionHash);
-        System.out.println(actionHash.get("test"));
 
         do {
             player.displayHealth();
@@ -62,11 +62,17 @@ public class Game {
         // Characters //
 
         Characters madHatter = new Characters(this, "madHatter", characterDescHash);
+        madHatter.setCurrentHealth(150);
         Characters redQueen = new Characters(this, "redQueen", characterDescHash);
+        redQueen.setCurrentHealth(200);
         Characters alice = new Characters(this, "alice", characterDescHash);
+        alice.setCurrentHealth(250);
         Characters whiteRabbit = new Characters(this, "whiteRabbit", characterDescHash);
+        whiteRabbit.setCurrentHealth(100);
         Characters soldier = new Characters(this, "soldier", characterDescHash);
+        soldier.setCurrentHealth(75);
         Characters caterpillar = new Characters(this, "caterpillar", characterDescHash);
+        caterpillar.setCurrentHealth(150);
 
         characterHash.put("madHatter", madHatter);
         characterHash.put("redQueen", redQueen);
@@ -77,7 +83,6 @@ public class Game {
 
         // Actions //
 
-        Actions test = new Actions(player, game, "test", actionDescHash);
         Actions look = new Actions(player,game,"look", actionDescHash);
         Actions inventory = new Actions(player, game, "inventory", actionDescHash);
         Actions help = new Actions(player, game,"help", actionDescHash);
@@ -95,8 +100,9 @@ public class Game {
         Actions use = new Actions(player, game, "use", actionDescHash);
         Actions give = new Actions(player, game, "give", actionDescHash);
         Actions open = new Actions(player, game, "open", actionDescHash);
+        Actions down = new Actions(player, game, "down", actionDescHash);
+        Actions up = new Actions(player, game, "up", actionDescHash);
 
-        actionHash.put("test", test);
         actionHash.put("look", look);
         actionHash.put("inventory", inventory);
         actionHash.put("help", help);
@@ -117,38 +123,78 @@ public class Game {
 
         //Items
 
-        Items squareRoomCabinet = new Items(game, "squareRoomCabinet", itemDescHash);
-        squareRoomCabinet.setIsOpenable(true);
 
         Items baton = new Items(game, "baton", itemDescHash);
         baton.setIsTakeable(true);
-        baton.setIsDroppable(true);
+        baton.setIsDroppable(false);
         baton.setIsUsable(true);
+        baton.setIsWeapon(true);
 
         Items rose = new Items(game, "rose", itemDescHash);
+        rose.setIsTakeable(true);
         rose.setHealingModifier(25);
+        rose.setIsUsable(true);
 
         Items watch = new Items(game, "watch", itemDescHash);
+        watch.setIsTakeable(true);
+        watch.setIsDroppable(false);
+
         Items drinkMeBottle = new Items(game, "drinkMeBottle", itemDescHash);
+        drinkMeBottle.setIsTakeable(true);
+
         Items eatMeBox = new Items(game, "eatMebox", itemDescHash);
+        eatMeBox.setIsTakeable(true);
+
         Items key = new Items(game, "key", itemDescHash);
+        key.setIsTakeable(true);
+
         Items oyster = new Items(game, "oyster", itemDescHash);
+        oyster.setIsTakeable(true);
         oyster.setHealingModifier(40);
 
         Items match = new Items(game, "match", itemDescHash);
+        match.setIsTakeable(true);
+        match.setIsUsable(true);
+
         Items hookah = new Items(game, "hookah", itemDescHash);
+        hookah.setIsTakeable(true);
         hookah.setHealingModifier(-10);
 
+        Items squareRoomCabinet = new Items(game, "squareRoomCabinet", itemDescHash);
+        squareRoomCabinet.setIsTakeable(false);
+        squareRoomCabinet.setIsOpenable(true, match);
+
         Items teapot = new Items(game, "teapot", itemDescHash);
+        teapot.setIsTakeable(true);
+
         Items teacup = new Items(game, "teacup", itemDescHash);
+        teacup.setIsTakeable(true);
+
         Items unbirthdayCake = new Items(game, "unbirthdayCake", itemDescHash);
+        unbirthdayCake.setIsTakeable(true);
+
         Items mallet = new Items(game, "mallet", itemDescHash);
+        mallet.setIsTakeable(true);
+
         Items jam = new Items(game, "jam", itemDescHash);
+        jam.setIsTakeable(true);
         jam.setHealingModifier(30);
+        jam.setIsUsable(true);
 
         Items gasMask = new Items(game, "gasMask", itemDescHash);
+        gasMask.setIsUsable(true);
+        gasMask.setIsTakeable(true);
+
         Items umbrella = new Items(game, "umbrella", itemDescHash);
+        umbrella.setIsTakeable(true);
+        umbrella.setIsUsable(true);
+
         Items playingCard = new Items(game, "playingCard", itemDescHash);
+        playingCard.setIsTakeable(true);
+
+        Items squareRoomLock = new Items(game, "squareRoomLock", itemDescHash);
+        squareRoomLock.setIsTakeable(false);
+        squareRoomLock.setIsDestroyable(true);
 
         itemHash.put("squareRoomCabinet", squareRoomCabinet);
         itemHash.put("baton", baton);
@@ -167,6 +213,7 @@ public class Game {
         itemHash.put("gasMask", gasMask);
         itemHash.put("umbrella", umbrella);
         itemHash.put("playingCard", playingCard);
+        itemHash.put("squareRoomLock", squareRoomLock);
 
         //Locations + Rooms
 
@@ -177,16 +224,17 @@ public class Game {
         Locations safeHaven = new Locations(game, "safeHaven", locationDescHash);
         Locations theVoid = new Locations(game, "theVoid", locationDescHash);
         Locations squareRoom = new Locations(game, "squareRoom", locationDescHash);
-        Locations rabbitsHouse = new Locations(game, "rabbitsHouse", locationDescHash);
+        squareRoom.addItem(baton);
+        squareRoom.setLocationCharacters(soldier);
 
-        Rooms squareRoomMain = new Rooms("squareRoomMain", roomDescHash);
-        squareRoomMain.addItem(baton);
-        squareRoomMain.addItem(rose);
-        squareRoomMain.addItem(squareRoomCabinet);
-        Rooms rabbitsHouseBackRoom = new Rooms("rabbitsHouseBackRoom", roomDescHash);
-        Rooms rabbitsHouseLivingRoom = new Rooms("rabbitsHouseLivingRoom", roomDescHash);
+        Locations rabbitsHouseLivingRoom = new Locations(game, "rabbitsHouseLivingRoom", locationDescHash);
+        rabbitsHouseLivingRoom.addItem(jam);
         rabbitsHouseLivingRoom.addItem(match);
-        Rooms rabbitsHouseHallway = new Rooms("rabbitsHouseHallway", roomDescHash);
+
+        Locations rabbitsHouseHallway = new Locations(game, "rabbitsHouseHallway", locationDescHash);
+        Locations rabbitsHouseBackroom = new Locations(game, "rabbitsHouseBackroom", locationDescHash);
+
+
 
         locationHash.put("forestZone", forestZone);
         locationHash.put("unbirthdayParty", unbirthdayParty);
@@ -195,26 +243,18 @@ public class Game {
         locationHash.put("safeHaven", safeHaven);
         locationHash.put("theVoid", theVoid);
         locationHash.put("squareRoom", squareRoom);
-        locationHash.put("rabbitsHouse", rabbitsHouse);
-
-        roomHash.put("squareRoomMain", squareRoomMain);
-        roomHash.put("rabbitsHouseBackRoom", rabbitsHouseBackRoom);
-        roomHash.put("rabbitsHouseLivingRoom", rabbitsHouseLivingRoom);
-        roomHash.put("rabbitsHouseHallway", rabbitsHouseHallway);
+        locationHash.put("rabbitsHouse", rabbitsHouseLivingRoom);
 
         //Add Directions
 
-        squareRoom.setContainedRooms(squareRoomMain);
-        squareRoom.setInitialRoom(squareRoomMain);
-        squareRoom.setContainedRooms(rabbitsHouseLivingRoom);
-        squareRoom.setContainedRooms(rabbitsHouseHallway);
-        squareRoom.setContainedRooms(rabbitsHouseBackRoom);
-        squareRoomMain.addDirection("south", rabbitsHouse);
+        squareRoom.addDirection("south", rabbitsHouseLivingRoom);
         rabbitsHouseLivingRoom.addDirection("south", rabbitsHouseHallway);
-        rabbitsHouseHallway.addDirection("south", rabbitsHouseBackRoom);
+        rabbitsHouseLivingRoom.addDirection("north", squareRoom);
         rabbitsHouseHallway.addDirection("north", rabbitsHouseLivingRoom);
-
-        player = new Player(game, squareRoom, 0);
+        rabbitsHouseHallway.addDirection("south", rabbitsHouseBackroom);
+        rabbitsHouseBackroom.addDirection("north", rabbitsHouseHallway);
+        //Add direction of SOUTH in backroom when "key" is in the inventory
+        //Add direction of UP to the saferoom when the haypile has been burned away
 
     }
 
