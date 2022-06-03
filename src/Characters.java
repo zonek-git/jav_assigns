@@ -39,66 +39,67 @@ public class Characters {
 
     //Getters
 
-    public String getCharacterDescription() {
+    public String getDescription() {
         return desc;
     }
 
-    public String getCharacterName() {
+    public String getName() {
         return name;
-    }
-
-    public int getMaxCharacterHealth() {
-        return maxCharHealth;
-    }
-
-    public int getMaxCharacterDamage() {
-        return maxCharDamage;
-    }
-
-    public int getCharacterResistance() {
-        return resistance;
-    }
-
-    public int getCharacterCurrentHealth() {
-        return currentHealth;
     }
 
     public String getProperCharacterName() {
         String properName = null;
         switch (name) {
             case "madHatter" :
-                properName = "The Mad Hatter";
+                properName = "Hatter";
                 break;
             case "redQueen" :
-                properName = "The Queen of Hearts";
+                properName = "Queen";
                 break;
             case "alice" :
                 properName = "Alice";
                 break;
             case "whiteRabbit" :
-                properName = "The White Rabbit";
+                properName = "Rabbit";
                 break;
             case "soldier" :
-                properName = "The Card Soldier";
+                properName = "Soldier";
                 break;
             case "caterpillar" :
-                properName = "The Caterpillar";
+                properName = "Caterpillar";
                 break;
         }
         return properName;
     }
 
+    public int getMaxHealth() {
+        return maxCharHealth;
+    }
+
+    public int getMaxDamage() {
+        return maxCharDamage;
+    }
+
+    public int getResistance() {
+        return resistance;
+    }
+
+    public int getHealth() {
+        return currentHealth;
+    }
+
+
     //Setters
 
-    public void setCurrentHealth(int healthSet) {
+    public void setHealth(int healthSet) {
         this.currentHealth = healthSet;
     }
 
-    public void setmaxCharHealth(int maxCharHealth) {
+    public void setMaxHealth(int maxCharHealth) {
         this.maxCharHealth = maxCharHealth;
     }
 
-    public void setMaxCharDamage(int maxCharDamage) {
+    public void setMaxDamage(int maxCharDamage) {
         this.maxCharDamage = maxCharDamage;
     }
 
@@ -110,7 +111,7 @@ public class Characters {
         this.isAlive = isAlive;
     }
 
-    public void setCharLocation(Locations charLocation) {
+    public void setLocation(Locations charLocation) {
         this.charLocation = charLocation;
     }
 }

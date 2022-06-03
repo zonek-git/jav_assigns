@@ -111,7 +111,7 @@ public class Locations {
         String itemTitle;
         boolean contained = false;
         for(int i = 0 ; i < containedItems.size() ; i++) {
-            itemTitle = containedItems.get(i).getItemName();
+            itemTitle = containedItems.get(i).getName();
             if(itemTitle.equals(itemName)){
                 contained = true;
             }

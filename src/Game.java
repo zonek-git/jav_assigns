@@ -31,6 +31,7 @@ public class Game {
         player = new Player(game, 0);
         loadAssets(game);
         player.setCurrentLocation(locationHash.get("squareRoom"));
+        player.setStartingPlayerHealth(100);
         registry = new Control(game, player, actionHash);
 
         do {
@@ -62,22 +63,31 @@ public class Game {
         // Characters //
 
         Characters madHatter = new Characters(this, "madHatter", characterDescHash);
-        madHatter.setCurrentHealth(150);
+        madHatter.setMaxHealth(150);
+        madHatter.setHealth(madHatter.getMaxHealth());
         Characters redQueen = new Characters(this, "redQueen", characterDescHash);
-        redQueen.setCurrentHealth(200);
+        redQueen.setMaxHealth(200);
+        redQueen.setHealth(redQueen.getMaxHealth());
         Characters alice = new Characters(this, "alice", characterDescHash);
-        alice.setCurrentHealth(250);
+        alice.setMaxHealth(1000);
+        alice.setHealth(redQueen.getMaxHealth());
         Characters whiteRabbit = new Characters(this, "whiteRabbit", characterDescHash);
-        whiteRabbit.setCurrentHealth(100);
+        whiteRabbit.setMaxHealth(100);
+        whiteRabbit.setHealth(redQueen.getMaxHealth());
         Characters soldier = new Characters(this, "soldier", characterDescHash);
-        soldier.setCurrentHealth(75);
+        soldier.setMaxHealth(75);
+        soldier.setHealth(redQueen.getMaxHealth());
         Characters caterpillar = new Characters(this, "caterpillar", characterDescHash);
-        caterpillar.setCurrentHealth(150);
+        caterpillar.setMaxHealth(150);
+        caterpillar.setHealth(redQueen.getMaxHealth());
 
         characterHash.put("madHatter", madHatter);
+        characterHash.put("hatter", madHatter);
         characterHash.put("redQueen", redQueen);
+        characterHash.put("queen", redQueen);
         characterHash.put("alice", alice);
         characterHash.put("whiteRabbit", whiteRabbit);
+        characterHash.put("rabbit", whiteRabbit);
         characterHash.put("soldier", soldier);
         characterHash.put("caterpillar", caterpillar);
 
@@ -105,67 +115,96 @@ public class Game {
 
         actionHash.put("look", look);
         actionHash.put("inventory", inventory);
+        actionHash.put("invent", inventory);
+        actionHash.put("in", inventory);
+        actionHash.put("i", inventory);
         actionHash.put("help", help);
         actionHash.put("take", take);
         actionHash.put("run", run);
         actionHash.put("drop", drop);
         actionHash.put("persuade", persuade);
         actionHash.put("north", north);
+        actionHash.put("n", north);
         actionHash.put("south", south);
+        actionHash.put("s", south);
         actionHash.put("east", east);
+        actionHash.put("e", east);
         actionHash.put("west", west);
+        actionHash.put("w", west);
         actionHash.put("again", again);
         actionHash.put("attack", attack);
+        actionHash.put("atk", attack);
         actionHash.put("examine", examine);
         actionHash.put("use", use);
         actionHash.put("give", give);
         actionHash.put("open", open);
+        actionHash.put("up", up);
+        actionHash.put("upwards", up);
+        actionHash.put("down", down);
+        actionHash.put("downwards", down);
 
         //Items
+        //Important Attributes:
+        //  isUsable
+        //  isWeapon
+        //  isDroppable
+        //  isSafeDrop
+        //  isTakeable
+        //  isOpenable
+        //  isDestroyable
 
 
         Items baton = new Items(game, "baton", itemDescHash);
         baton.setIsTakeable(true);
-        baton.setIsDroppable(false);
         baton.setIsUsable(true);
         baton.setIsWeapon(true);
 
         Items rose = new Items(game, "rose", itemDescHash);
         rose.setIsTakeable(true);
+        rose.setIsDroppable(true);
         rose.setHealingModifier(25);
         rose.setIsUsable(true);
 
         Items watch = new Items(game, "watch", itemDescHash);
         watch.setIsTakeable(true);
-        watch.setIsDroppable(false);
+        watch.setIsSafeDroppable(true);
 
         Items drinkMeBottle = new Items(game, "drinkMeBottle", itemDescHash);
         drinkMeBottle.setIsTakeable(true);
+        drinkMeBottle.setIsSafeDroppable(true);
+        drinkMeBottle.setIsUsable(true);
 
-        Items eatMeBox = new Items(game, "eatMebox", itemDescHash);
+        Items eatMeBox = new Items(game, "eatMeBox", itemDescHash);
         eatMeBox.setIsTakeable(true);
+        eatMeBox.setIsSafeDroppable(true);
+        eatMeBox.setIsUsable(true);
 
         Items key = new Items(game, "key", itemDescHash);
         key.setIsTakeable(true);
+        key.setIsSafeDroppable(true);
+        key.setIsUsable(true);
 
         Items oyster = new Items(game, "oyster", itemDescHash);
         oyster.setIsTakeable(true);
+        oyster.setIsDroppable(true);
         oyster.setHealingModifier(40);
 
         Items match = new Items(game, "match", itemDescHash);
         match.setIsTakeable(true);
+        match.setIsSafeDroppable(true);
         match.setIsUsable(true);
 
         Items hookah = new Items(game, "hookah", itemDescHash);
         hookah.setIsTakeable(true);
+        hookah.setIsSafeDroppable(true);
         hookah.setHealingModifier(-10);
 
         Items squareRoomCabinet = new Items(game, "squareRoomCabinet", itemDescHash);
-        squareRoomCabinet.setIsTakeable(false);
         squareRoomCabinet.setIsOpenable(true, match);
 
         Items teapot = new Items(game, "teapot", itemDescHash);
         teapot.setIsTakeable(true);
+        teapot.setIsSafeDroppable(true);
 
         Items teacup = new Items(game, "teacup", itemDescHash);
         teacup.setIsTakeable(true);
@@ -196,24 +235,35 @@ public class Game {
         squareRoomLock.setIsTakeable(false);
         squareRoomLock.setIsDestroyable(true);
 
+        Items haystack = new Items(game, "haystack", itemDescHash);
+
         itemHash.put("squareRoomCabinet", squareRoomCabinet);
+        itemHash.put("cabinet", squareRoomCabinet);
         itemHash.put("baton", baton);
         itemHash.put("rose", rose);
         itemHash.put("watch", watch);
         itemHash.put("drinkMeBottle", drinkMeBottle);
+        itemHash.put("bottle", drinkMeBottle);
         itemHash.put("eatMeBox", eatMeBox);
+        itemHash.put("box", eatMeBox);
         itemHash.put("key", key);
         itemHash.put("match", match);
         itemHash.put("hookah", hookah);
         itemHash.put("teapot", teapot);
         itemHash.put("teacup", teacup);
         itemHash.put("unbirthdayCake", unbirthdayCake);
+        itemHash.put("cake", unbirthdayCake);
         itemHash.put("mallet", mallet);
         itemHash.put("jam", jam);
         itemHash.put("gasMask", gasMask);
+        itemHash.put("mask", gasMask);
         itemHash.put("umbrella", umbrella);
         itemHash.put("playingCard", playingCard);
+        itemHash.put("card", playingCard);
         itemHash.put("squareRoomLock", squareRoomLock);
+        itemHash.put("padlock", squareRoomLock);
+        itemHash.put("lock", squareRoomLock);
+        itemHash.put("haystack", haystack);
 
         //Locations + Rooms
 
@@ -224,16 +274,19 @@ public class Game {
         Locations safeHaven = new Locations(game, "safeHaven", locationDescHash);
         Locations theVoid = new Locations(game, "theVoid", locationDescHash);
         Locations squareRoom = new Locations(game, "squareRoom", locationDescHash);
+        squareRoom.addItem(rose);
+        squareRoom.addItem(squareRoomLock);
+        squareRoom.addItem(squareRoomCabinet);
         squareRoom.addItem(baton);
-        squareRoom.setLocationCharacters(soldier);
 
         Locations rabbitsHouseLivingRoom = new Locations(game, "rabbitsHouseLivingRoom", locationDescHash);
         rabbitsHouseLivingRoom.addItem(jam);
-        rabbitsHouseLivingRoom.addItem(match);
 
         Locations rabbitsHouseHallway = new Locations(game, "rabbitsHouseHallway", locationDescHash);
-        Locations rabbitsHouseBackroom = new Locations(game, "rabbitsHouseBackroom", locationDescHash);
+        rabbitsHouseHallway.setLocationCharacters(whiteRabbit);
 
+        Locations rabbitsHouseBackroom = new Locations(game, "rabbitsHouseBackroom", locationDescHash);
+        rabbitsHouseBackroom.addItem(haystack);
 
 
         locationHash.put("forestZone", forestZone);
@@ -243,7 +296,9 @@ public class Game {
         locationHash.put("safeHaven", safeHaven);
         locationHash.put("theVoid", theVoid);
         locationHash.put("squareRoom", squareRoom);
-        locationHash.put("rabbitsHouse", rabbitsHouseLivingRoom);
+        locationHash.put("rabbitsHouseLivingRoom", rabbitsHouseLivingRoom);
+        locationHash.put("rabbitsHouseHallway", rabbitsHouseHallway);
+        locationHash.put("rabbitsHouseBackroom", rabbitsHouseBackroom);
 
         //Add Directions
 
@@ -253,6 +308,7 @@ public class Game {
         rabbitsHouseHallway.addDirection("north", rabbitsHouseLivingRoom);
         rabbitsHouseHallway.addDirection("south", rabbitsHouseBackroom);
         rabbitsHouseBackroom.addDirection("north", rabbitsHouseHallway);
+        safeHaven.addDirection("up", rabbitsHouseBackroom);
         //Add direction of SOUTH in backroom when "key" is in the inventory
         //Add direction of UP to the saferoom when the haypile has been burned away
 
@@ -263,24 +319,8 @@ public class Game {
     public void actionRegistry(String command) {
         String cmdSentence = command.toLowerCase();
         String[] cmdArray = cmdSentence.split(" ");
-        if (cmdArray.length == 1) {
-            String verb = cmdArray[0];
-            registry.outputCommand(verb);
-        } else if (cmdArray.length == 2) {
-            String verb = cmdArray[0];
-            String noun = cmdArray[1];
-            registry.outputCommand(verb, noun);
-        } else if (cmdArray.length == 3) {
-            String verb = cmdArray[0];
-            String noun = cmdArray[1];
-            String add1 = cmdArray[2];
-            registry.outputCommand(verb, noun, add1);
-        } else if (cmdArray.length == 4) {
-            String verb = cmdArray[0];
-            String noun = cmdArray[1];
-            String add1 = cmdArray[2];
-            String add2 = cmdArray[3];
-            registry.outputCommand(verb, noun, add1, add2);
-        }
+        ArrayList<String> cmdArrayList = new ArrayList<>(Arrays.asList(cmdArray));
+
+        registry.cmdParser(cmdArrayList);
     }
 }

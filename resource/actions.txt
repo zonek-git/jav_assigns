@@ -15,3 +15,5 @@ use:The 'use' command will use an item as indicated. Ex: "use rose".
 help:The Help Menu
 give:The 'give' command will give an item indicated to another character.
 open:The ability to open certain objects. Use the "look" command to see openable objects.
+up:The ability to go up something, like a ladder or a rope.
+down:The ability to go down something, like a ladder or a rope.

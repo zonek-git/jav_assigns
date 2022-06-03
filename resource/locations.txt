@@ -1,6 +1,8 @@
 squareRoom:The way that this room seems to shrink as you go further is unsettling. The door at the far end of the room is locked, but I bet I could barely fit through. There are a couple of cabinets sitting on the side wall. One could be opened, you suppose. Maybe there's something inside? There are a few pots and pans lining the walls. Nothing of note. How can I get through this door? There's a rather weak-looking lock on the door...
 forestZone:The sun peeks through the treeline, showing the mossy undergrowth of the forest. At least everything here seems to be settled and calm. You peer through the trunks of the large leafy trees, and you think you spot something. A small chest. Sitting on the chest is a soldier who's body is a large playing card. You step closer and a twig snaps underfoot. The soldier awakens suddenly with a snort, and stares right at you.
-rabbitsHouse:placeholder rabbit's house
+rabbitsHouseLivingRoom:placeholder rabbit's house
+rabbitsHouseHallway:placeholder rabbits hallway
+rabbitsHouseBackroom:placeholder rabbits backroom
 mushForest:placeholder mushroom forest
 courtRoom:placeholder courtroom
 unbirthdayParty:placeholder unbirthday party

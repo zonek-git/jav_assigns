@@ -7,6 +7,8 @@ public class Actions {
     Player player;
     private String actionDescription;
     private String actionName;
+    private ArrayList<String> actionNames;
+    private boolean encounter = false;
 
     //TODO instead of doing it all this way, I think it would be a good idea to take a parser for TXT file, remember?
 
@@ -20,9 +22,9 @@ public class Actions {
     /**
      * Primary constructor for actions.
      *
-     * @param game   dependency injection for the main Game class object newGame
-     * @param name   pushing in the name of the particular action
-     * @param desc   pushing in the description of the particular action using itemHash in Game.loadAssets()
+     * @param game dependency injection for the main Game class object newGame
+     * @param name pushing in the name of the particular action
+     * @param desc pushing in the description of the particular action using itemHash in Game.loadAssets()
      */
     public Actions(Player player, Game game, String name, HashMap<String, String> desc) {
         this.game = game;
@@ -31,9 +33,36 @@ public class Actions {
         this.actionDescription = desc.get(name);
     }
 
+    public void delegator(Actions action) {
+
+    }
+
+
+    //Getters
+
+    public String getActionName() {
+        return actionName;
+    }
+
+
+    //Setters
+
+
+    //Combat Calculation
+
+
     /**
-     * Used to take the command that is passed in through Control and sends it to do the proper Action sequence
+     * Chance calculation to meet a random soldier.
      */
+    public double calcEncounter() {
+        return Math.random();
+    }
+
+    public void spawnEncounter() {
+        Characters spawnSoldier = game.characterHash.get("soldier");
+        spawnSoldier.setHealth(spawnSoldier.getMaxHealth());
+    }
+
 
     //Display Functions - Simple functions to display something, nothing else.
 
@@ -90,15 +119,15 @@ public class Actions {
             currentLoc.getLocationItemNames();
             System.out.println();
         }
-        if(currentLoc.getLocationCharacters().size() == 0) {
+        if (currentLoc.getLocationCharacters().size() == 0) {
             System.out.println("There doesn't seem to be anyone else in here with you...");
-        } else if(currentLoc.getLocationCharacters().size() > 0) {
+        } else if (currentLoc.getLocationCharacters().size() > 0) {
             for (int i = 0; i < currentLoc.getLocationCharacters().size(); i++) {
                 char1 = currentLoc.getLocationCharacters().get(i);
             }
             if (char1 != null) {
                 System.out.println("There also appears to be someone in here with you! It looks like... " + char1.getProperCharacterName());
-                System.out.println(char1.getCharacterDescription());
+                System.out.println(char1.getDescription());
             }
         }
     }
@@ -125,7 +154,7 @@ public class Actions {
             System.out.println();
         } else {
             for (int i = 0; i < locationItems.size(); i++) {
-                if (locationItems.get(i).getItemName().equals(itemName)) {
+                if (locationItems.get(i).getName().equals(itemName)) {
                     properName = locationItems.get(i).getProperItemName();
                     if (locationItems.get(i).getIsTakeable() && (player.getNumberOfItems() < player.getMaxInventory())) {
                         player.addInventoryItem(locationItems.get(i));
@@ -140,7 +169,7 @@ public class Actions {
                 }
             }
             if (properName == null) {
-                System.out.println("The " + itemName + " item indicated doesn't exist in the area you're currently in. Try 'look' to see items available.");
+                System.out.println("The " + properName + " item indicated doesn't exist in the area you're currently in. Try 'look' to see items available.");
                 System.out.println();
             }
         }
@@ -163,12 +192,28 @@ public class Actions {
             System.out.println();
         } else {
             for (int i = 0; i < playerItems.size(); i++) {
-                if (playerItems.get(i).getItemName().equals(itemName)) {
-                    properName = playerItems.get(i).getProperItemName();
-                    player.getCurrentLocationObject().addItem(playerItems.get(i));
-                    player.removeInventoryItem(playerItems.get(i));
-                    System.out.println(properName + " has been dropped in the " + player.getCurrentLocationObject().getLocationProperName());
-                    System.out.println();
+                if (playerItems.get(i).getName().equals(itemName)) {
+                    if (playerItems.get(i).getIsDroppable()) {
+                        properName = playerItems.get(i).getProperItemName();
+                        player.getCurrentLocationObject().addItem(playerItems.get(i));
+                        player.removeInventoryItem(playerItems.get(i));
+                        System.out.println(properName + " has been dropped in the " + player.getCurrentLocationObject().getLocationProperName());
+                        System.out.println();
+                        break;
+                    } else {
+                        System.out.println("You can't drop this particular item.");
+                    }
+                    if (playerItems.get(i).getIsSafeDroppable() && player.getCurrentLocationObject().getLocationName().equals("safeRoom")) {
+                        properName = playerItems.get(i).getProperItemName();
+                        player.getCurrentLocationObject().addItem(playerItems.get(i));
+                        player.removeInventoryItem(playerItems.get(i));
+                        System.out.println(properName + " has been dropped in the " + player.getCurrentLocationObject().getLocationProperName());
+                        System.out.println();
+                        break;
+                    } else {
+                        System.out.println("This item is droppable.. but you should probably put it in the safe room to aid in Alice's recovery.");
+                    }
+
                 }
             }
             if (properName == null) {
@@ -200,7 +245,7 @@ public class Actions {
             System.out.println("There isn't anything in this area, and neither is there anything in your inventory.");
         } else {
             for (int i = 0; i < totalItems.size(); i++) {
-                if (totalItems.get(i).getItemName().equals(itemName)) {
+                if (totalItems.get(i).getName().equals(itemName)) {
                     properName = totalItems.get(i).getProperItemName();
                     System.out.println(properName + ": " + game.itemHash.get(itemName));
                     System.out.println();
@@ -222,15 +267,19 @@ public class Actions {
             System.out.println("There isn't anything in your inventory. Pick something up first.");
         } else {
             for (int i = 0; i < playerItems.size(); i++) {
-                if (playerItems.get(i).getItemName().equals(itemName)) {
-                    String nameObject = playerItems.get(i).getItemName();
+                if (playerItems.get(i).getName().equals(itemName)) {
+                    String nameObject = playerItems.get(i).getName();
                     Items itemObject = playerItems.get(i);
                     if (nameObject.equals("rose") || nameObject.equals("jam") || nameObject.equals("oyster")) {
                         player.setAddCurrentHealth((itemObject.getHealingModifier()));
                     } else if (nameObject.equals("gasMask")) {
                         player.setWearingGasMask(true);
-                    } else if (nameObject.equals("key")) {
-                        //todo
+                    } else if (nameObject.equals("key") && player.getCurrentLocationObject().getLocationName().equals("rabbitsHouseBackroom")) {
+                        System.out.println("Hmm. You use the key on the back door. It makes an audible click as the door is now open. You can now go south.");
+
+                        if (!player.getCurrentLocationObject().getLocationName().equals("rabbitsHouseBackroom")) {
+                            System.out.println("You can't use the key here... Try somewhere else.");
+                        }
                     } else if (nameObject.equals("umbrella")) {
                         //todo
                     }
@@ -241,6 +290,12 @@ public class Actions {
         }
     }
 
+    /**
+     * Allows the player to open openable objects contained in the location.
+     *
+     * @param itemName passes in the String name value of the object in question, derived from the grammar parser
+     * @throws NullPointerException
+     */
     public void actionableOpen(String itemName) throws NullPointerException {
         ArrayList<Items> locationItems = player.getCurrentLocationObject().getLocationItems();
         Items itemObject = null;
@@ -248,94 +303,171 @@ public class Actions {
         if (locationItems.isEmpty()) {
             System.out.println("There isn't anything in here...");
         } else {
-            for (int i = 0 ; i < locationItems.size(); i++) {
-                if (locationItems.get(i).getItemName().equals(itemName)) {
+            for (int i = 0; i < locationItems.size(); i++) {
+                if (locationItems.get(i).getName().equals(itemName)) {
                     itemObject = locationItems.get(i);
-                    if(itemObject.getIsOpenable()) {
+                    if (itemObject.getIsOpenable() && itemObject.getContainedItem() != null) {
+                        System.out.println("There appears to be a " + itemObject.getContainedItem().getProperItemName() + " in this container. You put it in your inventory.");
                         Items containedItem = itemObject.getContainedItem();
                         player.addInventoryItem(containedItem);
+                        itemObject.removeContainedItem();
+                        break;
                     }
-                } else {
-                    System.out.println("This item doesn't exist in this location");
+                    if (itemObject.getContainedItem() == null) {
+                        System.out.println("There isn't anything in here.");
+                        break;
+                    }
                 }
             }
         }
     }
 
+    /**
+     * Allows the player to move from location to location.
+     *
+     * @param movementDirection the direction of which is parsed via the Control class.. "north" or "south", etc.
+     * @throws NullPointerException
+     */
     public void actionableMovement(String movementDirection) throws NullPointerException {
-        if(player.getCurrentLocationObject().getDirection(movementDirection) != null) {
+        if (player.getCurrentLocationObject().getDirection(movementDirection) != null) {
             player.setCurrentLocation(player.getCurrentLocationObject().getDirection(movementDirection));
+            if (calcEncounter() > 0.6) {
+                spawnEncounter();
+            }
         } else {
             System.out.println("You can't go that way.");
         }
 
-        if(player.getCurrentLocationObject().getLocationName().equals("squareRoom") && movementDirection.equals("north")) {
+        if (player.getCurrentLocationObject().getLocationName().equals("squareRoom") && movementDirection.equals("north")) {
             System.out.println("Can't go back up the way you came... You'll have to continue on forward.");
         }
     }
 
-    public void actionableAttack(String character, String addition, String weapon) throws NullPointerException {
+    /**
+     * Allows the player to attack a certain target.
+     *
+     * @param target1
+     * @param target2
+     * @throws NullPointerException
+     */
+    public void actionableAttack(String target1, String target2) throws NullPointerException {
         ArrayList<Characters> locationCharacters = player.getCurrentLocationObject().getLocationCharacters();
         ArrayList<Items> playerItems = player.getCurrentInventory();
-        Characters targetObject = null;
-        String targetName;
+        ArrayList<Items> locationItems = player.getCurrentLocationObject().getLocationItems();
+        Characters targetChar = null;
+        Items targetObject = null;
+        String targetName = null;
         String targetProperName = null;
         Items weaponObject = null;
-        String weaponName;
+        String weaponName = null;
         String weaponProperName = null;
         boolean pass = true;
 
-        if(locationCharacters.isEmpty()) {
-            System.out.println("There are no enemies in this location!");
-        } else {
-            do {
-                for(int i = 0 ; i < locationCharacters.size() ; i++ ) {
-                    if(locationCharacters.get(i).getCharacterName().equals(character)) {
-                        targetObject = locationCharacters.get(i);
-                        targetName = locationCharacters.get(i).getCharacterName();
-                        targetProperName = locationCharacters.get(i).getProperCharacterName();
-                        break;
-                    } else {
-                        System.out.println("That's not a valid target.");
-                        pass = false;
-                    }
+        do {
+            for (int i = 0; i < locationCharacters.size(); i++) {
+                if (locationCharacters.get(i).getName().equals(target1)) {
+                    targetChar = locationCharacters.get(i);
+                    targetName = locationCharacters.get(i).getName();
+                    targetProperName = locationCharacters.get(i).getProperCharacterName();
                 }
-                if(addition.equals("with")) {
-                    for(int i = 0 ; i < playerItems.size() ; i++) {
-                        if(playerItems.get(i).getItemName().equals(weapon)) {
-                            weaponName = playerItems.get(i).getItemName();
-                            weaponProperName = playerItems.get(i).getProperItemName();
-                            weaponObject = playerItems.get(i);
-                            if(!weaponObject.getIsWeapon()) {
-                                pass = false;
-                            }
-                            break;
-                        } else {
-                            System.out.println("You don't have that weapon in your inventory.");
-                            pass = false;
-                        }
+                if (locationCharacters.get(i).getName().equals(target2)) {
+                    targetChar = locationCharacters.get(i);
+                    targetName = locationCharacters.get(i).getName();
+                    targetProperName = locationCharacters.get(i).getProperCharacterName();
+                }
+            }
+
+            for (int i = 0; i < locationItems.size(); i++) {
+                if (locationItems.get(i).getName().equals(target1) && locationItems.get(i).getIsDestroyable()) {
+                    targetObject = locationItems.get(i);
+                    targetName = locationItems.get(i).getName();
+                    targetProperName = locationItems.get(i).getProperItemName();
+                }
+                if (locationItems.get(i).getName().equals(target2) && locationItems.get(i).getIsDestroyable()) {
+                    targetObject = locationItems.get(i);
+                    targetName = locationItems.get(i).getName();
+                    targetProperName = locationItems.get(i).getProperItemName();
+                }
+            }
+
+            if (targetName == null) {
+                System.out.println("Invalid target, or not nearby");
+                break;
+            }
+
+            for (int i = 0; i < playerItems.size(); i++) {
+                if (playerItems.get(i).getName().equals(target1) && playerItems.get(i).getIsWeapon()) {
+                    weaponName = playerItems.get(i).getName();
+                    weaponProperName = playerItems.get(i).getProperItemName();
+                    weaponObject = playerItems.get(i);
+                }
+            }
+
+            for (int i = 0; i < playerItems.size(); i++) {
+                if (playerItems.get(i).getName().equals(target2) && playerItems.get(i).getIsWeapon()) {
+                    weaponName = playerItems.get(i).getName();
+                    weaponProperName = playerItems.get(i).getProperItemName();
+                    weaponObject = playerItems.get(i);
+                }
+            }
+
+            if (weaponObject == null) {
+                System.out.println("You don't have a weapon!");
+                break;
+            }
+
+            if (weaponName == null) {
+                System.out.println("You don't have that weapon in your inventory.");
+                break;
+            }
+
+            if (targetChar != null) {
+                System.out.println("You attack " + targetProperName + " with your " + weaponProperName);
+                System.out.println(targetChar.getHealth());
+                int health = targetChar.getHealth();
+                int attackpl = player.getBaseDamage();
+                int attackwp = weaponObject.getWeaponDamage();
+                int attackttl = attackpl + attackwp;
+
+                health = health - attackttl;
+                targetChar.setHealth(health);
+                System.out.println(targetChar.getHealth());
+            }
+
+
+
+            if (targetObject != null && targetProperName != null && weaponProperName != null) {
+                System.out.println("You attack the " + targetProperName + " with your " + weaponProperName);
+                if (targetObject.getIsDestroyable()) {
+                    player.getCurrentLocationObject().removeItem(targetObject);
+                    if (player.getCurrentLocationName().equals("squareRoom") && targetName.equals("squareRoomLock") && weaponObject.getIsWeapon()) {
+                        System.out.println("The lock drops to the ground, destroyed. Took a couple hits, but it finally gave way.");
+                        game.locationHash.get("squareRoom").addDirection("south", game.locationHash.get("rabbitsHouseLivingRoom"));
+                        break;
+                    }
+                    if (player.getCurrentLocationName().equals("rabbitsHouseBackroom") && targetName.equals("haystack") && weaponName.equals("match")) {
+                        Locations loc = game.locationHash.get("rabbitsHouseBackroom");
+                        loc.addDirection("down", game.locationHash.get("safeHaven"));
+                        player.setCurrentLocation(game.locationHash.get("safeHaven"));
+                        System.out.println
+                                ("""
+                                        As the hay burns, you feel the ground giving out below you. Before you fall, you're able to grab onto\s
+                                        a nearby rope tied to the upper rafters. As you descend quickly, burning your hands on the tough texture of the rope,\s
+                                        you observe what appears to be a small shrine in a tornado shelter. Someone had inhabited this place at one time. You\s
+                                        could feel the desperation in the atmosphere. 'Had Alice lived here?' you thought. On the pedestal of the shrine, are five\s
+                                        slots where items could be placed. Perhaps you'd find answers to this later... But this would be a great spot to keep\s
+                                        items if you become encumbered.\s
+                                        """);
+                        break;
                     }
                 } else {
-                    System.out.println("Try: 'attack *character* with *weapon*");
-                    pass = false;
+                    break;
                 }
+            } else {
+                break;
+            }
 
-                if (targetObject != null && weaponObject != null && targetProperName != null && weaponProperName != null) {
-                    System.out.println("You attack " + targetProperName + " with your " + weaponProperName);
-                    System.out.println(targetObject.getCharacterCurrentHealth());
-                    int health = targetObject.getCharacterCurrentHealth();
-                    int attackpl = player.getBaseDamage();
-                    int attackwp = weaponObject.getWeaponDamage();
-                    int attackttl = attackpl + attackwp;
-
-                    health = health - attackttl;
-                    targetObject.setCurrentHealth(health);
-                    System.out.println(targetObject.getCharacterCurrentHealth());
-                    pass = false;
-                }
-            } while (pass);
-
-        }
+        } while (pass);
 
     }
 

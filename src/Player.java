@@ -26,6 +26,8 @@ public class Player {
 
     //Special modifiers
     private boolean wearingGasMask = false;
+    private boolean rabbitHouseDoorLock = false;
+    private boolean rabbitHouseHayBurnt = false;
 
     public Player() {
 
@@ -48,7 +50,7 @@ public class Player {
             System.out.println("You currently have nothing in your inventory");
         } else {
             for (int i = 0; i < currentInventory.size(); i++) {
-                System.out.println("#" + i + " " + currentInventory.get(i).getItemName());
+                System.out.println("#" + i + " " + currentInventory.get(i).getName());
             }
         }
         System.out.println();

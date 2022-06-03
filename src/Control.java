@@ -1,13 +1,24 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Control {
     Game game;
     Player player;
+    Actions action;
+    Items item;
+    Items item2;
+    Characters character;
 
     HashMap<String, String> actionsDesc;
     HashMap<String, Actions> actions;
+
+    ArrayList<String> cmdArray;
+    ArrayList<String> itemArrayS = new ArrayList<>();
+    ArrayList<String> charactersArrayS = new ArrayList<>();
+    ArrayList<String> actionArrayS = new ArrayList<>();
+    ArrayList<String> cmdOutput = new ArrayList<>();
 
     public Control() {
 
@@ -20,90 +31,130 @@ public class Control {
         this.actions = actions;
     }
 
-    public void outputCommand(String w1) {
-        String verb = w1.toLowerCase();
-        switch (verb) {
-            case "help":
-            case "h":
-            case "commands":
-                actions.get("help").displayHelp();
-                break;
-            case "look":
-                actions.get("look").displayLook();
-                break;
-            case "inventory":
-            case "i":
-            case "in":
-            case "invent":
-                actions.get("inventory").displayInventory();
-                break;
-            case "take":
-            case "grab":
-                System.out.println("Please indicate what item you want to grab.");
-                break;
-            case "south":
-            case "go south":
-            case "s":
-            case "go s":
-            case "head south":
-            case "head s":
-                actions.get("south").actionableMovement("south");
-            case "north":
-            case "go north":
-            case "n":
-            case "go n":
-            case "head north":
-            case "head n":
-                actions.get("north").actionableMovement("north");
-            case "up":
-                actions.get("up").actionableMovement("up");
-            default:
-                System.out.println("You don't think you can do that. You should try again or ask (help).");
+
+    public void cmdParser(ArrayList<String> cmd) {
+        cmdArray = cmd;
+
+        for (int i = 0; i < cmd.size(); i++) {
+            if (game.actionHash.containsKey(cmd.get(i))) {
+                action = game.actionHash.get(cmd.get(i));
+            }
+        }
+
+        for (int i = 0; i < cmd.size(); i++) {
+            if (game.itemHash.containsKey(cmd.get(i))) {
+                item = game.itemHash.get(cmd.get(i));
+                cmd.remove(item.getName());
+            }
+        }
+
+        for (int i = 0; i < cmd.size(); i++) {
+            if (game.itemHash.containsKey(cmd.get(i))) {
+                item2 = game.itemHash.get(cmd.get(i));
+            }
+        }
+            for (int i = 0; i < cmd.size(); i++) {
+                if (game.characterHash.containsKey(cmd.get(i))) {
+                    character = game.characterHash.get(cmd.get(i));
+                }
+            }
+
+        if (action != null) {
+            outputCommand(action);
+            action = null;
+            item = null;
+            character = null;
+        } else {
+            System.out.println("Please specify an action to take.");
         }
     }
 
-    public void outputCommand(String w1, String w2) {
-        String verb = w1.toLowerCase();
-        String noun = w2.toLowerCase();
-        switch (verb) {
+
+    public void outputCommand(Actions action) {
+        switch (action.getActionName()) {
             case "take":
-            case "grab":
-                actions.get("take").actionableTake(noun);
+                if (item == null) {
+                    System.out.println("You need to specify an item to take in your current location");
+                } else {
+                    action.actionableTake(item.getName());
+                }
+                //case "run":
+                //action.actionableRun(); //todo
                 break;
             case "drop":
-                actions.get("drop").actionableDrop(noun);
+                if (item == null) {
+                    System.out.println("You need to specify what item to drop from your inventory, if possible. Some items are only droppable into the safe room.");
+                } else {
+                    action.actionableDrop(item.getName());
+                }
+                break;
+            case "persuade":
+                if (character == null) {
+                    System.out.println("You need to specify a character to persuade... sometimes it won't work, though.");
+                } //else {
+                //action.actionablePersuade(character); //todo
+                //}
+                break;
+            case "north":
+            case "south":
+            case "east":
+            case "west":
+            case "up":
+            case "down":
+                action.actionableMovement(action.getActionName());
+                break;
+            case "attack":
+                if (item != null && item2 != null) {
+                    action.actionableAttack(item.getName(), item2.getName());
+                }
+                if (item != null && character != null) {
+                    action.actionableAttack(item.getName(), character.getName());
+                }
+                break;
+            case "inventory":
+                action.displayInventory();
                 break;
             case "examine":
-                actions.get("examine").actionableExamine(noun);
+                if (item == null) {
+                    System.out.println("Please specify the item to examine.");
+                } else {
+                    action.actionableExamine(item.getName());
+                }
+                break;
+            case "look":
+                action.displayLook();
                 break;
             case "use":
-                actions.get("use").actionableUse(noun);
+                if (item == null) {
+                    System.out.println("Please specify an item to use.");
+                } else {
+                    action.actionableUse(item.getName());
+                }
+                break;
+            case "give":
+                if (item == null && character == null) {
+                    System.out.println("Please specify both an item and a character to give the item to.");
+                }
+                if (item == null) {
+                    System.out.println("Please specify an item to give to " + character.getProperCharacterName());
+                }
+                if (character == null) {
+                    System.out.println("Please specify a character to give the " + item.getProperItemName());
+                }
+                //if(character != null && item != null) {
+                //    action.actionableGive();
+                //} //todo
                 break;
             case "open":
-                actions.get("open").actionableOpen(noun);
+                if (item == null) {
+                    System.out.println("Please specify an object to open, that is openable.");
+                } else {
+                    action.actionableOpen(item.getName());
+                }
+                break;
         }
     }
 
-    public void outputCommand(String verb, String noun, String add1) {
-
-    }
-
-    public void outputCommand(String w1, String w2, String w3, String w4) {
-        String add1 = w1.toLowerCase();
-        String add2 = w2.toLowerCase();
-        String add3 = w3.toLowerCase();
-        String add4 = w4.toLowerCase();
-
-        switch(add1) {
-            case "attack":
-            case "atk":
-                actions.get("attack").actionableAttack(add2, add3, add4);
-        }
-    }
-
-    /**
-     * System that allows user to be prompted for an ENTER key to continue the story prompt
-     */
     public void pressEnterToContinue() {
         System.out.println("Press the <ENTER> key to continue...");
         try {

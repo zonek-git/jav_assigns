@@ -16,3 +16,4 @@ gasMask:A new gas mask. Could be useful.
 umbrella:An umbrella. Could be useful.
 playingCard:A Queen of Hearts playing card. Could come in handy. Looks like it's from a fancy deck.
 squareRoomCabinet:A small cabinet that rests on the floor, slightly unhinged from its resting place. You can see something glimmering inside.
+haystack:Nothing special. Just a haystack. Seems quite flammable...

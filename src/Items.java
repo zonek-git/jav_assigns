@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Items {
@@ -7,13 +8,16 @@ public class Items {
     private String itemDescription;
     private String examineDescription;
     private Items containedItem;
+    private ArrayList<String> itemProperNames = new ArrayList<>();
 
     private int healingModifier = 0;
     private int weaponDamage = 0;
+    private int health = 0;
 
     private boolean isUsable = false;
     private boolean isWeapon = false;
     private boolean isDroppable = false;
+    private boolean isSafeDrop = false;
     private boolean isTakeable = false;
     private boolean isOpenable = false;
     private boolean isDestroyable = false;
@@ -33,7 +37,7 @@ public class Items {
 
     // Getters //
 
-    public String getItemName() {
+    public String getName() {
         return name;
     }
 
@@ -64,8 +68,11 @@ public class Items {
     public String getProperItemName() {
         String properName = null;
         switch (name) {
+            case "squareRoomLock":
+                properName = "Padlock";
+                break;
             case "squareRoomCabinet":
-                properName = "Small cabinet";
+                properName = "Cabinet";
                 break;
             case "baton":
                 properName = "Baton";
@@ -77,10 +84,10 @@ public class Items {
                 properName = "Watch";
                 break;
             case "drinkMeBottle":
-                properName = "Drink Me Bottle";
+                properName = "Bottle";
                 break;
             case "eatMeBox":
-                properName = "Eat Me Box";
+                properName = "Box";
                 break;
             case "key":
                 properName = "Key";
@@ -101,22 +108,25 @@ public class Items {
                 properName = "Teacup";
                 break;
             case "unbirthdayCake":
-                properName = "Un-Birthday Cake";
+                properName = "Cake";
                 break;
             case "mallet":
                 properName = "Mallet";
                 break;
             case "jam":
-                properName = "Jam Jar";
+                properName = "Jam";
                 break;
             case "gasMask":
-                properName = "Gas Mask";
+                properName = "Mask";
                 break;
             case "umbrella":
                 properName = "Umbrella";
                 break;
             case "playingCard":
-                properName = "Playing Card";
+                properName = "Card";
+                break;
+            case "haystack":
+                properName = "Haystack";
                 break;
         }
         return properName;
@@ -142,9 +152,21 @@ public class Items {
         return weaponDamage;
     }
 
+    public boolean getIsSafeDroppable() {
+        return isSafeDrop;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
 
     //SETTERS//
 
+
+    public void removeContainedItem() {
+        this.containedItem = null;
+    }
 
     public void setIsWeapon(boolean set) {
         this.isWeapon = set;
@@ -152,6 +174,10 @@ public class Items {
 
     public void setIsDroppable(boolean set) {
         this.isDroppable = set;
+    }
+
+    public void setIsSafeDroppable(boolean set) {
+        this.isSafeDrop = set;
     }
 
     public void setIsTakeable(boolean set) {
@@ -164,6 +190,7 @@ public class Items {
 
     public void setIsDestroyable(boolean set) {
         this.isDestroyable = set;
+        this.health = 1;
     }
 
     public void setIsOpenable(boolean set, Items item) {
