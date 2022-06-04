@@ -5,12 +5,15 @@ public class Locations {
 
     private String name;
     protected String locationDescription;
+    private String staleDescription;
     private String entryDescription;
     private String exitDescription;
     private ArrayList<Characters> containedCharacters = new ArrayList<>();
     private ArrayList<Items> containedItems = new ArrayList<>();
     private HashMap<String, Locations> directions = new HashMap<>();
     protected Game game;
+
+    private int locationState = 0;
 
     Locations() {
 
@@ -86,6 +89,14 @@ public class Locations {
         this.name = locationName;
     }
 
+    public void setLocationState(int set) {
+        this.locationState = set;
+    }
+
+    public void setStaleStateDesc(HashMap<String,String> stale) {
+        this.staleDescription = stale.get(name);
+    }
+
     // Getters //
 
 
@@ -125,6 +136,14 @@ public class Locations {
 
     public String getLocationName() {
         return name;
+    }
+
+    public int getLocationState() {
+        return locationState;
+    }
+
+    public String getStaleDescription() {
+        return staleDescription;
     }
 
 }

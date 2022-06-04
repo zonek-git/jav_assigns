@@ -9,6 +9,7 @@ public class Control {
     Actions action;
     Items item;
     Items item2;
+    int item1Pos;
     Characters character;
 
     HashMap<String, String> actionsDesc;
@@ -35,34 +36,53 @@ public class Control {
     public void cmdParser(ArrayList<String> cmd) {
         cmdArray = cmd;
 
-        for (int i = 0; i < cmd.size(); i++) {
-            if (game.actionHash.containsKey(cmd.get(i))) {
-                action = game.actionHash.get(cmd.get(i));
+        for (int i = 0; i < cmdArray.size(); i++) {
+            if (game.actionHash.containsKey(cmdArray.get(i))) {
+                action = game.actionHash.get(cmdArray.get(i));
+
+                //todo TESTING
+                //System.out.println("registry: " + action.getActionName());
             }
         }
 
-        for (int i = 0; i < cmd.size(); i++) {
-            if (game.itemHash.containsKey(cmd.get(i))) {
-                item = game.itemHash.get(cmd.get(i));
-                cmd.remove(item.getName());
+        for (int i = 0; i < cmdArray.size(); i++) {
+            if (game.itemHash.containsKey(cmdArray.get(i))) {
+                item = game.itemHash.get(cmdArray.get(i));
+                item1Pos = i;
+
+                //todo TESTING
+                //System.out.println("registry item1: " + item.getName());
+            }
+        }
+        if (item != null) {
+            cmdArray.remove(cmdArray.get(item1Pos));
+        }
+
+        System.out.println(cmdArray);
+
+        for (int i = 0; i < cmdArray.size(); i++) {
+            if (game.itemHash.containsKey(cmdArray.get(i))) {
+                item2 = game.itemHash.get(cmdArray.get(i));
+
+                //todo TESTING
+                //System.out.println("registry item2: " + item2.getName());
             }
         }
 
-        for (int i = 0; i < cmd.size(); i++) {
-            if (game.itemHash.containsKey(cmd.get(i))) {
-                item2 = game.itemHash.get(cmd.get(i));
+        for (int i = 0; i < cmdArray.size(); i++) {
+            if (game.characterHash.containsKey(cmdArray.get(i))) {
+                character = game.characterHash.get(cmdArray.get(i));
+
+                //todo TESTING
+                //System.out.println("registry: " + character.getName());
             }
         }
-            for (int i = 0; i < cmd.size(); i++) {
-                if (game.characterHash.containsKey(cmd.get(i))) {
-                    character = game.characterHash.get(cmd.get(i));
-                }
-            }
 
         if (action != null) {
             outputCommand(action);
             action = null;
             item = null;
+            item2 = null;
             character = null;
         } else {
             System.out.println("Please specify an action to take.");
@@ -106,9 +126,17 @@ public class Control {
             case "attack":
                 if (item != null && item2 != null) {
                     action.actionableAttack(item.getName(), item2.getName());
+
+                    //todo TESTING
+                    //System.out.println(true + " 'atk' item1= " + item.getName());
+                    //System.out.println(true + " 'atk' item2= " + item2.getName());
                 }
                 if (item != null && character != null) {
                     action.actionableAttack(item.getName(), character.getName());
+
+                    //todo TESTING
+                    //System.out.println(true + " 'atk' item1= " + item.getName());
+                    //System.out.println(true + " 'atk' char= " + character.getName());
                 }
                 break;
             case "inventory":

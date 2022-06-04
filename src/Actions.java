@@ -106,7 +106,13 @@ public class Actions {
      */
     public void displayLook() {
         Locations currentLoc = player.getCurrentLocationObject();
-        System.out.println(currentLoc.getLocationDescription());
+
+        if (currentLoc.getLocationState() == 0) {
+            System.out.println(currentLoc.getLocationDescription());
+        } else if (currentLoc.getLocationState() == 1) {
+            System.out.println(currentLoc.getStaleDescription());
+        }
+        //System.out.println(currentLoc.getLocationDescription());
         Characters char1 = null;
         if (currentLoc.getLocationItems().size() == 1) {
             System.out.println();
@@ -247,7 +253,7 @@ public class Actions {
             for (int i = 0; i < totalItems.size(); i++) {
                 if (totalItems.get(i).getName().equals(itemName)) {
                     properName = totalItems.get(i).getProperItemName();
-                    System.out.println(properName + ": " + game.itemHash.get(itemName));
+                    System.out.println(properName + ": " + game.itemHash.get(itemName).getItemDescription());
                     System.out.println();
                 }
             }
@@ -272,14 +278,20 @@ public class Actions {
                     Items itemObject = playerItems.get(i);
                     if (nameObject.equals("rose") || nameObject.equals("jam") || nameObject.equals("oyster")) {
                         player.setAddCurrentHealth((itemObject.getHealingModifier()));
+
+                    //GasMask
                     } else if (nameObject.equals("gasMask")) {
                         player.setWearingGasMask(true);
+
+                    //Key
                     } else if (nameObject.equals("key") && player.getCurrentLocationObject().getLocationName().equals("rabbitsHouseBackroom")) {
                         System.out.println("Hmm. You use the key on the back door. It makes an audible click as the door is now open. You can now go south.");
 
                         if (!player.getCurrentLocationObject().getLocationName().equals("rabbitsHouseBackroom")) {
                             System.out.println("You can't use the key here... Try somewhere else.");
                         }
+
+                    //Umbrella
                     } else if (nameObject.equals("umbrella")) {
                         //todo
                     }
@@ -382,11 +394,17 @@ public class Actions {
                     targetObject = locationItems.get(i);
                     targetName = locationItems.get(i).getName();
                     targetProperName = locationItems.get(i).getProperItemName();
+
+                    //todo TESTING
+                    //System.out.println(true + " target " + targetName);
                 }
                 if (locationItems.get(i).getName().equals(target2) && locationItems.get(i).getIsDestroyable()) {
                     targetObject = locationItems.get(i);
                     targetName = locationItems.get(i).getName();
                     targetProperName = locationItems.get(i).getProperItemName();
+
+                    //todo TESTING
+                    //System.out.println(true + " target " + targetName);
                 }
             }
 
@@ -400,6 +418,9 @@ public class Actions {
                     weaponName = playerItems.get(i).getName();
                     weaponProperName = playerItems.get(i).getProperItemName();
                     weaponObject = playerItems.get(i);
+
+                    //todo TESTING
+                    //System.out.println(true + " weapon " + weaponName);
                 }
             }
 
@@ -408,6 +429,9 @@ public class Actions {
                     weaponName = playerItems.get(i).getName();
                     weaponProperName = playerItems.get(i).getProperItemName();
                     weaponObject = playerItems.get(i);
+
+                    //todo TESTING
+                    //System.out.println(true + " weapon " + weaponName);
                 }
             }
 
@@ -424,10 +448,31 @@ public class Actions {
             if (targetChar != null) {
                 System.out.println("You attack " + targetProperName + " with your " + weaponProperName);
                 System.out.println(targetChar.getHealth());
-                int health = targetChar.getHealth();
-                int attackpl = player.getBaseDamage();
+                double health = targetChar.getHealth();
+                double attackpl = 0;
                 int attackwp = weaponObject.getWeaponDamage();
-                int attackttl = attackpl + attackwp;
+
+                //Critical hit chance
+                if (player.getCurrentHealth() == 100) {
+                    attackpl = player.getBaseDamage();
+                } else if (player.getCurrentHealth() < 80) {
+                    double chance = Math.random();
+                    if (chance > 0.80) {
+                        attackpl = player.getBaseDamage() * 1.2;
+                    }
+                } else if (player.getCurrentHealth() < 50) {
+                    double chance = Math.random();
+                    if (chance > 0.50) {
+                        attackpl = player.getBaseDamage() * 1.5;
+                    }
+                } else if (player.getCurrentHealth() < 30) {
+                    double chance = Math.random();
+                    if (chance > 0.50) {
+                        attackpl = player.getBaseDamage() * 1.9;
+                    }
+                }
+
+                double attackttl = attackpl + attackwp;
 
                 health = health - attackttl;
                 targetChar.setHealth(health);
@@ -436,15 +481,20 @@ public class Actions {
 
 
 
-            if (targetObject != null && targetProperName != null && weaponProperName != null) {
+            if (targetObject != null) {
                 System.out.println("You attack the " + targetProperName + " with your " + weaponProperName);
                 if (targetObject.getIsDestroyable()) {
                     player.getCurrentLocationObject().removeItem(targetObject);
+
+                    //SquareRoom Event (Lock Destroyed)
                     if (player.getCurrentLocationName().equals("squareRoom") && targetName.equals("squareRoomLock") && weaponObject.getIsWeapon()) {
                         System.out.println("The lock drops to the ground, destroyed. Took a couple hits, but it finally gave way.");
                         game.locationHash.get("squareRoom").addDirection("south", game.locationHash.get("rabbitsHouseLivingRoom"));
+                        game.locationHash.get("squareRoom").setLocationState(1);
                         break;
                     }
+
+                    //rabbitsHouseBackroom Event (Haystack Burnt)
                     if (player.getCurrentLocationName().equals("rabbitsHouseBackroom") && targetName.equals("haystack") && weaponName.equals("match")) {
                         Locations loc = game.locationHash.get("rabbitsHouseBackroom");
                         loc.addDirection("down", game.locationHash.get("safeHaven"));

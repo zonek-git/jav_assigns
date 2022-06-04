@@ -7,9 +7,9 @@ public class Characters {
     private String name;
     private String desc;
 
-    private int currentHealth;
+    private double currentHealth;
     private int maxCharHealth;
-    private int maxCharDamage;
+    private double maxCharDamage;
     private int resistance;
     private double charAttack;
     private boolean isAlive;
@@ -84,14 +84,14 @@ public class Characters {
         return resistance;
     }
 
-    public int getHealth() {
+    public double getHealth() {
         return currentHealth;
     }
 
 
     //Setters
 
-    public void setHealth(int healthSet) {
+    public void setHealth(double healthSet) {
         this.currentHealth = healthSet;
     }
 
@@ -99,7 +99,7 @@ public class Characters {
         this.maxCharHealth = maxCharHealth;
     }
 
-    public void setMaxDamage(int maxCharDamage) {
+    public void setMaxDamage(double maxCharDamage) {
         this.maxCharDamage = maxCharDamage;
     }
 

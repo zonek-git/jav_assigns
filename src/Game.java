@@ -18,6 +18,8 @@ public class Game {
     HashMap<String, String> locationDescHash;
     HashMap<String, String> roomDescHash;
 
+    HashMap<String, String> staleLocationDescHash;
+
     FileHandlingClass importAssetDescriptions = new FileHandlingClass();
 
     public static void main(String[] args) throws IOException {
@@ -35,6 +37,8 @@ public class Game {
         registry = new Control(game, player, actionHash);
 
         do {
+            Locations prevLoc = player.getCurrentLocationObject();
+
             player.displayHealth();
             System.out.print(">> ");
             command = userInput.nextLine();
@@ -42,23 +46,32 @@ public class Game {
                 System.out.println("Hmm. I wonder what I should do?");
             } else {
                 actionRegistry(command);
+                if (player.getCurrentLocationObject() != prevLoc) {
+                    actionHash.get("look").displayLook();
+                }
             }
         } while ((!command.equals("quit") && !player.getIsAlive()));
     }
 
     private void loadAssets(Game game) throws IOException {
 
+        //Initial Description Location Import
+
         assetHash.put("characters", importAssetDescriptions.assetImport("characters"));
         assetHash.put("items", importAssetDescriptions.assetImport("items"));
         assetHash.put("locations", importAssetDescriptions.assetImport("locations"));
         assetHash.put("actions", importAssetDescriptions.assetImport("actions"));
         assetHash.put("rooms", importAssetDescriptions.assetImport("rooms"));
-
         actionDescHash = assetHash.get("actions");
         itemDescHash = assetHash.get("items");
         characterDescHash = assetHash.get("characters");
         locationDescHash = assetHash.get("locations");
         roomDescHash = assetHash.get("rooms");
+
+        //Stale Description Location Import
+
+        assetHash.put("locationsStale", importAssetDescriptions.assetImport("locationsStale"));
+        staleLocationDescHash = assetHash.get("locationsStale");
 
         // Characters //
 
@@ -93,11 +106,11 @@ public class Game {
 
         // Actions //
 
-        Actions look = new Actions(player,game,"look", actionDescHash);
+        Actions look = new Actions(player, game, "look", actionDescHash);
         Actions inventory = new Actions(player, game, "inventory", actionDescHash);
-        Actions help = new Actions(player, game,"help", actionDescHash);
+        Actions help = new Actions(player, game, "help", actionDescHash);
         Actions take = new Actions(player, game, "take", actionDescHash);
-        Actions run = new Actions(player, game,"run", actionDescHash);
+        Actions run = new Actions(player, game, "run", actionDescHash);
         Actions drop = new Actions(player, game, "drop", actionDescHash);
         Actions persuade = new Actions(player, game, "persuade", actionDescHash);
         Actions north = new Actions(player, game, "north", actionDescHash);
@@ -193,6 +206,7 @@ public class Game {
         match.setIsTakeable(true);
         match.setIsSafeDroppable(true);
         match.setIsUsable(true);
+        match.setIsWeapon(true);
 
         Items hookah = new Items(game, "hookah", itemDescHash);
         hookah.setIsTakeable(true);
@@ -236,6 +250,7 @@ public class Game {
         squareRoomLock.setIsDestroyable(true);
 
         Items haystack = new Items(game, "haystack", itemDescHash);
+        haystack.setIsDestroyable(true);
 
         itemHash.put("squareRoomCabinet", squareRoomCabinet);
         itemHash.put("cabinet", squareRoomCabinet);
@@ -248,6 +263,7 @@ public class Game {
         itemHash.put("box", eatMeBox);
         itemHash.put("key", key);
         itemHash.put("match", match);
+        itemHash.put("matchstick", match);
         itemHash.put("hookah", hookah);
         itemHash.put("teapot", teapot);
         itemHash.put("teacup", teacup);
@@ -300,9 +316,10 @@ public class Game {
         locationHash.put("rabbitsHouseHallway", rabbitsHouseHallway);
         locationHash.put("rabbitsHouseBackroom", rabbitsHouseBackroom);
 
+        squareRoom.setStaleStateDesc(staleLocationDescHash);
+
         //Add Directions
 
-        squareRoom.addDirection("south", rabbitsHouseLivingRoom);
         rabbitsHouseLivingRoom.addDirection("south", rabbitsHouseHallway);
         rabbitsHouseLivingRoom.addDirection("north", squareRoom);
         rabbitsHouseHallway.addDirection("north", rabbitsHouseLivingRoom);
@@ -313,7 +330,6 @@ public class Game {
         //Add direction of UP to the saferoom when the haypile has been burned away
 
     }
-
 
 
     public void actionRegistry(String command) {

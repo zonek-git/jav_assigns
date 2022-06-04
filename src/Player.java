@@ -8,7 +8,7 @@ public class Player {
     //Constant vars
     private String name;
     private int modifierSelector = 1; //1 = charisma, 2 = fortitude, 3 = combat
-    private int currentHealth = 0;
+    private double currentHealth = 0;
     private boolean isAlive;
     private int maxInventory = 5;
 
@@ -26,8 +26,6 @@ public class Player {
 
     //Special modifiers
     private boolean wearingGasMask = false;
-    private boolean rabbitHouseDoorLock = false;
-    private boolean rabbitHouseHayBurnt = false;
 
     public Player() {
 
@@ -111,6 +109,10 @@ public class Player {
         return wearingGasMask;
     }
 
+    public double getCurrentHealth() {
+        return currentHealth;
+    }
+
 
     // Setters //
 
@@ -127,7 +129,7 @@ public class Player {
         this.currentLocation = currentLocation;
     }
 
-    public void setStartingPlayerHealth(int health) {
+    public void setStartingPlayerHealth(double health) {
         this.currentHealth = health;
     }
 
@@ -150,10 +152,6 @@ public class Player {
         if (currentHealth <= 0) {
             isAlive = false;
         }
-    }
-
-    public int getCurrentHealth() {
-        return currentHealth;
     }
 
     public void setCharismaModifier(boolean modifier) {
