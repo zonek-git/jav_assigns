@@ -4,44 +4,45 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Control {
-    Game game;
-    Player player;
-    Actions action;
-    Items item;
-    Items item2;
-    int item1Pos;
-    Characters character;
-
-    HashMap<String, String> actionsDesc;
-    HashMap<String, Actions> actions;
-
+    private Game game;
+    private Player player;
+    private Actions action;
+    private Items item;
+    private Items item2;
+    private int item1Pos;
+    private Characters character;
     ArrayList<String> cmdArray;
-    ArrayList<String> itemArrayS = new ArrayList<>();
-    ArrayList<String> charactersArrayS = new ArrayList<>();
-    ArrayList<String> actionArrayS = new ArrayList<>();
-    ArrayList<String> cmdOutput = new ArrayList<>();
 
+    /**
+     * Default constructor for Control class
+     */
     public Control() {
 
     }
 
+    /**
+     * Primary constructor for Control class
+     * @param game dependency injection from Game
+     * @param player dependency injection from Player
+     * @param actions dependency injection from Actions
+     */
     public Control(Game game, Player player, HashMap<String, Actions> actions) {
         this.game = game;
         this.player = player;
-        this.actionsDesc = game.assetHash.get("actions");
-        this.actions = actions;
     }
 
-
-    public void cmdParser(ArrayList<String> cmd) {
+    /**
+     * Takes input sent by actionRegistry in Game and attempts to parse out what each "important" word means. Assigns
+     * each "important" word determined -> into global variable usable by further methods
+     * @param cmd ArrayList of commands sent by actionRegistry
+     * @throws InterruptedException Possible error with sleep() method
+     */
+    public void cmdParser(ArrayList<String> cmd) throws InterruptedException {
         cmdArray = cmd;
 
         for (int i = 0; i < cmdArray.size(); i++) {
             if (game.actionHash.containsKey(cmdArray.get(i))) {
                 action = game.actionHash.get(cmdArray.get(i));
-
-                //todo TESTING
-                //System.out.println("registry: " + action.getActionName());
             }
         }
 
@@ -49,32 +50,21 @@ public class Control {
             if (game.itemHash.containsKey(cmdArray.get(i))) {
                 item = game.itemHash.get(cmdArray.get(i));
                 item1Pos = i;
-
-                //todo TESTING
-                //System.out.println("registry item1: " + item.getName());
             }
         }
         if (item != null) {
             cmdArray.remove(cmdArray.get(item1Pos));
         }
 
-        System.out.println(cmdArray);
-
         for (int i = 0; i < cmdArray.size(); i++) {
             if (game.itemHash.containsKey(cmdArray.get(i))) {
                 item2 = game.itemHash.get(cmdArray.get(i));
-
-                //todo TESTING
-                //System.out.println("registry item2: " + item2.getName());
             }
         }
 
         for (int i = 0; i < cmdArray.size(); i++) {
             if (game.characterHash.containsKey(cmdArray.get(i))) {
                 character = game.characterHash.get(cmdArray.get(i));
-
-                //todo TESTING
-                //System.out.println("registry: " + character.getName());
             }
         }
 
@@ -89,8 +79,13 @@ public class Control {
         }
     }
 
-
-    public void outputCommand(Actions action) {
+    /**
+     * Takes the parsed action by cmdParser and assigns appropriate items and characters to specified action, then starts
+     * the corresponding Actions method.
+     * @param action Action object detected by cmdParser
+     * @throws InterruptedException Possible error caused by sleep() method
+     */
+    public void outputCommand(Actions action) throws InterruptedException {
         switch (action.getActionName()) {
             case "take":
                 if (item == null) {
@@ -98,8 +93,6 @@ public class Control {
                 } else {
                     action.actionableTake(item.getName());
                 }
-                //case "run":
-                //action.actionableRun(); //todo
                 break;
             case "drop":
                 if (item == null) {
@@ -108,35 +101,38 @@ public class Control {
                     action.actionableDrop(item.getName());
                 }
                 break;
-            case "persuade":
-                if (character == null) {
-                    System.out.println("You need to specify a character to persuade... sometimes it won't work, though.");
-                } //else {
-                //action.actionablePersuade(character); //todo
-                //}
-                break;
             case "north":
             case "south":
             case "east":
             case "west":
             case "up":
             case "down":
-                action.actionableMovement(action.getActionName());
+                if (player.getCurrentLocationObject().getLocationCharacters() != null) {
+                    action.actionableMovement(action.getActionName());
+                } else {
+                    System.out.println("You can't run away from this! Face your fears... Or you could try 'run'.");
+                }
                 break;
             case "attack":
+            case "hit":
                 if (item != null && item2 != null) {
                     action.actionableAttack(item.getName(), item2.getName());
-
-                    //todo TESTING
-                    //System.out.println(true + " 'atk' item1= " + item.getName());
-                    //System.out.println(true + " 'atk' item2= " + item2.getName());
-                }
-                if (item != null && character != null) {
+                    break;
+                } else if (item != null && character != null) {
                     action.actionableAttack(item.getName(), character.getName());
+                    break;
+                } else {
+                    System.out.println("Hint: use 'attack' like... 'attack + target + with + weapon'");
+                    System.out.println("Or, use 'attack + target + weapon' or 'hit'");
+                }
 
-                    //todo TESTING
-                    //System.out.println(true + " 'atk' item1= " + item.getName());
-                    //System.out.println(true + " 'atk' char= " + character.getName());
+            case "burn":
+                if (item == game.itemHash.get("match") && item2 != null) {
+                    action.actionableAttack(item.getName(), item2.getName());
+                } else if (item2 == game.itemHash.get("match") && item != null) {
+                    action.actionableAttack(item2.getName(), item.getName());
+                } else {
+                    System.out.println("Hint: use 'burn' like... 'burn target with item'");
                 }
                 break;
             case "inventory":
@@ -169,9 +165,6 @@ public class Control {
                 if (character == null) {
                     System.out.println("Please specify a character to give the " + item.getProperItemName());
                 }
-                //if(character != null && item != null) {
-                //    action.actionableGive();
-                //} //todo
                 break;
             case "open":
                 if (item == null) {
@@ -180,16 +173,11 @@ public class Control {
                     action.actionableOpen(item.getName());
                 }
                 break;
+            case "help":
+                action.displayHelp();
+                break;
+            case "run":
+                action.actionableRun();
         }
     }
-
-    public void pressEnterToContinue() {
-        System.out.println("Press the <ENTER> key to continue...");
-        try {
-            System.in.read();
-        } catch (IOException ignored) {
-        }
-    }
-
-
 }

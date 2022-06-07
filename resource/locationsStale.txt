@@ -1,1 +1,10 @@
-squareRoom:The way that this room seems to shrink as you go further is unsettling. The door at the far end of the room is locked, but I bet I could barely fit through. There are a couple of cabinets sitting on the side wall. You've already broken the padlock on the floor.
+squareRoom:You're in the square room. A cabinet, one door, no way back up through that tiny hole. An unlocked doorway at the south end of the corridor.
+safeHaven:You're in the safe haven. The shrine is still here, the giant hole up above, letting in sunlight. A rope upwards that leads to rabbit's back room. Remember: teapot, card, watch, hookah, and cake.
+forestZone:You're in the forest zone again. A pathway to the mushroom forest to the west, and a pathway to the unbirthday party to the east.
+rabbitsHouseLivingRoom:You're in rabbit's living room again. Drabby furniture and all. A doorway at the north, a hallway at the south end.
+rabbitsHouseHallway:You're in rabbit's hallway again. The dark hallway. A doorway lies to the north towards rabbit's living room, and another doorway to the south leads to the backroom.
+rabbitsHouseBackroom:You're in rabbit's backroom again. The safe room lies downwards via the rope, a northern door leads to the hallway, and the southern door leads to the forest zone.
+mushForest:You're in the mushroom forest again. A pathway to the forest zone to the east.
+unbirthdayParty:You're in the unbirthday party again. A pathway lies to the west towards the forest zone, and a small doorway which leads to the courtroom to the east.
+courtRoom:You're in the courtroom again. A doorway leads to the west towards the unbirthday party, and a black hole which leads to the void to the east...
+theVoid: You're in the void again. Alice is still raging. The portal leads back to the courtroom, to the west.

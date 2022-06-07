@@ -1,19 +1,16 @@
 take:The 'take' command allows you to pick up an item, if available.
 run:The 'run' command will give you a chance at running away from a confrontation. Sometimes, this won't work.
 drop:The 'drop' command, paired with the item of choice, allows you to drop an item at your current location. You must have that item in your inventory in order to drop it.
-persuade:The 'persuade' option will allow you to potentially sway your enemy, possibly avoiding a fight. Sometimes, using this will only anger your opponent further, increasing their risk of critical damage.
 north:The 'north' command allows you to travel northbound, if possible.
 south:The 'south' command allows you to travel southbound, if possible.
 east:The 'east' command allows you to travel eastbound, if possible.
 west:The 'west' command allows you to travel westbound, if possible.
-again:The 'again' command allows you to repeat your previously typed in command, if possible.
-attack:The 'attack' command is versatile. You can use it like: "baton attack soldier". This will attack the soldier with your baton. Provided you have the weapon. Alternatively, you can just say "attack soldier", which will use your fists (lowest attack rating).
+attack:The 'attack' command is versatile. You can use in several ways such as: "attack soldier with baton". This will attack the soldier with your baton. Provided you have the weapon. (You cannot lose your baton. It is the basic weapon)
 inventory:The 'inventory' command will display your current inventory.
-examine:The 'examine' command will examine an item that you have in your inventory.
+examine:The 'examine' command will examine an item that you have in your inventory, or in your surrounding location.
 look:THe 'look' command will describe to you your surroundings.
 use:The 'use' command will use an item as indicated. Ex: "use rose".
 help:The Help Menu
-give:The 'give' command will give an item indicated to another character.
 open:The ability to open certain objects. Use the "look" command to see openable objects.
 up:The ability to go up something, like a ladder or a rope.
 down:The ability to go down something, like a ladder or a rope.

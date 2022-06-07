@@ -8,12 +8,11 @@ public class FileHandlingClass {
 
     /**
      * System that displays my text files for "story" elements
-     *
-     * @param path
+     * @param filename the filename of the particular txt file to be retrieved
      */
-    public void fileOutput(String path) {
+    public void fileOutput(String filename) {
         try {
-            File file = new File(path);
+            File file = new File("resource/" + filename + ".txt");
             FileReader readFile = new FileReader(file);
             BufferedReader displayFile = new BufferedReader(readFile);
             String readLine;
@@ -30,6 +29,15 @@ public class FileHandlingClass {
         }
     }
 
+
+    /**
+     * Creates hashmap file from txt file. Used for descriptions for items. Follow the proper delimiter in text file of :
+     * after the name of the item, and the description file must be only one single line. It is limited to 50 characters
+     * per line in order to compact it during display.
+      * @param filename the filename of the particular txt file to be retrieved
+     * @return returns a hashmap of key value and the description, as per determined via delimiter ":" in the txt file
+     * @throws IOException Possible failure to retrieve specified filename
+     */
     public HashMap<String, String> assetImport(String filename) throws IOException {
         File fileImport = new File("resource/" + filename + ".txt");
         FileReader fileRead = new FileReader(fileImport);
@@ -49,33 +57,4 @@ public class FileHandlingClass {
         }
         return hashDesc;
     }
-
-    /**
-     * System that loads description files for the items, characters, locations
-     *
-     * @param path
-     * @return
-     * @throws FileNotFoundException
-     */
-    public String descFile(String path) throws FileNotFoundException {
-        StringBuilder descriptionString = new StringBuilder();
-        Scanner scanFiles = new Scanner(new java.io.File(path));
-        while (scanFiles.hasNextLine()) {
-            descriptionString.append(scanFiles.nextLine());
-        }
-        scanFiles.close();
-        return descriptionString.toString();
-    }
-
-    public List<String> actionWords(String path) throws FileNotFoundException {
-        Scanner scanFiles = new Scanner(new java.io.File(path));
-        List<String> actionList = new ArrayList<String>();
-        while (scanFiles.hasNextLine()) {
-            actionList.add(scanFiles.nextLine());
-        }
-        scanFiles.close();
-        return actionList;
-    }
-
-
 }

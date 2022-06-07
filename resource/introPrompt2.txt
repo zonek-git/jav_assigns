@@ -28,3 +28,22 @@ A scream of panic could be heard coming from the forest.
 
 ------------------------------------------------
 
+You dropped your baton on the ground nearby. The room you were in...
+
+You'd describe it as a room full of square tiles... The square room. The way that this room seems to shrink as you go
+further is unsettling. The door at the far end of the room is locked, but I bet I could barely fit through. There are a
+couple of cabinets sitting on the side wall. One could be opened, you suppose. Maybe there's something inside? There
+are a few pots and pans lining the walls. Nothing of note. How can I get through this door? There's a rather weak-looking
+lock on the door to the south...
+
+It appears there are some items in this room as well:
+Rose
+Padlock
+Cabinet
+Baton
+
+There doesn't seem to be anyone else in here with you...
+
+[[ [[ Use the "help" keyword to show a list of available commands. Hint to start: Look and Examine are quite important
+to figure out the way forward ]] ]]
+

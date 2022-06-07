@@ -3,27 +3,24 @@ import java.util.HashMap;
 
 public class Characters {
 
-    Game game;
+    //Global variables for Characters
     private String name;
     private String desc;
 
     private double currentHealth;
-    private int maxCharHealth;
+    private double maxCharHealth;
     private double maxCharDamage;
-    private int resistance;
-    private double charAttack;
-    private boolean isAlive;
-    private Locations charLocation;
 
     Characters() {
 
     }
 
     /**
-     * @param name
-     * @param desc
+     * Primary constructor for building Characters items
+     * @param name String input for name
+     * @param desc HashMap input for description
      */
-    Characters(Game game, String name, HashMap<String, String> desc) {
+    Characters(String name, HashMap<String, String> desc) {
         this.name = name;
         this.desc = desc.get(name);
     }
@@ -33,37 +30,50 @@ public class Characters {
      *
      * @return attack output
      */
-    public void charAttackRoll() {
-        charAttack = maxCharDamage * Math.random();
+    public double charAttackRoll() {
+        double charAttack = maxCharDamage * Math.random();
+        return charAttack;
     }
 
     //Getters
 
+    /**
+     * Retrieves the character description
+     * @return String desc
+     */
     public String getDescription() {
         return desc;
     }
 
+    /**
+     * Retrieves the character name
+     * @return String name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Retrieves the "displayable" character name
+     * @return String properName
+     */
     public String getProperCharacterName() {
         String properName = null;
         switch (name) {
             case "madHatter" :
-                properName = "Hatter";
+                properName = "Mad Hatter";
                 break;
             case "redQueen" :
-                properName = "Queen";
+                properName = "Queen of Hearts";
                 break;
             case "alice" :
                 properName = "Alice";
                 break;
             case "whiteRabbit" :
-                properName = "Rabbit";
+                properName = "White Rabbit";
                 break;
             case "soldier" :
-                properName = "Soldier";
+                properName = "Card Soldier";
                 break;
             case "caterpillar" :
                 properName = "Caterpillar";
@@ -72,46 +82,47 @@ public class Characters {
         return properName;
     }
 
-    public int getMaxHealth() {
+    /**
+     * retrieves the maximum health of a character
+     * @return double maxCharHealth
+     */
+    public double getMaxHealth() {
         return maxCharHealth;
     }
 
-    public int getMaxDamage() {
-        return maxCharDamage;
-    }
-
-    public int getResistance() {
-        return resistance;
-    }
-
+    /**
+     * Retrieves the health of the character
+     * @return double currentHealth
+     */
     public double getHealth() {
         return currentHealth;
     }
 
-
     //Setters
 
+    public void setIsAlive(boolean set) {
+    }
+    /**
+     * Set the health of the character
+     * @param healthSet double value
+     */
     public void setHealth(double healthSet) {
         this.currentHealth = healthSet;
     }
 
-    public void setMaxHealth(int maxCharHealth) {
+    /**
+     * Set the maximum health of the character
+     * @param maxCharHealth double value
+     */
+    public void setMaxHealth(double maxCharHealth) {
         this.maxCharHealth = maxCharHealth;
     }
 
+    /**
+     * Set the maximum damage output of a character
+     * @param maxCharDamage double value
+     */
     public void setMaxDamage(double maxCharDamage) {
         this.maxCharDamage = maxCharDamage;
-    }
-
-    public void setResistance(int resistance) {
-        this.resistance = resistance;
-    }
-
-    public void setIsAlive(boolean isAlive) {
-        this.isAlive = isAlive;
-    }
-
-    public void setLocation(Locations charLocation) {
-        this.charLocation = charLocation;
     }
 }

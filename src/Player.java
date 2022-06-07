@@ -1,46 +1,36 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
-
-    Game game;
-
+    //Global variables for player
     //Constant vars
-    private String name;
-    private int modifierSelector = 1; //1 = charisma, 2 = fortitude, 3 = combat
     private double currentHealth = 0;
-    private boolean isAlive;
     private int maxInventory = 5;
 
     //Combat/Interaction modifiers:
-    private int baseCharisma = 50;
-    private int baseFortitude = 50;
-    private int baseCombatAbility = 50;
-    private int baseDamage = 15;
+    private boolean isShrunk = false;
+    private boolean isAlive = true;
+    private int baseDamage = 20;
 
     //Location holder
-    protected Locations currentLocation;
-    private Locations moveFromTo;
+    private Locations previousLocation;
+    private Locations currentLocation;
     private ArrayList<Items> currentInventory = new ArrayList<>();
     private int numberOfItems;
-
-    //Special modifiers
-    private boolean wearingGasMask = false;
 
     public Player() {
 
     }
 
-    public Player(Game game, int numberOfItems) {
+    public Player(int numberOfItems) {
         super();
-        this.game = game;
         this.numberOfItems = numberOfItems;
     }
 
     /**
      * View the current inventory of the Player.
      */
-
     public void viewInventory() {
         System.out.println("Your current inventory: ");
         System.out.println();
@@ -48,7 +38,7 @@ public class Player {
             System.out.println("You currently have nothing in your inventory");
         } else {
             for (int i = 0; i < currentInventory.size(); i++) {
-                System.out.println("#" + i + " " + currentInventory.get(i).getName());
+                System.out.println("#" + (i + 1) + " " + currentInventory.get(i).getProperItemName());
             }
         }
         System.out.println();
@@ -56,124 +46,174 @@ public class Player {
 
     // Functions //
 
+    /**
+     * Add Items object into inventory
+     * @param itemObject Items item specified
+     */
     public void addInventoryItem(Items itemObject) {
         currentInventory.add(itemObject);
         numberOfItems++;
     }
 
-    public void removeInventoryItem(Items item) {
-        currentInventory.remove(item);
+    /**
+     * Remove Items objet from inventory
+     * @param itemObject Items item specified
+     */
+    public void removeInventoryItem(Items itemObject) {
+        currentInventory.remove(itemObject);
         numberOfItems--;
     }
 
-
     // Getters //
 
+    /**
+     * Is the player shrunk to fit through to theVoid?
+     * @return boolean
+     */
+    public boolean getIsShrunk() {
+        return isShrunk;
+    }
+
+    /**
+     * Get the immediately previous location of the player
+     * @return Locations previousLocation
+     */
+    public Locations getPreviousLocation() {
+        return previousLocation;
+    }
+
+    /**
+     * Get the base damage output of the player
+     * @return int baseDamage
+     */
     public int getBaseDamage() {
         return baseDamage;
     }
 
-    public String getName() {
-        return name;
-    }
-
+    /**
+     * Get the max inventory capacity of the player
+     * @return int maxInventory
+     */
     public int getMaxInventory() {
         return maxInventory;
     }
 
+    /**
+     * Get the number of items in inventory
+     * @return int numberOfItems
+     */
     public int getNumberOfItems() {
         return numberOfItems;
     }
 
+    /**
+     * Get the name of the current Locations object
+     * @return String currentLocationName
+     */
     public String getCurrentLocationName() {
         return currentLocation.getLocationName();
     }
 
+    /**
+     * Returns the actual object of the current location
+     * @return Locations currentLocation
+     */
     public Locations getCurrentLocationObject() {
         return currentLocation;
     }
 
+    /**
+     * Returns the ArrayList of items currently in the inventory of the player
+     * @return ArrayList currentInventory
+     */
     public ArrayList<Items> getCurrentInventory() {
         return currentInventory;
     }
 
-    public String getCurrentLocationDescription() {
-        return currentLocation.getLocationDescription();
-    }
-
+    /**
+     * Return if the player is alive or not
+     * @return boolean isAlive
+     */
     public boolean getIsAlive() {
         return isAlive;
     }
 
-    public boolean getWearingGasMask() {
-        return wearingGasMask;
-    }
-
+    /**
+     * Returns the player's current health stats
+     * @return double currentHealth
+     */
     public double getCurrentHealth() {
         return currentHealth;
     }
 
-
     // Setters //
 
-
-    public void setMaxInventory(int inValue) {
-        this.maxInventory = inValue;
+    /**
+     * Sets whether the player is shrunk or not
+     * @param set boolean
+     */
+    public void setIsShrunk(boolean set) {
+        this.isShrunk = set;
     }
 
-    public void setWearingGasMask(boolean wearing) {
-        this.wearingGasMask = wearing;
+    /**
+     * Sets the previous location of the player, before moving to the next location object
+     * @param previousLocation Locations location object
+     */
+    public void setPreviousLocation(Locations previousLocation) {
+        this.previousLocation = previousLocation;
     }
 
+    /**
+     * Sets if the player is alive or not
+     * @param set boolean
+     */
+    public void setIsAlive(boolean set) {
+        this.isAlive = set;
+    }
+
+    /**
+     * Sets the object of the current location
+     * @param currentLocation Locations location object
+     */
     public void setCurrentLocation(Locations currentLocation) {
         this.currentLocation = currentLocation;
     }
 
+    /**
+     * Sets the starting health of the player
+     * @param health double health value
+     */
     public void setStartingPlayerHealth(double health) {
         this.currentHealth = health;
     }
 
-    public boolean setAddCurrentHealth(int effect) {
+    /**
+     * Adds to the current health of the
+     * @param effect
+     * @return
+     */
+    public void setAddCurrentHealth(int effect) {
         boolean used = false;
         //Maximum, constants. Able to go up and down
         int maxHealth = 100;
         if (currentHealth == maxHealth) {
             System.out.println("You're already at full health. No need to use this!");
-            used = false;
-        } else if (currentHealth < maxHealth) {
+        } else if (currentHealth <= maxHealth) {
             currentHealth = Math.min(currentHealth + effect, maxHealth);
-            used = true;
         }
-        return used;
     }
 
-    public void setSubtractCurrentHealth(int effect) {
+    public void setSubtractCurrentHealth(double effect) {
         currentHealth = currentHealth - effect;
         if (currentHealth <= 0) {
             isAlive = false;
         }
     }
 
-    public void setCharismaModifier(boolean modifier) {
-        if (modifier) {
-            baseCharisma = 100;
-        }
-    }
-
-    public void setFortitudeModifier(boolean modifier) {
-        if (modifier) {
-            baseFortitude = 100;
-        }
-    }
-
-    public void setCombatAbilityModifier(boolean modifier) {
-        if (modifier) {
-            baseCombatAbility = 100;
-        }
-    }
-
     public void displayHealth() {
-        System.out.println("** Current Health: " + currentHealth);
+        DecimalFormat formatHealth = new DecimalFormat("#.0");
+        System.out.println("** Current Health: " + formatHealth.format(currentHealth));
     }
 
 
