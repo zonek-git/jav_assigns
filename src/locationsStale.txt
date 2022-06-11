@@ -1,5 +1,5 @@
 squareRoom:You're in the square room. A cabinet, one door, no way back up through that tiny hole. An unlocked doorway at the south end of the corridor.
-safeHaven:You're in the safe haven. The shrine is still here, the giant hole up above, letting in sunlight. A rope upwards that leads to rabbit's back room. Remember: teapot, card, watch, hookah, and cake.
+safeHaven:You're in the safe haven. The shrine is still here, the giant hole up above, letting in sunlight. A rope upwards that leads to rabbit's back room. Remember; teapot, card, watch, hookah, and cake. [[You only have to drop the items in the room, you don't have to 'put' them on the shrine]]
 forestZone:You're in the forest zone again. A pathway to the mushroom forest to the west, and a pathway to the unbirthday party to the east.
 rabbitsHouseLivingRoom:You're in rabbit's living room again. Drabby furniture and all. A doorway at the north, a hallway at the south end.
 rabbitsHouseHallway:You're in rabbit's hallway again. The dark hallway. A doorway lies to the north towards rabbit's living room, and another doorway to the south leads to the backroom.

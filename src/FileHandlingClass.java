@@ -12,7 +12,7 @@ public class FileHandlingClass {
      */
     public void fileOutput(String filename) {
         try {
-            File file = new File("resource/" + filename + ".txt");
+            File file = new File("src/" + filename + ".txt");
             FileReader readFile = new FileReader(file);
             BufferedReader displayFile = new BufferedReader(readFile);
             String readLine;
@@ -39,7 +39,7 @@ public class FileHandlingClass {
      * @throws IOException Possible failure to retrieve specified filename
      */
     public HashMap<String, String> assetImport(String filename) throws IOException {
-        File fileImport = new File("resource/" + filename + ".txt");
+        File fileImport = new File("src/" + filename + ".txt");
         FileReader fileRead = new FileReader(fileImport);
         BufferedReader readLine = new BufferedReader(fileRead);
         HashMap<String, String> hashDesc = new HashMap<>();

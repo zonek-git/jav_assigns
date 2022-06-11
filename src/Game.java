@@ -95,8 +95,21 @@ public class Game {
             //If both the items are inside safeHaven and you have "unlocked" the exit in safeHaven via the eatmebox, you
             //can go "up" inside safeHaven which will trigger victory
             if (gameVictory) {
+
                 System.out.println("Alice has successfully been reunited with her sister. Thank Goodness...");
                 System.out.println("Victory!");
+                System.out.println();
+
+                if (player.getCurrentHealth() >= 80) {
+                    System.out.println("50 Points for finishing with over 80 points of health.");
+                }
+                if (player.getCurrentHealth() > 40 && player.getCurrentHealth() < 80) {
+                    System.out.println("20 Points for finishing with over 40 points of health.");
+                }
+                if (player.getCurrentHealth() > 20 && player.getCurrentHealth() < 40) {
+                    System.out.println("0 points for finishing with less than 40 points of health.");
+                }
+
                 break;
             }
 
@@ -129,7 +142,6 @@ public class Game {
         assetHash.put("items", importAssetDescriptions.assetImport("items"));
         assetHash.put("locations", importAssetDescriptions.assetImport("locations"));
         assetHash.put("actions", importAssetDescriptions.assetImport("actions"));
-        assetHash.put("rooms", importAssetDescriptions.assetImport("rooms"));
 
         //All objects reference for *object* description hashmap
 
@@ -137,7 +149,6 @@ public class Game {
         itemDescHash = assetHash.get("items");
         characterDescHash = assetHash.get("characters");
         locationDescHash = assetHash.get("locations");
-        roomDescHash = assetHash.get("rooms");
 
         //Stale Description Location Import
 
@@ -157,6 +168,7 @@ public class Game {
         Characters alice = new Characters("alice", characterDescHash);
         alice.setMaxHealth(1000);
         alice.setHealth(alice.getMaxHealth());
+        alice.setMaxDamage(40);
         Characters whiteRabbit = new Characters("whiteRabbit", characterDescHash);
         whiteRabbit.setMaxHealth(75);
         whiteRabbit.setHealth(whiteRabbit.getMaxHealth());

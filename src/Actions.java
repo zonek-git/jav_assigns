@@ -346,11 +346,13 @@ public class Actions {
                     if (nameObject.equals("eatMeBox")) {
                         System.out.println("You grow large enough to get through the hole! (Hole up above is reachable)");
                         game.victoryConditionsGrow = true;
+                        break;
                     }
                     if (nameObject.equals("drinkMeBottle")) {
                         player.getCurrentLocationObject().addDirection("east", game.locationHash.get("theVoid"));
                         player.setIsShrunk(true);
                         System.out.println("You shrank down to to fit through the door! (Door to the void is unlocked)");
+                        break;
                     } else {
                         System.out.println("You don't currently have that item in your inventory...");
                     }
@@ -375,6 +377,10 @@ public class Actions {
             for (int i = 0; i < locationItems.size(); i++) {
                 if (locationItems.get(i).getName().equals(itemName)) {
                     itemObject = locationItems.get(i);
+                    if (player.getMaxInventory() == player.getNumberOfItems()) {
+                        System.out.println("You already have the max number of items in your inventory. Drop something or use something!");
+                        break;
+                    }
                     if (itemObject.getIsOpenable() && itemObject.getContainedItem() != null) {
                         System.out.println("There appears to be a " + itemObject.getContainedItem().getProperItemName() + " in this container. You put it in your inventory.");
                         Items containedItem = itemObject.getContainedItem();
@@ -416,7 +422,7 @@ public class Actions {
             player.setPreviousLocation(prevLoc);
             player.getPreviousLocation().setLocationState(1);
             player.setCurrentLocation(player.getCurrentLocationObject().getDirection(movementDirection));
-            if (player.getCurrentLocationObject().getLocationCharacters() == null && calcEncounter() > 0.6) {
+            if (player.getCurrentLocationObject().getLocationCharacters().isEmpty() && !player.getCurrentLocationName().equals("safeHaven") && calcEncounter() > 0.5) {
                 spawnEncounter();
             }
         } else if (!player.getCurrentLocationObject().getLocationName().equals("squareRoom")) {

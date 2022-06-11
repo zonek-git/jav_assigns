@@ -124,13 +124,13 @@ public class Items {
                 properName = "Rose";
                 break;
             case "watch":
-                properName = "Watch";
+                properName = "Watch *";
                 break;
             case "drinkMeBottle":
-                properName = "Bottle";
+                properName = "Drink MeBottle";
                 break;
             case "eatMeBox":
-                properName = "Box";
+                properName = "Eat Me Box";
                 break;
             case "key":
                 properName = "Key";
@@ -142,16 +142,16 @@ public class Items {
                 properName = "Matchstick";
                 break;
             case "hookah":
-                properName = "Hookah";
+                properName = "Hookah *";
                 break;
             case "teapot":
-                properName = "Teapot";
+                properName = "Teapot *";
                 break;
             case "teacup":
                 properName = "Teacup";
                 break;
             case "unbirthdayCake":
-                properName = "Cake";
+                properName = "Cake *";
                 break;
             case "mallet":
                 properName = "Mallet";
@@ -159,14 +159,8 @@ public class Items {
             case "jam":
                 properName = "Jam";
                 break;
-            case "gasMask":
-                properName = "Mask";
-                break;
-            case "umbrella":
-                properName = "Umbrella";
-                break;
             case "playingCard":
-                properName = "Card";
+                properName = "Playing Card *";
                 break;
             case "haystack":
                 properName = "Haystack";

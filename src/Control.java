@@ -76,6 +76,10 @@ public class Control {
             character = null;
         } else {
             System.out.println("Please specify an action to take.");
+            action = null;
+            item = null;
+            item2 = null;
+            character = null;
         }
     }
 

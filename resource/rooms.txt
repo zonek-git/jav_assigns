@@ -1,2 +1,0 @@
-squareRoomMain:There is only one room in here. A long hallway. An exit to the south.
-rabbitsHouseLivingRoom:A little cozy area at first glance. A rocking chair sits in the south-east corner, east of the darkened hallway... Scratch marks scatter the walls. An earthy scent fills your senses.
