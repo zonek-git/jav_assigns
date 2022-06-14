@@ -1,7 +1,13 @@
+/**
+ * title: FileHandlingClass.java
+ * description: FileHandlingClass class for Assignment 4
+ * date: June 6, 2022
+ * @author Joshua P.J. Vilcsak
+ * @version 1.0
+ * @copyright 2022 Joshua P.J.Vilcsak
+ */
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.util.HashMap;
 
 public class FileHandlingClass {
@@ -39,7 +45,8 @@ public class FileHandlingClass {
      * @throws IOException Possible failure to retrieve specified filename
      */
     public HashMap<String, String> assetImport(String filename) throws IOException {
-        File fileImport = new File("src/" + filename + ".txt");
+        File fileImport = new File("src" +
+                "/" + filename + ".txt");
         FileReader fileRead = new FileReader(fileImport);
         BufferedReader readLine = new BufferedReader(fileRead);
         HashMap<String, String> hashDesc = new HashMap<>();

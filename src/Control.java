@@ -1,7 +1,14 @@
-import java.io.*;
+/**
+ * title: Control.java
+ * description: Control class for Assignment 4
+ * date: June 6, 2022
+ * @author Joshua P.J. Vilcsak
+ * @version 1.0
+ * @copyright 2022 Joshua P.J.Vilcsak
+ */
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+
 
 public class Control {
     private Game game;
@@ -26,7 +33,7 @@ public class Control {
      * @param player dependency injection from Player
      * @param actions dependency injection from Actions
      */
-    public Control(Game game, Player player, HashMap<String, Actions> actions) {
+    public Control(Game game, Player player) {
         this.game = game;
         this.player = player;
     }

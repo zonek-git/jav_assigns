@@ -1,3 +1,12 @@
+/**
+ * title: Characters.java
+ * description: Characters class for Assignment 4
+ * date: June 6, 2022
+ * @author Joshua P.J. Vilcsak
+ * @version 1.0
+ * @copyright 2022 Joshua P.J.Vilcsak
+ */
+
 import java.lang.Math;
 import java.util.HashMap;
 
@@ -11,7 +20,7 @@ public class Characters {
     private double maxCharHealth;
     private double maxCharDamage;
 
-    Characters() {
+    public Characters() {
 
     }
 
@@ -20,7 +29,7 @@ public class Characters {
      * @param name String input for name
      * @param desc HashMap input for description
      */
-    Characters(String name, HashMap<String, String> desc) {
+    public Characters(String name, HashMap<String, String> desc) {
         this.name = name;
         this.desc = desc.get(name);
     }

@@ -1,3 +1,12 @@
+/**
+ * title: Actions.java
+ * description: Actions class for Assignment 4
+ * date: June 6, 2022
+ * @author Joshua P.J. Vilcsak
+ * @version 1.0
+ * @copyright 2022 Joshua P.J.Vilcsak
+ */
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +23,7 @@ public class Actions {
     /**
      * Default constructor
      */
-    Actions() {
+    public Actions() {
 
     }
 
@@ -55,6 +64,7 @@ public class Actions {
         TimeUnit.SECONDS.sleep(2);
         System.out.println();
         player.getCurrentLocationObject().setLocationCharacters(game.characterHash.get("soldier"));
+        game.characterHash.get("soldier").setHealth(game.characterHash.get("soldier").getMaxHealth());
     }
 
     /**
@@ -137,12 +147,10 @@ public class Actions {
         System.out.println(game.actionHash.get("take").actionDescription);
         System.out.println(game.actionHash.get("run").actionDescription);
         System.out.println(game.actionHash.get("drop").actionDescription);
-        System.out.println(game.actionHash.get("persuade").actionDescription);
         System.out.println(game.actionHash.get("north").actionDescription);
         System.out.println(game.actionHash.get("south").actionDescription);
         System.out.println(game.actionHash.get("east").actionDescription);
         System.out.println(game.actionHash.get("west").actionDescription);
-        System.out.println(game.actionHash.get("again").actionDescription);
         System.out.println(game.actionHash.get("attack").actionDescription);
         System.out.println(game.actionHash.get("inventory").actionDescription);
         System.out.println(game.actionHash.get("examine").actionDescription);

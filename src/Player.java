@@ -1,6 +1,14 @@
+/**
+ * title: Player.java
+ * description: Player class for Assignment 4
+ * date: June 6, 2022
+ * @author Joshua P.J. Vilcsak
+ * @version 1.0
+ * @copyright 2022 Joshua P.J.Vilcsak
+ */
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Player {
     //Global variables for player
@@ -194,7 +202,6 @@ public class Player {
      * @return
      */
     public void setAddCurrentHealth(int effect) {
-        boolean used = false;
         //Maximum, constants. Able to go up and down
         int maxHealth = 100;
         if (currentHealth == maxHealth) {

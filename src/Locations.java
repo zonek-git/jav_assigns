@@ -1,3 +1,12 @@
+/**
+ * title: Locations.java
+ * description: Locations class for Assignment 4
+ * date: June 6, 2022
+ * @author Joshua P.J. Vilcsak
+ * @version 1.0
+ * @copyright 2022 Joshua P.J.Vilcsak
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,7 +22,7 @@ public class Locations {
 
     private int locationState = 0;
 
-    Locations() {
+    public Locations() {
 
     }
 

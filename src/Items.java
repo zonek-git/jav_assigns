@@ -1,4 +1,13 @@
-import java.util.ArrayList;
+/**
+ * title: Items.java
+ * description: Items class for Assignment 4
+ * date: June 6, 2022
+ * @author Joshua P.J. Vilcsak
+ * @version 1.0
+ * @copyright 2022 Joshua P.J.Vilcsak
+ */
+
+
 import java.util.HashMap;
 
 public class Items {
@@ -23,7 +32,7 @@ public class Items {
     /**
      * Default constructor
      */
-    Items() {
+    public Items() {
 
     }
 
@@ -32,7 +41,7 @@ public class Items {
      * @param name the name of the Items object
      * @param desc the description of the Items object
      */
-    Items(String name, HashMap<String, String> desc) {
+    public Items(String name, HashMap<String, String> desc) {
         this.name = name;
         this.itemDescription = desc.get(name);
     }
