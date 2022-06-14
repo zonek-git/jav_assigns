@@ -1,0 +1,112 @@
+Research
+
+ - Initially, I had set up all the required classes according to the problem parameters, and then I realized, I had no
+ real good ideas of where to go from there. I decided I needed to understand what kind of objects one class inherits from
+ another. I decided the best way to go about this was to create constructors, and assign the constructors for each class
+ the kind of parameters (information about objects, locations) that would be needed. For example, locations probably needed
+ to have some kind of indication of how many exits or entrances there were, how many objects were being held in that location
+ (such as storage lockers, individual items and such).
+ - Following up with this train of thought, I further created an Item constructor that would carry a certain number of
+ conditions. Because I wanted to work with a sanity system, each item could affect the player's sanity negatively or
+ positively. I had then created a sanity (health) system for the Player class, with a setter and getter to allow exterior
+ classes to access those variables.
+ - I decided to scrap the sanity mechanic as it was proving too time-consuming to even finish this program within a decent
+ span of time.
+ - My wife and I decided to watch the original 1951 classic as we'd never seen the movie before. This was going to be
+ challenging, as there wasn't a lot of "actionable" things to do, just based off the story. My wife and I tried to come
+ up with a story, and got some ideas about interesting mechanics that haven't been done much before, mainly, a sanity meter.
+ - Beyond this point, I didn't really know where to progress. To try and get over this, I decided (and according to landing
+ posts) to watch some youtube videos on the subject of Java-based text adventure games. I started with https://www.youtube.com/watch?v=EpB9u4ItOYU
+ to see how informative he'd be. I followed through and implemented some of his basic ideas. A random number generator
+ would be very important, especially for random events, or turn-based attacks?
+ - After watching this, my original idea of creating a story-based game was slightly daunting. In my mind, I needed to
+ create something a bit more interactive, rather than just a conversation simulator with sanity elements. Combat systems
+ seemed to be the best way of implementing that while gaining more "actionable" things to do. Therefore, I changed my ideas
+ a little.
+ - I wanted the game to be a bit more interactive, so I had a few ideas. My first one was allowing the player to create
+ their own character in a search for Alice down the rabbit hole. Immediately, I ran into some issues. I needed to generate
+ text files for all the actions and storyline and such, but in order to use custom names, I needed to figure out some
+ way to insert the custom name TEMPORARILY in the text file. This was proving difficult. Perhaps creating a StringBuffer?
+ This idea was scrapped because it was taking too much time.
+ - I had to abandon this custom name idea, at least for creating temporary copies of the game files, and instead referred
+ to the player as "you". I had done this because I was now facing a much larger issue: how to take user input and parse
+ the individual words into some kind of meaning.
+ - Another major resource that I used to research how the mechanics of the game should be structured is
+https://www.codersarts.com/post/java-sample-project-1-text-adventure-game. I never copied anything, but I had to understand
+how object oriented programming worked in the way that I wanted it to. I had to change how I thought, coming from python. This
+resource helped me immensely. 
+ - A few other resources that I used: I would like to give credit to a co-student of mine, I don't know his last name, but
+he goes to AU, I met him via an online chatroom where AU members visit. Jake helped me figure out a couple things that I 
+struggled with, mainly, using hashmaps. Hashmaps were used in my game to relate "user input" into String key values in
+the hashmap, to the corresponding Object being referenced. Additionally, hashmaps allowed me to apply descriptions to locations,
+characters, actions, and items via delimiters when my textreader was reading a text file. Each "name" would be separated by
+a ":", the description of the particular object followed. 
+ - The textbook itself wasn't very helpful to me, personally. I found everything written in it to be too verbose, and confusing.
+I of course read through all the chapters, but I found that online resources such as those above helped me a lot more than
+this particular textbook. A great example of this is the TextIO system that was used by the author, which is outdated
+and frequently resulted in crashes in my programs. I'd rather use built-in imports.
+
+* Challenges *
+
+After trying to integrate all these features, I had run into problem after problem. The current "mechanics" section of my design
+section now clearly outlines what I wanted to do. I had to change my mind a few times due to limitations. Most of the issues
+that I ran across during the coding of this assignment were easy to fix, but there were specifically two parts of it that had
+me sitting upon hours and hours in front of a screen.
+
+Problem
+
+ - Parsing input into viable understandable grammar for the parsing system:
+Initially when I had approached this, I was splitting the string that was provided by user input into several parts. This would
+then be made into a String[] array. Then, I would have several switch-case statements that would identify how many words were 
+being detected and then it would spit that out into another parser, which would take the words and apply them to a specific 
+action. The problem with this is that there was a lot of garbage collection that had to be done, and it was inefficient. For
+example: "Attack the mad hatter with my sword". We would be registering attck, the, mad, hatter, with, my, and sword. There's
+so much garbage here to collect.. But I had no way to efficiently remove the garbage... It would take every word, and setting
+this up in a way that would realize "the" wasn't an important word would require a whole other dictionary to be created.
+
+Solution
+
+ - Creating a hashmap that would match important words with the corresponding action, item, or character
+By creating a hashmap with different keys relating to the action, item, or character involved, it would then relate each user
+input and remove the "important" words from a sentence being inputted. There are some drawbacks, but everything works. 
+
+Problem
+
+ - Relating "objects" to their text descriptions
+The other big issue that took a lot of my time was understanding how to incorporate a single description file for actions, locations,
+characters, and items without having a separate description file for each of these items. As per the game requirements, all assets
+needed to be loaded at once. I initially decided to just have a constructor that handled all of the initial assets' descriptions, 
+inputted via a String. The problem with this was that it was difficult to change the descriptions if needed, or relate an input
+from the user to the description file. There was no easy way to handle this. 
+
+Solution
+
+ - Creating hashmaps to input all of my description files 
+I decided to then create hasmaps which contains <String, HashMap<String, String>> that related something like "items" to "*itemName, description*".
+This allowed me to create a large hashmap that contains a String and a HashMap. The String key would be the type of objects contained, such as "actions".
+The HashMap contained would be another <String, String>. The first String key would be the specific object name, such as "take". The corresponding
+value to that particular key would be the description. Both the key and value of the hashmap are pulled from one line of a txt file. The first
+key String value before the delimiter ":", and the value of the key would be after the delimiter ":". 
+
+* Testing * 
+
+ - Testing ran through the entire development process. I almost always tested new features right after they were implemented.
+ 
+ - When the entire program seemed to work properly, I had my wife play-through the game to see if she could find potential issues.
+ I did this because I felt like because I knew exactly how things are supposed to play out, I would neglect to consider other potential
+ circumstances that would lead to errors and issues. I was correct, as she had found several problems that I hadn't forseen.
+ 
+ - I had several if-else statements incorrectly nested within each other for my Actions class specialEvents method, where every condition
+ would be checked and excecuted, rather than break out of the for-loop when one of the conditions were reached. Fixed.
+ 
+ - An error where my input parser in Control would retain the old values of the previous entry if the input resulted in an invalid input.
+ I solved this by having all the variables which stored actions, items, and characters set to null *after* those commands were sent to 
+ my outputCommand method. 
+ 
+ - Many little errors where certain items were not droppable as they should have been. 
+ 
+ - My properName system would result in displaying items as "null" in the "look" command when listing items, as I had neglected
+ to properly specify the properName of an Object inside of their respective classes. 
+ 
+ - Implemented a "help" option inside of the game so that commands could be clearly listed. Also added more [[hints]] to the in-game
+ prompts so that the path would be clearer. 
